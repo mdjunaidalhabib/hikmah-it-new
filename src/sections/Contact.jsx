@@ -15,8 +15,8 @@ export default function Contact() {
             text="Send project details: business type, needed package, hosting/domain requirement, admin panel features and launch target."
           />
           <div className="contact-cards">
-            <a href={`tel:${brand.phone}`}><PhoneCall size={20} /><span>{brand.phone}</span></a>
-            <a href={`mailto:${brand.email}`}><Mail size={20} /><span>{brand.email}</span></a>
+            <a href={brand.phoneHref}><PhoneCall size={20} /><span>{brand.phone}</span></a>
+            <a href={brand.emailHref}><Mail size={20} /><span>{brand.email}</span></a>
             <a href={brand.facebook} target="_blank" rel="noreferrer"><Globe2 size={20} /><span>Visit Facebook Page</span></a>
             <div><MapPin size={20} /><span>{brand.location}</span></div>
           </div>

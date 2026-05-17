@@ -23,8 +23,8 @@ export default function Footer() {
         </div>
         <div>
           <h4>Contact</h4>
-          <span>{brand.phone}</span>
-          <span>{brand.email}</span>
+          <a href={brand.phoneHref}>{brand.phone}</a>
+          <a href={brand.emailHref}>{brand.email}</a>
           <span>{brand.location}</span>
           <a href={brand.facebook} target="_blank" rel="noreferrer">Visit Facebook Page</a>
         </div>

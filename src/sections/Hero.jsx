@@ -1,7 +1,6 @@
 import { ArrowRight, CheckCircle2, PlayCircle } from 'lucide-react'
 import Button from '../components/Button'
-import Logo from '../components/Logo'
-import { brand, stats } from '../data/siteData'
+import { brand } from '../data/siteData'
 
 export default function Hero() {
   return (
@@ -19,21 +18,16 @@ export default function Hero() {
             <Button href="#contact">Start Your Project <ArrowRight size={18} /></Button>
             <Button href="#services" variant="ghost"><PlayCircle size={18} /> View Services</Button>
           </div>
-          <div className="stats-grid">
-            {stats.map((item) => (
-              <div className="stat" key={item.label}>
-                <strong>{item.value}</strong>
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
-        <div className="hero-panel">
-          <div className="panel-top"><Logo dark /></div>
-          <div className="dashboard-card big-card">
+        <div className="hero-panel dashboard-preview">
+          <div className="dashboard-head">
             <span>Admin Dashboard</span>
-            <strong>৳ 2,45,000</strong>
-            <small>Monthly sales overview</small>
+            <button type="button">This Month <span>⌄</span></button>
+          </div>
+          <strong className="dashboard-total">৳ 2,45,000</strong>
+          <small className="dashboard-subtitle">Monthly sales overview</small>
+          <div className="chart-area">
+            <span>60K</span><span>40K</span><span>20K</span><span>0</span>
             <div className="chart-bars"><i /><i /><i /><i /><i /></div>
           </div>
           <div className="mini-grid">

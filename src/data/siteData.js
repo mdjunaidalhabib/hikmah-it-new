@@ -30,8 +30,10 @@ export const brand = {
   name: "Hikmah IT",
   tagline: "Smart Digital Solution for Business & Education",
   phone: "01624114405",
+  phoneHref: "tel:+8801624114405",
   whatsapp: "https://wa.me/8801624114405",
   email: "hikmahitcenter@gmail.com",
+  emailHref: "mailto:hikmahitcenter@gmail.com",
   location: "Bangladesh",
   facebook: "https://facebook.com/hikmahitbd",
 };
