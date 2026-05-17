@@ -16,7 +16,7 @@ import WhatsAppButton from './components/WhatsAppButton'
 
 export default function App() {
   return (
-    <>
+    <div className="font-sans text-slate-950 antialiased">
       <Navbar />
       <main>
         <Hero />
@@ -34,6 +34,6 @@ export default function App() {
       </main>
       <Footer />
       <WhatsAppButton />
-    </>
+    </div>
   )
 }

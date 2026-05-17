@@ -2,34 +2,19 @@ import Logo from '../components/Logo'
 import { navItems, brand } from '../data/siteData'
 
 export default function Footer() {
+  const link = 'mb-2 block text-slate-300 transition hover:text-white';
   return (
-    <footer className="footer">
-      <div className="container footer-grid">
+    <footer className="bg-[#020617] py-14 pb-6 text-white">
+      <div className="mx-auto grid w-[min(1180px,calc(100%-40px))] gap-8 sm:grid-cols-2 lg:grid-cols-[1.4fr_.8fr_.9fr_.9fr]">
         <div>
-          <div className="footer-brand-row"><Logo dark /></div>
-          <p>{brand.tagline}. We build modern websites, e-commerce platforms, domain/international hosting support and institution management solutions.</p>
+          <Logo />
+          <p className="mt-4 max-w-sm leading-8 text-slate-400">{brand.tagline}. We build modern websites, e-commerce platforms, domain/international hosting support and institution management solutions.</p>
         </div>
-        <div>
-          <h4>Quick Links</h4>
-          {navItems.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
-        </div>
-        <div>
-          <h4>Main Services</h4>
-          <a href="#ecommerce">E-commerce Website</a>
-          <a href="#madrasah">Madrasah Management</a>
-          <a href="#business-websites">Portfolio Website</a>
-          <a href="#business-websites">Landing Page</a>
-          <a href="#hosting">Hosting & Domain</a>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <a href={brand.phoneHref}>{brand.phone}</a>
-          <a href={brand.emailHref}>{brand.email}</a>
-          <span>{brand.location}</span>
-          <a href={brand.facebook} target="_blank" rel="noreferrer">Visit Facebook Page</a>
-        </div>
+        <div><h4 className="mb-4 font-black">Quick Links</h4>{navItems.map((item) => <a className={link} key={item.href} href={item.href}>{item.label}</a>)}</div>
+        <div><h4 className="mb-4 font-black">Main Services</h4><a className={link} href="#ecommerce">E-commerce Website</a><a className={link} href="#madrasah">Madrasah Management</a><a className={link} href="#business-websites">Portfolio Website</a><a className={link} href="#business-websites">Landing Page</a><a className={link} href="#hosting">Hosting & Domain</a></div>
+        <div><h4 className="mb-4 font-black">Contact</h4><a className={link} href={brand.phoneHref}>{brand.phone}</a><a className={link} href={brand.emailHref}>{brand.email}</a><span className="mb-2 block text-slate-300">{brand.location}</span><a className={link} href={brand.facebook} target="_blank" rel="noreferrer">Visit Facebook Page</a></div>
       </div>
-      <div className="container footer-bottom">© {new Date().getFullYear()} Hikmah IT. All rights reserved.</div>
+      <div className="mx-auto mt-10 w-[min(1180px,calc(100%-40px))] border-t border-white/10 pt-6 text-slate-400">© {new Date().getFullYear()} Hikmah IT. All rights reserved.</div>
     </footer>
   )
 }
