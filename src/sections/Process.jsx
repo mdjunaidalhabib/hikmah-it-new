@@ -3,7 +3,7 @@ import { process } from '../data/siteData'
 
 export default function Process() {
   return (
-    <section className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-24">
+    <section className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-12">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader eyebrow="Work Process" title="Simple, clear and project-focused workflow" />
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">

@@ -4,7 +4,7 @@ import { pricingGroups } from '../data/siteData'
 
 export default function Pricing() {
   return (
-    <section className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-24" id="pricing">
+    <section className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-12" id="pricing">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader eyebrow="Packages" title="Professional service packages" />
         <div className="grid gap-12">
