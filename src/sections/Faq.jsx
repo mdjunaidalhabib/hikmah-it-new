@@ -3,7 +3,7 @@ import { faq } from '../data/siteData'
 
 export default function Faq() {
   return (
-    <section className="bg-[#EAF3FF] py-20 lg:py-24" id="faq">
+    <section className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-24" id="faq">
       <div className="mx-auto w-[min(900px,calc(100%-40px))]">
         <SectionHeader eyebrow="FAQ" title="Common questions" text="Short answers for clients before they contact you." />
         <div className="grid gap-4">

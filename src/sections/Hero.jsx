@@ -19,22 +19,22 @@ export default function Hero() {
             <Button href="#services" variant="ghost"><PlayCircle size={18} /> View Services</Button>
           </div>
         </div>
-        <div className="rounded-[2rem] border border-white/10 bg-white/10 p-5 shadow-2xl shadow-black/25 backdrop-blur-xl">
+        <div className="rounded-[2rem] border border-blue-300/20 bg-[#0b1736]/80 p-5 shadow-2xl shadow-blue-950/30 backdrop-blur-xl">
           <div className="mb-5 flex items-center justify-between text-sm font-extrabold text-slate-200">
             <span>Admin Dashboard</span>
             <button type="button" className="rounded-full bg-white/10 px-3 py-1.5">This Month ⌄</button>
           </div>
-          <div className="rounded-3xl bg-white p-6 text-slate-950">
-            <span className="font-bold text-slate-500">Monthly sales overview</span>
+          <div className="rounded-3xl border border-blue-300/15 bg-gradient-to-br from-[#13245a] via-[#0f1d44] to-[#0b1736] p-6 text-white">
+            <span className="font-medium text-blue-100">Monthly sales overview</span>
             <strong className="mt-2 block text-4xl font-black tracking-[-0.05em]">৳ 2,45,000</strong>
             <div className="mt-6 flex h-32 items-end gap-3">
-              {['h-[45%]', 'h-[70%]', 'h-[55%]', 'h-[90%]', 'h-[62%]'].map((height) => <i key={height} className={`${height} block flex-1 rounded-t-2xl bg-gradient-to-t from-blue-600 to-blue-200`} />)}
+              {['h-[45%]', 'h-[70%]', 'h-[55%]', 'h-[90%]', 'h-[62%]'].map((height) => <i key={height} className={`${height} block flex-1 rounded-t-2xl bg-gradient-to-t from-blue-500 to-cyan-200`} />)}
             </div>
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {['312|Orders', '1.2k|Users', '98%|Uptime', 'SEO|Ready'].map((item) => {
               const [big, small] = item.split('|')
-              return <div className="rounded-2xl bg-white/10 p-4" key={item}><strong className="block text-lg">{big}</strong><span className="text-xs text-slate-300">{small}</span></div>
+              return <div className="rounded-2xl border border-blue-300/15 bg-blue-500/10 p-4" key={item}><strong className="block text-lg">{big}</strong><span className="text-xs text-blue-100">{small}</span></div>
             })}
           </div>
         </div>

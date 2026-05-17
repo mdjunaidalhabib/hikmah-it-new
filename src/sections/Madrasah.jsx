@@ -5,12 +5,12 @@ import { madrasahFeatures } from '../data/siteData'
 
 export default function Madrasah() {
   return (
-    <section className="bg-[#EAF3FF] py-20 lg:py-24" id="madrasah">
+    <section className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-24" id="madrasah">
       <div className="mx-auto grid w-[min(1180px,calc(100%-40px))] items-center gap-10 lg:grid-cols-[.95fr_1.05fr]">
-        <div className="rounded-[2rem] bg-slate-950 p-6 text-white shadow-2xl shadow-slate-950/15">
+        <div className="rounded-[2rem] border border-blue-100 bg-gradient-to-br from-white to-blue-50 p-6 text-slate-950 shadow-2xl shadow-blue-950/10">
           <div className="mb-4 rounded-3xl bg-gradient-to-br from-emerald-600 to-blue-600 p-5 text-2xl font-black">Madrasah Management Dashboard</div>
           <div className="grid gap-3">
-            {['Students', 'Teachers', 'Attendance', 'Accounting', 'Fees', 'Result', 'Public Website'].map((item) => <div className="flex justify-between rounded-2xl border border-white/10 bg-white/10 p-4" key={item}><span>{item}</span><strong className="text-emerald-300">Active</strong></div>)}
+            {['Students', 'Teachers', 'Attendance', 'Accounting', 'Fees', 'Result', 'Public Website'].map((item) => <div className="flex justify-between rounded-2xl border border-blue-100 bg-white p-4" key={item}><span>{item}</span><strong className="text-emerald-600">Active</strong></div>)}
           </div>
         </div>
         <div>

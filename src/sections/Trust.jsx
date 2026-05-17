@@ -3,7 +3,7 @@ import { trustItems } from '../data/siteData'
 
 export default function Trust() {
   return (
-    <section className="bg-[#EAF3FF] py-20 lg:py-24">
+    <section className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-24">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader eyebrow="Why Choose Us" title="Built for trust, speed and professional presentation" text="The design direction uses navy, blue and amber colors to build a premium, reliable and technology-focused brand identity." />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
