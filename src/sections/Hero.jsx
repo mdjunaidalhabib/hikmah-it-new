@@ -55,9 +55,9 @@ export default function Hero() {
 
             <div className="mt-6 grid gap-3">
               {[
-                "Business Website",
                 "E-commerce Store",
                 "Madrasah Management",
+                "Business Website",
                 "Hosting & Domain",
               ].map((item) => (
                 <div
