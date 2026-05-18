@@ -57,7 +57,8 @@ export default function Hero() {
               {[
                 "E-commerce Store",
                 "Madrasah Management",
-                "Business Website",
+                "Portfolio & Business Website",
+                "Landing Page",
                 "Hosting & Domain",
               ].map((item) => (
                 <div
