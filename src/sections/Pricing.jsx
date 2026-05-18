@@ -26,7 +26,7 @@ export default function Pricing() {
                 {group.plans.map((plan) => (
                   <article
                     key={plan.name}
-                    className={`rounded-[2rem] border p-7 shadow-xl transition hover:shadow-2xl ${
+                    className={`flex flex-col h-full rounded-[2rem] border p-7 shadow-xl transition hover:shadow-2xl ${
                       plan.highlighted
                         ? "border-blue-300 bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-blue-950/10 ring-2 ring-blue-100 lg:-translate-y-2"
                         : "border-slate-200 bg-white shadow-slate-950/5"
@@ -34,38 +34,45 @@ export default function Pricing() {
                   >
                     {/* Badge */}
                     {plan.highlighted && (
-                      <span className="mb-4 inline-flex rounded-full bg-amber-400 px-3 py-1 text-sm font-semibold text-slate-900">
+                      <span className="mb-4 inline-block w-fit rounded-full bg-amber-400 px-3 py-1 text-xs font-semibold tracking-wide text-slate-900 shadow-sm">
                         Recommended
                       </span>
                     )}
 
-                    {/* Plan Name */}
-                    <h3 className="text-2xl font-semibold text-slate-900">
-                      {plan.name}
-                    </h3>
+                    {/* Content */}
+                    <div>
+                      {/* Plan Name */}
+                      <h3 className="text-2xl font-semibold text-slate-900">
+                        {plan.name}
+                      </h3>
 
-                    {/* Price */}
-                    <strong className="mt-3 block text-3xl font-bold text-blue-600">
-                      {plan.price}
-                    </strong>
+                      {/* Price */}
+                      <strong className="mt-3 block text-3xl font-bold text-blue-600">
+                        {plan.price}
+                      </strong>
 
-                    {/* Description */}
-                    <p className="mt-3 leading-7 text-slate-600">{plan.text}</p>
+                      {/* Description */}
+                      <p className="mt-3 leading-7 text-slate-600">
+                        {plan.text}
+                      </p>
 
-                    {/* Features */}
-                    <ul className="my-6 grid gap-3 text-slate-700">
-                      {plan.features.map((feature) => (
-                        <li key={feature}>✓ {feature}</li>
-                      ))}
-                    </ul>
+                      {/* Features */}
+                      <ul className="my-6 grid gap-3 text-slate-700">
+                        {plan.features.map((feature) => (
+                          <li key={feature}>✓ {feature}</li>
+                        ))}
+                      </ul>
+                    </div>
 
-                    {/* Button */}
-                    <Button
-                      href="#contact"
-                      variant={plan.highlighted ? "primary" : "ghost-dark"}
-                    >
-                      Choose Package
-                    </Button>
+                    {/* Button at bottom */}
+                    <div className="mt-auto">
+                      <Button
+                        href="#contact"
+                        variant={plan.highlighted ? "primary" : "ghost-dark"}
+                      >
+                        Choose Package
+                      </Button>
+                    </div>
                   </article>
                 ))}
               </div>
