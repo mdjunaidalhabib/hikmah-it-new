@@ -21,18 +21,20 @@ export default function Portfolio() {
               href={item.url}
               target="_blank"
               rel="noreferrer"
-              className="group overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl shadow-slate-950/5 transition hover:shadow-2xl"
+              className="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl"
             >
-              {/* Image */}
-              <div className="relative h-56 overflow-hidden bg-slate-200">
+              {/* Image Wrapper */}
+              <div className="relative aspect-video overflow-hidden border-b border-slate-200 bg-slate-100">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 />
 
                 {/* Overlay */}
-                <div className="absolute inset-0 grid place-items-center bg-slate-950/0 opacity-0 transition group-hover:bg-slate-950/40 group-hover:opacity-100">
+                <div className="absolute inset-0 grid place-items-center bg-slate-950/0 opacity-0 transition duration-300 group-hover:bg-slate-950/40 group-hover:opacity-100">
                   <span className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900">
                     Visit Website
                   </span>
@@ -40,16 +42,18 @@ export default function Portfolio() {
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <span className="text-sm font-semibold text-blue-600">
+              <div className="p-4">
+                <span className="text-xs font-semibold uppercase tracking-wide text-blue-600">
                   {item.category}
                 </span>
 
-                <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                <h3 className="mt-1 line-clamp-1 text-lg font-semibold text-slate-900">
                   {item.title}
                 </h3>
 
-                <p className="mt-2 leading-7 text-slate-600">{item.text}</p>
+                <p className="mt-1 line-clamp-2 text-sm leading-5 text-slate-600">
+                  {item.text}
+                </p>
               </div>
             </a>
           ))}

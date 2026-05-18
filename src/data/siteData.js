@@ -347,22 +347,22 @@ export const portfolio = [
   {
     title: "Online Store Preview",
     category: "E-commerce + Admin Panel",
-    image: "/hero.png",
-    url: "https://example.com",
+    image: "/preview/openup_banner.webp",
+    url: "https://openupbd.com",
     text: "Product, order, payment and admin-panel based online shop preview.",
   },
   {
     title: "Company Website Preview",
     category: "Business Website",
-    image: "/worker.png",
-    url: "https://example.com",
+    image: "/preview/hikmahit_banner.webp",
+    url: "https://hikmahit.com",
     text: "Professional company website layout for service and lead generation.",
   },
   {
     title: "Campaign Page Preview",
     category: "Landing Page",
-    image: "/hero.png",
-    url: "https://example.com",
+    image: "/preview/habibs_fashion_banner.webp",
+    url: "https://habibsfashion.com",
     text: "One-page offer, campaign or product promotion website preview.",
   },
 ];
