@@ -11,7 +11,7 @@ export default function Portfolio() {
         <SectionHeader
           eyebrow="Project Showcase"
           title="Recent website preview gallery"
-          text="Card click করলে live website open হবে।"
+          text="Click the card to visit the live website."
         />
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
