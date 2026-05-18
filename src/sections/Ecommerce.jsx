@@ -6,7 +6,7 @@ import { ecommerceFeatures } from "../data/siteData";
 export default function Ecommerce() {
   return (
     <section
-      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-12"
+      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-8 lg:py-12"
       id="ecommerce"
     >
       {/* 👉 Top Center Heading */}

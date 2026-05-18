@@ -14,11 +14,11 @@ const icons = [Rocket, MonitorSmartphone, Globe2];
 export default function BusinessWebsites() {
   return (
     <section
-      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-12"
+      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-8 lg:py-12"
       id="business-websites"
     >
       {/* Heading */}
-      <div className="mx-auto w-[min(900px,calc(100%-40px))] text-center mb-12">
+      <div className="mx-auto mb-12 w-[min(900px,calc(100%-40px))] text-center">
         <SectionHeader
           align="center"
           eyebrow="Business Website"
@@ -37,26 +37,31 @@ export default function BusinessWebsites() {
 
               return (
                 <article
-                  className="relative flex gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-950/5"
+                  className="relative flex gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-950/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                   key={item.title}
                 >
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-blue-600 text-white">
-                    <Icon size={21} />
+                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/20">
+                    <Icon size={24} strokeWidth={2.2} />
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-black text-slate-950">
+                    <h3 className="text-xl font-semibold tracking-[-0.02em] text-slate-950">
                       {item.title}
                     </h3>
-                    <small className="font-extrabold text-blue-700">
+
+                    <small className="mt-1 inline-block text-xs font-semibold uppercase tracking-wide text-blue-700">
                       {item.tag}
                     </small>
-                    <p className="mt-2 leading-7 text-slate-600">{item.text}</p>
+
+                    <p className="mt-3 text-[15px] leading-7 font-normal text-slate-600">
+                      {item.text}
+                    </p>
                   </div>
 
                   <ArrowRight
                     className="absolute right-5 top-5 text-blue-600"
-                    size={18}
+                    size={20}
+                    strokeWidth={2.2}
                   />
                 </article>
               );
@@ -71,27 +76,30 @@ export default function BusinessWebsites() {
             <span className="h-3 w-3 rounded-full bg-amber-500" />
             <span className="h-3 w-3 rounded-full bg-blue-500" />
             <span className="h-3 w-3 rounded-full bg-emerald-500" />
-            <strong className="ml-2 text-sm">Website Preview</strong>
+
+            <strong className="ml-2 text-sm font-semibold tracking-wide text-slate-700">
+              Website Preview
+            </strong>
           </div>
 
           {/* Main preview */}
           <div className="rounded-3xl border border-blue-100 bg-white p-7">
-            <small className="font-extrabold text-blue-700">
+            <small className="text-sm font-semibold uppercase tracking-wide text-blue-700">
               Professional Website
             </small>
 
-            <h3 className="mt-3 text-3xl font-black leading-tight tracking-[-0.04em]">
+            <h3 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.03em] text-slate-950">
               Build trust, showcase your work and collect leads
             </h3>
 
-            <p className="mt-4 leading-7 text-slate-600">
+            <p className="mt-4 text-[15px] leading-7 font-normal text-slate-600">
               Modern layout, service highlights, portfolio area, testimonials
               and WhatsApp/Facebook contact flow.
             </p>
           </div>
 
-          {/* Features moved here */}
-          <div className="mt-4 flex flex-wrap gap-3 text-sm font-extrabold text-slate-700">
+          {/* Features */}
+          <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-slate-700">
             {[
               "Clean responsive design",
               "Lead focused structure",
@@ -99,9 +107,10 @@ export default function BusinessWebsites() {
             ].map((item) => (
               <span
                 key={item}
-                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 border border-blue-100"
+                className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 shadow-sm"
               >
-                <CheckCircle2 size={16} /> {item}
+                <CheckCircle2 size={16} strokeWidth={2.2} />
+                {item}
               </span>
             ))}
           </div>
@@ -109,6 +118,7 @@ export default function BusinessWebsites() {
           {/* CTA buttons */}
           <div className="mt-5 flex flex-wrap gap-3">
             <Button href="#pricing">See Website Packages</Button>
+
             <Button href="#portfolio" variant="ghost-dark">
               View Showcase
             </Button>

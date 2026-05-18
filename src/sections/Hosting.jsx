@@ -9,11 +9,11 @@ export default function Hosting() {
 
   return (
     <section
-      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-12"
+      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-8 lg:py-12"
       id="hosting"
     >
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
-        {/* 👉 Top Center Heading */}
+        {/* Heading */}
         <div className="mx-auto w-[min(900px,calc(100%-40px))] text-center mb-12">
           <SectionHeader
             align="center"
@@ -23,7 +23,7 @@ export default function Hosting() {
           />
         </div>
 
-        {/* 👉 Cards */}
+        {/* Cards */}
         <div className="grid gap-5 lg:grid-cols-2">
           {/* Domain Card */}
           <article className={card}>
@@ -31,15 +31,15 @@ export default function Hosting() {
               <Globe2 size={28} />
             </div>
 
-            <span className="mt-5 inline-flex rounded-full bg-amber-100 px-3 py-1 text-sm font-black text-amber-700">
+            <span className="mt-5 inline-flex rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-700">
               Domain Support
             </span>
 
-            <h3 className="mt-3 text-3xl font-black text-slate-950">
+            <h3 className="mt-3 text-3xl font-bold text-slate-950">
               Domain Purchase Support
             </h3>
 
-            <strong className="mt-2 block text-2xl font-black text-blue-700">
+            <strong className="mt-2 block text-2xl font-bold text-blue-700">
               ৳1,500+
             </strong>
 
@@ -50,7 +50,7 @@ export default function Hosting() {
 
             <div className="my-5 flex items-center justify-between rounded-full border border-slate-200 bg-slate-50 p-2 pl-5 text-slate-500">
               <span>yourbusiness.com</span>
-              <button className="rounded-full bg-blue-600 px-4 py-2 font-bold text-white">
+              <button className="rounded-full bg-blue-600 px-4 py-2 font-semibold text-white">
                 Check
               </button>
             </div>
@@ -74,19 +74,18 @@ export default function Hosting() {
               <ServerCog size={28} />
             </div>
 
-            <span className="mt-5 inline-flex rounded-full bg-amber-400 px-3 py-1 text-sm font-black text-slate-950">
+            <span className="mt-5 inline-flex rounded-full bg-amber-400 px-3 py-1 text-sm font-semibold text-slate-950">
               International Hosting
             </span>
 
-            <h3 className="mt-3 text-3xl font-black text-slate-950">
+            <h3 className="mt-3 text-3xl font-bold text-slate-950">
               Hosting Purchase Support
             </h3>
 
-            <strong className="mt-2 block text-2xl font-black text-blue-700">
+            <strong className="mt-2 block text-2xl font-bold text-blue-700">
               ৳300 service charge
             </strong>
 
-            {/* ✅ FIXED TEXT COLOR */}
             <p className="mt-3 leading-7 text-slate-600">
               Hosting আমরা নিজেরা sell/provide করি না। Trusted international
               provider থেকে hosting কিনতে payment support দেওয়া হবে।
@@ -104,7 +103,7 @@ export default function Hosting() {
           </article>
         </div>
 
-        {/* 👉 Buttons */}
+        {/* Buttons */}
         <div className="mt-8 flex justify-center gap-3">
           <Button href={brand.whatsapp}>Order Support</Button>
           <Button href="#contact" variant="ghost-dark">

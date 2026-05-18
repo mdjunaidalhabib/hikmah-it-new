@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 export default function Faq() {
   return (
     <section
-      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-20 lg:py-12"
+      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-8 lg:py-12"
       id="faq"
     >
       <div className="mx-auto w-[min(900px,calc(100%-40px))]">

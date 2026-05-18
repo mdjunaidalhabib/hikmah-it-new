@@ -12,7 +12,7 @@ const contactItem =
 export default function Contact() {
   return (
     <section
-      className="bg-gradient-to-br from-[#e6f4ea] via-[#f7fbf8] to-[#e9f7ef] py-20 text-slate-950 lg:py-12"
+      className="bg-gradient-to-br from-[#e6f4ea] via-[#f7fbf8] to-[#e9f7ef] py-8 text-slate-950 lg:py-12"
       id="contact"
     >
       <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
