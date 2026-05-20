@@ -1,7 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const allowedHost = process.env.VITE_ALLOWED_HOST;
+const allowedHosts = process.env.VITE_ALLOWED_HOST
+  ? process.env.VITE_ALLOWED_HOST.split(",").map((host) => host.trim())
+  : [];
 
 export default defineConfig({
   plugins: [react()],
@@ -14,6 +16,6 @@ export default defineConfig({
   preview: {
     host: "0.0.0.0",
     port: 3000,
-    allowedHosts: allowedHost ? [allowedHost] : [],
+    allowedHosts,
   },
 });
