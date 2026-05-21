@@ -11,7 +11,6 @@ export default function Ecommerce() {
       className="relative overflow-hidden bg-[#edf4ff] py-10 lg:py-16"
       id="ecommerce"
     >
-
       {/* 👉 Top Center Heading */}
       <div className="relative mx-auto mb-12 w-[min(900px,calc(100%-40px))] text-center">
         <SectionHeader
@@ -45,8 +44,8 @@ export default function Ecommerce() {
           <div className="flex flex-wrap gap-3">
             <Button href="#pricing">See Packages</Button>
 
-            <Button href="#contact" variant="ghost-dark">
-              Request Demo
+            <Button href="#portfolio" variant="ghost-dark">
+              See Live Project
             </Button>
           </div>
         </div>
