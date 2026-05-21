@@ -355,7 +355,7 @@ export const portfolio = [
     title: "Company Website Preview",
     category: "Business Website",
     image: "/preview/hikmahit_banner.webp",
-    url: "https://hikmahit.com",
+    url: "https://hikmahit.vercel.app",
     text: "Professional company website layout for service and lead generation.",
   },
   {
@@ -369,20 +369,44 @@ export const portfolio = [
 
 export const faq = [
   {
-    q: "E-commerce website e admin panel thakbe?",
-    a: "Yes, product, category, order, customer, payment status and delivery control er admin panel structure thakbe.",
+    q: "Will my website be mobile responsive?",
+    a: "Yes, all websites are fully responsive for mobile, tablet, and desktop devices.",
   },
   {
-    q: "Portfolio, landing page and business website er price koto?",
-    a: "Landing page ৳5,000, portfolio website ৳7,000, business website ৳9,000. Ei package gulote hosting support free, but domain alada kinতে হবে.",
+    q: "Can you develop custom web applications?",
+    a: "Yes, we create custom dashboards, management systems, SaaS platforms, and automation tools.",
   },
   {
-    q: "Hosting/domain ki bKash, Rocket ba Nagad diye nite parbo?",
-    a: "Yes. Domain purchase support ৳1,500+ theke start. Hosting amra nijera sell kori na; Hostinger/Namecheap er moto international provider theke purchase support kori. bKash, Nagad, Rocket/BD gateway payment support thakbe. Hosting service charge ৳300, provider bill separate.",
+    q: "Will my website be SEO friendly?",
+    a: "Yes, we follow SEO best practices including optimized structure, fast loading speed, and clean code.",
   },
   {
-    q: "Madrasah system e accounting module thakbe?",
-    a: "Yes, income, expense, salary, fee collection, due report and financial summary option add kora hoyeche.",
+    q: "Do you work with React and Next.js?",
+    a: "Yes, we use modern technologies like React, Next.js, Node.js, and Tailwind CSS.",
+  },
+  {
+    q: "Can you integrate payment gateways?",
+    a: "Yes, we integrate payment gateways such as SSLCommerz, bKash, Nagad, Rocket, and international solutions.",
+  },
+  {
+    q: "Do you offer website maintenance services?",
+    a: "Yes, we provide ongoing maintenance, updates, security monitoring, and performance optimization.",
+  },
+  {
+    q: "Will my website be secure?",
+    a: "Yes, we implement modern security practices, secure authentication, and protection systems.",
+  },
+  {
+    q: "Can you improve website speed and performance?",
+    a: "Yes, we optimize websites using caching, image compression, lazy loading, and performance tuning.",
+  },
+  {
+    q: "Do you provide UI/UX design services?",
+    a: "Yes, we create clean, modern, and professional UI/UX designs tailored to your business needs.",
+  },
+  {
+    q: "Do you provide source code after project completion?",
+    a: "Yes, complete source code and project files are provided after project delivery.",
   },
 ];
 

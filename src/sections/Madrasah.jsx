@@ -5,10 +5,7 @@ import { madrasahFeatures } from "../data/siteData";
 
 export default function Madrasah() {
   return (
-    <section
-      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-10 sm:py-14 lg:py-24"
-      id="madrasah"
-    >
+    <section className="bg-[#edf4ff] py-10 sm:py-14 lg:py-24" id="madrasah">
       {/* Header */}
       <div className="mx-auto w-[min(1180px,calc(100%-20px))] sm:w-[min(1180px,calc(100%-40px))] text-center mb-8 sm:mb-12">
         <SectionHeader

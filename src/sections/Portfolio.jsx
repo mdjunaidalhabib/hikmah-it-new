@@ -3,10 +3,7 @@ import { portfolio } from "../data/siteData";
 
 export default function Portfolio() {
   return (
-    <section
-      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-8 lg:py-12"
-      id="portfolio"
-    >
+    <section className="bg-[#edf4ff] py-8 lg:py-12" id="portfolio">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
           eyebrow="Project Showcase"

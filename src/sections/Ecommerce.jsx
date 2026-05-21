@@ -8,12 +8,9 @@ import { ecommerceFeatures } from "../data/siteData";
 export default function Ecommerce() {
   return (
     <section
-      className="relative overflow-hidden bg-gradient-to-br from-[#edf4ff] via-[#f7faff] to-[#eaf2ff] py-10 lg:py-16"
+      className="relative overflow-hidden bg-[#edf4ff] py-10 lg:py-16"
       id="ecommerce"
     >
-      {/* 👉 Background Glow */}
-      <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-blue-200/30 blur-3xl" />
-      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-cyan-100/40 blur-3xl" />
 
       {/* 👉 Top Center Heading */}
       <div className="relative mx-auto mb-12 w-[min(900px,calc(100%-40px))] text-center">

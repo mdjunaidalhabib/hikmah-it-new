@@ -14,10 +14,7 @@ export default function Hosting() {
     "flex gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-[15px] leading-6 text-slate-700";
 
   return (
-    <section
-      id="hosting"
-      className="bg-gradient-to-b from-slate-50 to-white py-12 lg:py-16"
-    >
+    <section id="hosting" className="bg-[#edf4ff] py-12 lg:py-16">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <div className="mx-auto mb-12 max-w-3xl text-center">
           <SectionHeader

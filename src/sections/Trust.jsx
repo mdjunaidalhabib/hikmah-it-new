@@ -3,7 +3,7 @@ import { trustItems } from "../data/siteData";
 
 export default function Trust() {
   return (
-    <section className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-8 lg:py-12">
+    <section className="bg-[#edf4ff] py-8 lg:py-12">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
           eyebrow="Why Choose Us"

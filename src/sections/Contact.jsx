@@ -11,10 +11,7 @@ const contactItem =
 
 export default function Contact() {
   return (
-    <section
-      className="bg-gradient-to-br from-[#e6f4ea] via-[#f7fbf8] to-[#e9f7ef] py-8 text-slate-950 lg:py-12"
-      id="contact"
-    >
+    <section className="bg-[#edf4ff] py-8 text-slate-950 lg:py-12" id="contact">
       <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
         {/* 🔥 Top Center Heading */}
         <SectionHeader

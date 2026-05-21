@@ -13,10 +13,7 @@ const icons = [Rocket, MonitorSmartphone, Globe2];
 
 export default function BusinessWebsites() {
   return (
-    <section
-      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-8 lg:py-12"
-      id="business-websites"
-    >
+    <section className="bg-[#edf4ff] py-8 lg:py-12" id="business-websites">
       {/* Heading */}
       <div className="mx-auto mb-12 w-[min(900px,calc(100%-40px))] text-center">
         <SectionHeader

@@ -4,10 +4,7 @@ import { pricingGroups } from "../data/siteData";
 
 export default function Pricing() {
   return (
-    <section
-      className="bg-gradient-to-br from-[#eef6ff] via-[#f8fbff] to-[#e9f1ff] py-8 lg:py-12"
-      id="pricing"
-    >
+    <section className="bg-[#edf4ff] py-8 lg:py-12" id="pricing">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
           eyebrow="Packages"
