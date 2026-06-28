@@ -64,7 +64,7 @@ export default function Navbar() {
                     isActive
                       ? "bg-blue-500/20 text-emerald-300"
                       : "text-white/80 hover:bg-blue-500/15 hover:text-white"
-                  } ${label === "Earn" ? "text-emerald-300 hover:bg-emerald-500/15 hover:text-emerald-200" : ""}`
+                  } ${label === "Earn Money" ? "text-emerald-300 hover:bg-emerald-500/15 hover:text-emerald-200" : ""}`
                 }
               >
                 {({ isActive }) => (
@@ -140,7 +140,7 @@ export default function Navbar() {
           <ul className="space-y-0.5">
             {allNavItems.map(({ href, label }) => {
               const Icon = iconMap[href] || ArrowRight;
-              const isEarn = label === "Earn";
+              const isEarn = label === "Earn Money";
               return (
                 <li key={href}>
                   <NavLink
