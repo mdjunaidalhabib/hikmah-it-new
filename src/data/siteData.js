@@ -39,13 +39,22 @@ export const brand = {
 };
 
 export const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "E-commerce", href: "#ecommerce" },
-  { label: "Hosting", href: "#hosting" },
-  { label: "Madrasah System", href: "#madrasah" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Project", href: "/portfolio" },
+  { label: "Team", href: "/team" },
+  { label: "About", href: "/about" },
+];
+
+export const quickLinks = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Project", href: "/portfolio" },
+  { label: "Team", href: "/team" },
+  { label: "About", href: "/about" },
+  { label: "Earn Money", href: "/earn" },
 ];
 
 export const stats = [
@@ -60,37 +69,37 @@ export const services = [
     icon: ShoppingBag,
     title: "Full E-commerce Website",
     text: "Product, order, customer, payment, delivery and reporting system with a clean admin panel.",
-    href: "#ecommerce",
+    href: "/ecommerce",
   },
   {
     icon: School,
     title: "Madrasah Management System",
     text: "Student, teacher, accounting, attendance, fee, result, notice and public website control system.",
-    href: "#madrasah",
+    href: "/madrasah",
   },
   {
     icon: Building2,
     title: "Business Website",
     text: "Company website, service website, portfolio website and single page landing website for leads.",
-    href: "#business-websites",
+    href: "/business",
   },
   {
     icon: MonitorSmartphone,
     title: "Portfolio Website",
     text: "Personal brand, agency, professional profile and work showcase website with strong visual layout.",
-    href: "#business-websites",
+    href: "/business",
   },
   {
     icon: Rocket,
     title: "Landing Page Website",
     text: "Single page campaign website for product, course, event or service promotion with WhatsApp CTA.",
-    href: "#business-websites",
+    href: "/business",
   },
   {
     icon: ServerCog,
     title: "Hosting & Domain Service",
     text: "Domain support plus international hosting purchase/payment/setup support; we do not sell our own hosting.",
-    href: "#hosting",
+    href: "/hosting",
   },
 ];
 
@@ -326,7 +335,6 @@ export const pricingGroups = [
         ],
         highlighted: false,
       },
-
       {
         name: "Hosting Payment Assistance",
         price: "৳300 service charge",
@@ -419,4 +427,100 @@ export const trustItems = [
   { icon: BadgeCheck, title: "Professional UI" },
   { icon: LockKeyhole, title: "Trust Focused" },
   { icon: BarChart3, title: "Growth Ready" },
+];
+
+// ── Team & About Data ──────────────────────────────────────────────
+export const owner = {
+  name: "Md Junaid Al Habib",
+  role: "Founder & CEO",
+  location: "Dewanganj, Jamalpur",
+  bio: "Passionate web developer and entrepreneur with 3+ years of experience building modern websites, e-commerce platforms and management systems for businesses and educational institutions across Bangladesh.",
+  skills: ["React", "Next.js", "Node.js", "Tailwind CSS", "UI/UX", "SEO"],
+  photo: "/team/junaid.jpeg", // Owner Photo
+  facebook: "https://www.facebook.com/share/1Biz9s6ueR",
+  whatsapp: "https://wa.me/8801624114405",
+};
+
+export const teamMembers = [
+  {
+    name: "Md Mazharul Islam",
+    role: "Business Development Partner",
+    location: "Jamalpur, Bangladesh",
+    earning: "৳20,000+",
+    photo: "/team/member1.jpeg",
+    skills: [
+      "Business Development",
+      "Sales Strategy",
+      "Partnership Management",
+    ],
+    facebook: "#",
+    whatsapp: "#",
+  },
+  {
+    name: "Md Omar Faruk",
+    role: "Marketing Partner",
+    location: "Dhaka, Bangladesh",
+    earning: "৳15,000+",
+    photo: "/team/member2.jpeg",
+    skills: ["Digital Marketing", "Lead Generation", "Client Communication"],
+    facebook: "#",
+    whatsapp: "#",
+  },
+  {
+    name: "Md kawser Hossain",
+    role: "Referral Partner",
+    location: "Mymensingh, Bangladesh",
+    earning: "৳10,000+",
+    photo: "/team/member3.jpeg",
+    skills: ["Client Referral", "Networking", "Relationship Building"],
+    facebook: "#",
+    whatsapp: "#",
+  },
+];
+
+export const joinRoles = [
+  {
+    role: "Referral Partner",
+    desc: "Refer clients to Hikmah IT and earn commission on every successful project. No technical skills required — just bring potential clients.",
+    earn: "৳500–2,000 per referral",
+    icon: "🤝",
+  },
+  {
+    role: "Marketing Partner",
+    desc: "Promote Hikmah IT services through social media and personal networks to generate leads and earn commissions.",
+    earn: "৳1,000–5,000 per client",
+    icon: "📢",
+  },
+  {
+    role: "Business Development Partner",
+    desc: "Connect us with businesses, schools, madrasas, and organizations for long-term projects and corporate deals.",
+    earn: "৳5,000–20,000+ per project",
+    icon: "💼",
+  },
+];
+
+export const aboutStats = [
+  { value: "3+", label: "Years Experience" },
+  { value: "50+", label: "Projects Delivered" },
+  { value: "30+", label: "Happy Clients" },
+  { value: "10+", label: "Team Members" },
+];
+
+export const whyUs = [
+  {
+    title: "Bangladesh-Focused",
+    text: "We understand local business needs, Bangla content, bKash payments and BD-specific requirements.",
+  },
+  {
+    title: "Affordable Pricing",
+    text: "Professional-grade websites at prices that work for small businesses and institutions in Bangladesh.",
+  },
+  {
+    title: "End-to-End Support",
+    text: "From domain purchase to final launch and beyond — we guide you through every single step.",
+  },
+  {
+    title: "Modern Technology",
+    text: "React, Next.js, Tailwind CSS — fast, scalable and SEO-friendly tech stack for every project.",
+  },
 ];

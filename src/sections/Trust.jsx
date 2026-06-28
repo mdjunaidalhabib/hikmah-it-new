@@ -7,8 +7,8 @@ export default function Trust() {
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
           eyebrow="Why Choose Us"
-          title="Built for trust, speed and professional presentation"
-          text="The design direction uses navy, blue and amber colors to build a premium, reliable and technology-focused brand identity."
+          title="Built for Trust, Performance & Business Growth"
+          text="We create professional websites and management systems that are fast, reliable, mobile-friendly, and designed to help businesses and institutions grow with confidence."
         />
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
