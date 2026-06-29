@@ -29,9 +29,7 @@ export default function PortfolioPage() {
                   </div>
                 </div>
                 <div className="p-4">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-blue-600">{item.category}</span>
                   <h3 className="mt-1 line-clamp-1 text-lg font-semibold text-slate-900">{item.title}</h3>
-                  <p className="mt-1 line-clamp-2 text-sm leading-5 text-slate-600">{item.text}</p>
                 </div>
               </a>
             ))}

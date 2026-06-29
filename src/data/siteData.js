@@ -355,7 +355,21 @@ export const portfolio = [
   {
     title: "Online Store Preview",
     category: "E-commerce + Admin Panel",
-    image: "/preview/openup_banner.webp",
+    image: "/preview/openup_banner.png",
+    url: "https://openupbd.com",
+    text: "Product, order, payment and admin-panel based online shop preview.",
+  },
+  {
+    title: "Online Store Preview",
+    category: "E-commerce + Admin Panel",
+    image: "/preview/glorix_banner.png",
+    url: "https://openupbd.com",
+    text: "Product, order, payment and admin-panel based online shop preview.",
+  },
+  {
+    title: "Online Store Preview",
+    category: "E-commerce + Admin Panel",
+    image: "/preview/cartvan_banner.png",
     url: "https://openupbd.com",
     text: "Product, order, payment and admin-panel based online shop preview.",
   },
