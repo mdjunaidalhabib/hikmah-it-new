@@ -1,5 +1,7 @@
 import { Globe2, ServerCog, CheckCircle2, ArrowRight } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
+import PageHero from '../components/PageHero'
+import Seo from '../components/Seo'
 import Button from '../components/Button'
 import { brand } from '../data/siteData'
 
@@ -8,23 +10,20 @@ const listItem = "flex gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-[15px] leadi
 export default function HostingPage() {
   return (
     <div className="bg-[#edf4ff] min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#1d4ed8_0%,transparent_28%),linear-gradient(135deg,#071028_0%,#0b1736_48%,#172554_100%)] py-10 text-white">
-        <div className="absolute inset-0 opacity-15 [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:46px_46px]" />
-        <div className="relative mx-auto w-[min(900px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">Domain & Hosting Support</span>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Domain Buying & Hosting Payment Assistance
-          </h1>
-          <p className="mt-4 text-lg text-slate-300">
-            We help customers buy domains from international providers and provide payment assistance for hosting purchases from trusted global platforms.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button href="/contact">Get Support <ArrowRight size={16} /></Button>
-            <Button href="/pricing" variant="ghost">See Pricing</Button>
-          </div>
+      <Seo
+        title="Domain & Hosting Support"
+        description="Domain purchase guidance and hosting payment assistance from trusted international providers, with bKash/Nagad/Rocket payment support."
+      />
+      <PageHero
+        eyebrow="Domain & Hosting Support"
+        title="Domain Buying & Hosting Payment Assistance"
+        text="We help customers buy domains from international providers and provide payment assistance for hosting purchases from trusted global platforms."
+      >
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Button href="/contact">Get Support <ArrowRight size={16} /></Button>
+          <Button href="/pricing" variant="ghost">See Pricing</Button>
         </div>
-      </section>
+      </PageHero>
 
       {/* Cards */}
       <section className="py-12 lg:py-16">

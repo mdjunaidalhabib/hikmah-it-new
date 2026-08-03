@@ -1,27 +1,23 @@
 import SectionHeader from '../components/SectionHeader'
+import PageHero from '../components/PageHero'
+import Seo from '../components/Seo'
 import { ServiceCard } from '../components/Card'
-import { services, process } from '../data/siteData'
+import { services, workProcess } from '../data/siteData'
 import Button from '../components/Button'
 import { ArrowRight } from 'lucide-react'
 
 export default function ServicesPage() {
   return (
     <div className="bg-[#edf4ff] min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#1d4ed8_0%,transparent_28%),linear-gradient(135deg,#071028_0%,#0b1736_48%,#172554_100%)] py-10 text-white">
-        <div className="absolute inset-0 opacity-15 [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:46px_46px]" />
-        <div className="relative mx-auto w-[min(900px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">
-            What We Offer
-          </span>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Our Services
-          </h1>
-          <p className="mt-4 text-lg text-slate-300">
-            Everything a business or institution needs — from modern websites and online stores to institution management systems and domain/hosting support.
-          </p>
-        </div>
-      </section>
+      <Seo
+        title="Our Services"
+        description="Explore Hikmah IT's services: e-commerce websites, madrasah management systems, business websites, portfolio sites, landing pages and hosting/domain support."
+      />
+      <PageHero
+        eyebrow="What We Offer"
+        title="Our Services"
+        text="Everything a business or institution needs — from modern websites and online stores to institution management systems and domain/hosting support."
+      />
 
       {/* Services Grid */}
       <section className="py-12 lg:py-16">
@@ -44,7 +40,7 @@ export default function ServicesPage() {
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <SectionHeader eyebrow="Work Process" title="Simple, clear and project-focused workflow" />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {process.map((item) => (
+            {workProcess.map((item) => (
               <article key={item.step} className="rounded-3xl border border-slate-200 bg-[#edf4ff] p-6 shadow-lg shadow-slate-950/5 transition hover:shadow-xl">
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-600 font-bold text-white">{item.step}</span>
                 <h3 className="mt-5 text-xl font-semibold text-slate-900">{item.title}</h3>

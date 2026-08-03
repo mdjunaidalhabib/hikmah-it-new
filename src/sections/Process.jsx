@@ -1,5 +1,5 @@
 import SectionHeader from "../components/SectionHeader";
-import { process } from "../data/siteData";
+import { workProcess } from "../data/siteData";
 
 export default function Process() {
   return (
@@ -11,7 +11,7 @@ export default function Process() {
         />
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {process.map((item) => (
+          {workProcess.map((item) => (
             <article
               key={item.step}
               className="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-950/5 transition hover:shadow-xl"

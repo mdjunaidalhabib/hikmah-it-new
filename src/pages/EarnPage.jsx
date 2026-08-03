@@ -1,5 +1,6 @@
 import { ArrowRight, MessageCircle, TrendingUp, CheckCircle, Zap, Users, DollarSign, Star } from "lucide-react";
 import Button from "../components/Button";
+import Seo from "../components/Seo";
 import { joinRoles, brand } from "../data/siteData";
 
 const steps = [
@@ -37,6 +38,10 @@ const perks = [
 export default function EarnPage() {
   return (
     <div className="min-h-screen bg-[#edf4ff]">
+      <Seo
+        title="Earn Money with Hikmah IT"
+        description="Join Hikmah IT's referral and marketing partner program — refer clients and earn commission on every successful project."
+      />
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_30%_0%,#1d4ed8_0%,transparent_55%),linear-gradient(160deg,#071028_0%,#0b1736_50%,#172554_100%)] py-10 text-white">

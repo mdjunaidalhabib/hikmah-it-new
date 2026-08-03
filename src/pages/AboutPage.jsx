@@ -1,20 +1,22 @@
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
+import PageHero from '../components/PageHero'
+import Seo from '../components/Seo'
 import Button from '../components/Button'
 import { aboutStats, whyUs, owner, brand, trustItems } from '../data/siteData'
 
 export default function AboutPage() {
   return (
     <div className="bg-[#edf4ff] min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#1d4ed8_0%,transparent_28%),linear-gradient(135deg,#071028_0%,#0b1736_48%,#172554_100%)] py-10 text-white">
-        <div className="absolute inset-0 opacity-15 [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:46px_46px]" />
-        <div className="relative mx-auto w-[min(900px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">Who We Are</span>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">About Hikmah IT</h1>
-          <p className="mt-4 text-lg text-slate-300">{brand.tagline} — helping businesses and institutions across Bangladesh build a powerful digital presence.</p>
-        </div>
-      </section>
+      <Seo
+        title="About Us"
+        description="Learn about Hikmah IT's mission to make professional web development accessible to businesses and educational institutions across Bangladesh."
+      />
+      <PageHero
+        eyebrow="Who We Are"
+        title="About Hikmah IT"
+        text={`${brand.tagline} — helping businesses and institutions across Bangladesh build a powerful digital presence.`}
+      />
 
       {/* Stats */}
       <section className="py-10">

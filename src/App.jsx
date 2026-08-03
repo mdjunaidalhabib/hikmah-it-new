@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Navbar from './sections/Navbar'
 import Footer from './sections/Footer'
 import WhatsAppButton from './components/WhatsAppButton'
+import ErrorBoundary from './components/ErrorBoundary'
 
 import HomePage from './pages/HomePage'
 import ServicesPage from './pages/ServicesPage'
@@ -16,11 +17,35 @@ import ContactPage from './pages/ContactPage'
 import TeamPage from './pages/TeamPage'
 import AboutPage from './pages/AboutPage'
 import EarnPage from './pages/EarnPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => { window.scrollTo(0, 0) }, [pathname])
   return null
+}
+
+function AppRoutes() {
+  const { pathname } = useLocation()
+  return (
+    <ErrorBoundary key={pathname}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/ecommerce" element={<EcommercePage />} />
+        <Route path="/hosting" element={<HostingPage />} />
+        <Route path="/madrasah" element={<MadrasahPage />} />
+        <Route path="/business" element={<BusinessPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/portfolio" element={<PortfolioPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/team" element={<TeamPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/earn" element={<EarnPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </ErrorBoundary>
+  )
 }
 
 export default function App() {
@@ -30,20 +55,7 @@ export default function App() {
         <ScrollToTop />
         <Navbar />
         <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/ecommerce" element={<EcommercePage />} />
-            <Route path="/hosting" element={<HostingPage />} />
-            <Route path="/madrasah" element={<MadrasahPage />} />
-            <Route path="/business" element={<BusinessPage />} />
-            <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/portfolio" element={<PortfolioPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/earn" element={<EarnPage />} />
-          </Routes>
+          <AppRoutes />
         </main>
         <Footer />
         <WhatsAppButton />

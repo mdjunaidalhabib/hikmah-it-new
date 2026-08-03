@@ -1,5 +1,7 @@
 import { ExternalLink, MessageCircle, MapPin, ArrowRight } from "lucide-react";
 import SectionHeader from "../components/SectionHeader";
+import PageHero from "../components/PageHero";
+import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { teamMembers, joinRoles, owner, brand } from "../data/siteData";
 
@@ -33,26 +35,15 @@ function Avatar({ name, photo, size = "h-24 w-24", textSize = "text-2xl" }) {
 export default function TeamPage() {
   return (
     <div className="min-h-screen bg-[#edf4ff]">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#1d4ed8_0%,transparent_28%),linear-gradient(135deg,#071028_0%,#0b1736_48%,#172554_100%)] py-10 text-white">
-        <div className="absolute inset-0 opacity-15 [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:46px_46px]" />
-
-        <div className="relative mx-auto w-[min(900px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">
-            Marketing Partners
-          </span>
-
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Our Referral & Marketing Team
-          </h1>
-
-          <p className="mt-4 text-lg text-slate-300">
-            Meet our marketing and referral partners who help businesses and
-            organizations discover Hikmah IT solutions and earn commissions
-            through successful client referrals.
-          </p>
-        </div>
-      </section>
+      <Seo
+        title="Our Team & Referral Partners"
+        description="Meet the Hikmah IT team and referral/marketing partners who help businesses discover our web development and software services."
+      />
+      <PageHero
+        eyebrow="Marketing Partners"
+        title="Our Referral & Marketing Team"
+        text="Meet our marketing and referral partners who help businesses and organizations discover Hikmah IT solutions and earn commissions through successful client referrals."
+      />
 
       {/* Owner */}
       <section className="py-12 lg:py-16">
@@ -162,7 +153,8 @@ export default function TeamPage() {
                     href={member.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-blue-300 hover:text-blue-600"
+                    aria-label={`${member.name}'s Facebook profile`}
+                    className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-blue-300 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50"
                   >
                     <ExternalLink size={16} />
                   </a>
@@ -171,7 +163,8 @@ export default function TeamPage() {
                     href={member.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600"
+                    aria-label={`Message ${member.name} on WhatsApp`}
+                    className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300/50"
                   >
                     <MessageCircle size={16} />
                   </a>

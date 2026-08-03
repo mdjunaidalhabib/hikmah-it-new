@@ -1,29 +1,31 @@
 import { ArrowRight } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
+import PageHero from '../components/PageHero'
+import PricingCard from '../components/PricingCard'
+import Seo from '../components/Seo'
 import { FeatureCard } from '../components/Card'
 import Button from '../components/Button'
-import { madrasahFeatures } from '../data/siteData'
+import { madrasahFeatures, pricingGroups } from '../data/siteData'
 
 export default function MadrasahPage() {
+  const madrasahPricing = pricingGroups[2]
+
   return (
     <div className="bg-[#edf4ff] min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#1d4ed8_0%,transparent_28%),linear-gradient(135deg,#071028_0%,#0b1736_48%,#172554_100%)] py-10 text-white">
-        <div className="absolute inset-0 opacity-15 [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:46px_46px]" />
-        <div className="relative mx-auto w-[min(900px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">Education Software</span>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Madrasah Management System with Website Control
-          </h1>
-          <p className="mt-4 text-lg text-slate-300">
-            A complete institution management system for madrasah, school or academy. Manage academic operations and public website content from a single admin panel.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button href="/contact">Discuss System <ArrowRight size={16} /></Button>
-            <Button href="/pricing" variant="ghost">See Pricing</Button>
-          </div>
+      <Seo
+        title="Madrasah Management System"
+        description="Complete institution management software for madrasah, school or academy — student, teacher, accounting, exam and public website modules."
+      />
+      <PageHero
+        eyebrow="Education Software"
+        title="Madrasah Management System with Website Control"
+        text="A complete institution management system for madrasah, school or academy. Manage academic operations and public website content from a single admin panel."
+      >
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Button href="/contact">Discuss System <ArrowRight size={16} /></Button>
+          <Button href="/pricing" variant="ghost">See Pricing</Button>
         </div>
-      </section>
+      </PageHero>
 
       {/* Dashboard Preview */}
       <section className="py-12 lg:py-16">
@@ -70,6 +72,18 @@ export default function MadrasahPage() {
           <SectionHeader eyebrow="Modules" title="Complete features for institution management" />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {madrasahFeatures.map((f) => <FeatureCard key={f.title} {...f} />)}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="pb-12 lg:pb-16 bg-white">
+        <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
+          <SectionHeader eyebrow="Packages" title="Madrasah management pricing" />
+          <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
+            {madrasahPricing.plans.map((plan) => (
+              <PricingCard key={plan.name} plan={plan} />
+            ))}
           </div>
         </div>
       </section>

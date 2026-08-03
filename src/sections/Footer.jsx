@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="bg-[#020617] py-14 pb-6 text-white">
       <div className="mx-auto grid w-[min(1180px,calc(100%-40px))] gap-8 sm:grid-cols-2 lg:grid-cols-[1.4fr_.8fr_.9fr_.9fr]">
         <div>
-          <Link to="/">
+          <Link to="/" aria-label="Hikmah IT home">
             <Logo />
           </Link>
           <p className="mt-4 max-w-sm leading-8 text-slate-400">

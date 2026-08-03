@@ -1,4 +1,6 @@
 import SectionHeader from '../components/SectionHeader'
+import PageHero from '../components/PageHero'
+import Seo from '../components/Seo'
 import { portfolio } from '../data/siteData'
 import Button from '../components/Button'
 import { ArrowRight } from 'lucide-react'
@@ -6,14 +8,15 @@ import { ArrowRight } from 'lucide-react'
 export default function PortfolioPage() {
   return (
     <div className="bg-[#edf4ff] min-h-screen">
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#1d4ed8_0%,transparent_28%),linear-gradient(135deg,#071028_0%,#0b1736_48%,#172554_100%)] py-10 text-white">
-        <div className="absolute inset-0 opacity-15 [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:46px_46px]" />
-        <div className="relative mx-auto w-[min(900px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">Project Showcase</span>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">Our Work</h1>
-          <p className="mt-4 text-lg text-slate-300">Live websites we have built for clients — click any card to visit the live project.</p>
-        </div>
-      </section>
+      <Seo
+        title="Portfolio & Live Projects"
+        description="Browse live websites Hikmah IT has built for clients — e-commerce stores, business websites and landing pages."
+      />
+      <PageHero
+        eyebrow="Project Showcase"
+        title="Our Work"
+        text="Live websites we have built for clients — click any card to visit the live project."
+      />
 
       <section className="py-12 lg:py-16">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">

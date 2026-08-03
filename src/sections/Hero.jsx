@@ -4,8 +4,8 @@ import { brand } from "../data/siteData";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#1d4ed8_0%,transparent_28%),linear-gradient(135deg,#071028_0%,#0b1736_48%,#172554_100%)] pt-10 pb-16 text-white sm:pt-14 sm:pb-20 lg:py-24" id="home">
-      <div className="absolute inset-0 opacity-15 [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:46px_46px]" />
+    <section className="relative overflow-hidden bg-hero-navy pt-10 pb-16 text-white sm:pt-14 sm:pb-20 lg:py-24" id="home">
+      <div className="absolute inset-0 opacity-15 bg-grid-overlay" />
       <div className="relative mx-auto grid w-[min(1180px,calc(100%-40px))] items-center gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">

@@ -49,7 +49,7 @@ export default function Navbar() {
       <header className="sticky top-0 z-50 border-b border-blue-500/20 bg-[#070f28]/90 backdrop-blur-xl">
         <div className="mx-auto flex h-[60px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-3">
           {/* Logo */}
-          <Link to="/" className="shrink-0">
+          <Link to="/" className="shrink-0" aria-label="Hikmah IT home">
             <Logo />
           </Link>
 
@@ -60,7 +60,7 @@ export default function Navbar() {
                 key={href}
                 to={href}
                 className={({ isActive }) =>
-                  `relative rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200 ${
+                  `relative rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 ${
                     isActive
                       ? "bg-blue-500/20 text-emerald-300"
                       : "text-white/80 hover:bg-blue-500/15 hover:text-white"
@@ -90,7 +90,7 @@ export default function Navbar() {
               type="button"
               onClick={() => setOpen(true)}
               aria-label="Open menu"
-              className="relative grid h-9 w-9 place-items-center rounded-xl bg-blue-600/90 text-white shadow-lg shadow-blue-900/40 transition hover:bg-blue-500 lg:hidden"
+              className="relative grid h-9 w-9 place-items-center rounded-xl bg-blue-600/90 text-white shadow-lg shadow-blue-900/40 transition hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 lg:hidden"
             >
               <Menu size={19} />
             </button>
@@ -119,13 +119,13 @@ export default function Navbar() {
 
         {/* Drawer header */}
         <div className="flex items-center justify-between border-b border-blue-500/10 px-5 py-4">
-          <Link to="/" onClick={() => setOpen(false)}>
+          <Link to="/" onClick={() => setOpen(false)} aria-label="Hikmah IT home">
             <Logo />
           </Link>
           <button
             onClick={() => setOpen(false)}
             aria-label="Close menu"
-            className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 bg-white/5 text-white/60 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+            className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 bg-white/5 text-white/60 transition hover:border-white/20 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50"
           >
             <X size={16} />
           </button>
@@ -147,7 +147,7 @@ export default function Navbar() {
                     to={href}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150 ${
+                      `group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 ${
                         isActive
                           ? isEarn
                             ? "bg-emerald-500/15 text-emerald-300"

@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
+
 const cardClass =
-  "group rounded-3xl border border-slate-800/10 bg-white p-7 shadow-lg shadow-slate-950/5 transition duration-300 hover:-translate-y-1.5 hover:border-blue-200 hover:shadow-2xl hover:shadow-slate-950/10";
+  "group rounded-3xl border border-slate-800/10 bg-white p-7 shadow-lg shadow-slate-950/5 transition duration-300 hover:-translate-y-1.5 hover:border-blue-200 hover:shadow-2xl hover:shadow-slate-950/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50";
 
 const iconClass =
   "mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 to-slate-950 text-white shadow-lg shadow-blue-950/20";
@@ -20,7 +22,7 @@ export function FeatureCard({ icon: Icon, title, text }) {
 
 export function ServiceCard({ icon: Icon, title, text, href }) {
   return (
-    <a className={cardClass} href={href}>
+    <Link className={cardClass} to={href}>
       <div className={iconClass}>{Icon && <Icon size={26} />}</div>
 
       <h3 className="mb-2 text-xl font-semibold tracking-tight text-slate-950">
@@ -32,6 +34,6 @@ export function ServiceCard({ icon: Icon, title, text, href }) {
       <span className="mt-5 inline-flex font-semibold text-blue-700 group-hover:underline">
         Explore service →
       </span>
-    </a>
+    </Link>
   );
 }

@@ -1,5 +1,8 @@
 import { ArrowRight, CheckCircle2, Globe2, MonitorSmartphone, Rocket } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
+import PageHero from '../components/PageHero'
+import PricingCard from '../components/PricingCard'
+import Seo from '../components/Seo'
 import Button from '../components/Button'
 import { businessWebsiteTypes, pricingGroups } from '../data/siteData'
 
@@ -10,23 +13,20 @@ export default function BusinessPage() {
 
   return (
     <div className="bg-[#edf4ff] min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#1d4ed8_0%,transparent_28%),linear-gradient(135deg,#071028_0%,#0b1736_48%,#172554_100%)] py-10 text-white">
-        <div className="absolute inset-0 opacity-15 [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:46px_46px]" />
-        <div className="relative mx-auto w-[min(900px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">Business Website</span>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Landing Page, Portfolio & Business Website
-          </h1>
-          <p className="mt-4 text-lg text-slate-300">
-            Professional website solutions for personal brand, service business, company profile and campaign-focused online presence.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button href="/contact">Start Your Website <ArrowRight size={16} /></Button>
-            <Button href="/portfolio" variant="ghost">See Live Projects</Button>
-          </div>
+      <Seo
+        title="Landing Page, Portfolio & Business Website"
+        description="Professional website solutions for personal brand, service business, company profile and campaign-focused online presence."
+      />
+      <PageHero
+        eyebrow="Business Website"
+        title="Landing Page, Portfolio & Business Website"
+        text="Professional website solutions for personal brand, service business, company profile and campaign-focused online presence."
+      >
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Button href="/contact">Start Your Website <ArrowRight size={16} /></Button>
+          <Button href="/portfolio" variant="ghost">See Live Projects</Button>
         </div>
-      </section>
+      </PageHero>
 
       {/* Types */}
       <section className="py-12 lg:py-16">
@@ -81,20 +81,9 @@ export default function BusinessPage() {
       <section className="py-8 lg:py-12 bg-white">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <SectionHeader eyebrow="Packages" title="Website pricing packages" />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
             {websitePricing.plans.map((plan) => (
-              <article key={plan.name} className={`flex flex-col rounded-[2rem] border p-7 shadow-xl transition hover:shadow-2xl ${plan.highlighted ? 'border-blue-300 bg-gradient-to-br from-white via-blue-50 to-cyan-50 ring-2 ring-blue-100 lg:-translate-y-2' : 'border-slate-200 bg-white'}`}>
-                {plan.highlighted && <span className="mb-4 inline-block w-fit rounded-full bg-amber-400 px-3 py-1 text-xs font-semibold text-slate-900">Recommended</span>}
-                <h3 className="text-2xl font-semibold text-slate-900">{plan.name}</h3>
-                <strong className="mt-3 block text-3xl font-bold text-blue-600">{plan.price}</strong>
-                <p className="mt-3 leading-7 text-slate-600">{plan.text}</p>
-                <ul className="my-6 grid gap-3 text-slate-700">
-                  {plan.features.map((f) => <li key={f}>✓ {f}</li>)}
-                </ul>
-                <div className="mt-auto">
-                  <Button href="/contact" variant={plan.highlighted ? 'primary' : 'ghost-dark'}>Choose Package</Button>
-                </div>
-              </article>
+              <PricingCard key={plan.name} plan={plan} />
             ))}
           </div>
         </div>
