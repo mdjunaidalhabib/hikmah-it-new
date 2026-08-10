@@ -24,7 +24,7 @@ function formatPrice(pkg) {
 
 export default function CheckoutPage() {
   const { packageId } = useParams();
-  const settings = useSiteSettings();
+  const { settings } = useSiteSettings();
   const { user } = useUserAuth();
   const [pkg, setPkg] = useState(null);
   const [loading, setLoading] = useState(true);

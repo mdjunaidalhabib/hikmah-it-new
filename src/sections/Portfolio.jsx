@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import SectionHeader from "../components/SectionHeader";
 import { apiGet } from "../lib/api";
-import useSiteSettings from "../lib/useSiteSettings";
-import { isSectionVisible } from "../lib/sectionVisibility";
 
 export default function Portfolio() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const settings = useSiteSettings();
 
   useEffect(() => {
     apiGet("/public/portfolio")
@@ -15,7 +12,6 @@ export default function Portfolio() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (!isSectionVisible(settings, "portfolio")) return null;
   if (!loading && items.length === 0) return null;
 
   return (

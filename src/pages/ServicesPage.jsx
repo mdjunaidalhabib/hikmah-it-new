@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 import SectionHeader from "../components/SectionHeader";
 import PageHero from "../components/PageHero";
 import Seo from "../components/Seo";
@@ -9,23 +8,17 @@ import { workProcess } from "../data/siteData";
 import Button from "../components/Button";
 import { ArrowRight } from "lucide-react";
 import { apiGet } from "../lib/api";
-import useSiteSettings from "../lib/useSiteSettings";
 import { SERVICE_ICONS, DEFAULT_SERVICE_ICON } from "../lib/serviceIcons";
 
 export default function ServicesPage() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const settings = useSiteSettings();
 
   useEffect(() => {
     apiGet("/public/services")
       .then(setServices)
       .finally(() => setLoading(false));
   }, []);
-
-  if (settings && settings.sectionVisibility?.services === false) {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <div className="bg-[#edf4ff] min-h-screen">

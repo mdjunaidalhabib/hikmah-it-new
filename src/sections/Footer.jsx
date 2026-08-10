@@ -4,16 +4,12 @@ import Logo from "../components/Logo";
 import Button from "../components/Button";
 import { quickLinks, brand } from "../data/siteData";
 import useSiteSettings from "../lib/useSiteSettings";
-import { SECTION_HREF_MAP, isSectionVisible } from "../lib/sectionVisibility";
 import { useUserAuth } from "../context/UserAuthContext";
 
 export default function Footer() {
-  const settings = useSiteSettings();
-  const { user, loading } = useUserAuth();
+  const { settings } = useSiteSettings();
+  const { user } = useUserAuth();
   const link = "mb-2 block text-slate-400 transition hover:text-blue-400";
-  const visibleQuickLinks = quickLinks.filter(
-    (item) => !SECTION_HREF_MAP[item.href] || isSectionVisible(settings, SECTION_HREF_MAP[item.href])
-  );
 
   const phone = settings?.phone || brand.phone;
   const phoneHref = settings?.phone ? `tel:+88${settings.phone.replace(/\D/g, "")}` : brand.phoneHref;
@@ -42,26 +38,25 @@ export default function Footer() {
 
         <div className="lg:border-l lg:border-slate-800 lg:pl-6">
           <h4 className={heading}>{accent} কুইক লিংক</h4>
-          {visibleQuickLinks.map((item) => (
+          {quickLinks.map((item) => (
             <Link className={link} key={item.href} to={item.href}>
               {item.label}
             </Link>
           ))}
-          {!loading &&
-            (user ? (
-              <Link className={link} to="/profile">
-                আমার প্রোফাইল
+          {user ? (
+            <Link className={link} to="/profile">
+              আমার প্রোফাইল
+            </Link>
+          ) : (
+            <>
+              <Link className={link} to="/login">
+                লগইন
               </Link>
-            ) : (
-              <>
-                <Link className={link} to="/login">
-                  লগইন
-                </Link>
-                <Link className={link} to="/signup">
-                  সাইন আপ
-                </Link>
-              </>
-            ))}
+              <Link className={link} to="/signup">
+                সাইন আপ
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="lg:border-l lg:border-slate-800 lg:pl-6">

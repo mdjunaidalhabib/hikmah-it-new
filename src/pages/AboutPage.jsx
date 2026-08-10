@@ -7,7 +7,7 @@ import { aboutStats, whyUs, brand, trustItems } from '../data/siteData'
 import useSiteSettings from '../lib/useSiteSettings'
 
 export default function AboutPage() {
-  const settings = useSiteSettings()
+  const { settings } = useSiteSettings()
   const founder = settings?.founder
 
   return (

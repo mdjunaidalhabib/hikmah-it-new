@@ -12,17 +12,6 @@ if (!fs.existsSync(uploadsDir)) {
 
 const storage = multer.memoryStorage();
 
-export function saveBufferLocally(file) {
-  const ext = path.extname(file.originalname);
-  const base = path
-    .basename(file.originalname, ext)
-    .replace(/[^a-zA-Z0-9-_]/g, "-")
-    .slice(0, 40);
-  const filename = `${Date.now()}-${base}${ext}`;
-  fs.writeFileSync(path.join(uploadsDir, filename), file.buffer);
-  return filename;
-}
-
 const allowedMimeTypes = ["image/jpeg", "image/png", "image/webp", "image/svg+xml", "image/gif"];
 
 function fileFilter(req, file, cb) {

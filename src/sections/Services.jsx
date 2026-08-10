@@ -2,14 +2,11 @@ import { useEffect, useState } from "react";
 import SectionHeader from "../components/SectionHeader";
 import { ServiceCard } from "../components/Card";
 import { apiGet } from "../lib/api";
-import useSiteSettings from "../lib/useSiteSettings";
-import { isSectionVisible } from "../lib/sectionVisibility";
 import { SERVICE_ICONS, DEFAULT_SERVICE_ICON } from "../lib/serviceIcons";
 
 export default function Services() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const settings = useSiteSettings();
 
   useEffect(() => {
     apiGet("/public/services")
@@ -17,7 +14,6 @@ export default function Services() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (!isSectionVisible(settings, "services")) return null;
   if (!loading && services.length === 0) return null;
 
   return (

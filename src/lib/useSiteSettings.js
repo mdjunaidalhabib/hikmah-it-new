@@ -3,6 +3,7 @@ import { apiGet } from "./api";
 
 export default function useSiteSettings() {
   const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
@@ -12,11 +13,14 @@ export default function useSiteSettings() {
       })
       .catch(() => {
         // Public site should keep working with static fallbacks if the API is unavailable.
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
     return () => {
       active = false;
     };
   }, []);
 
-  return settings;
+  return { settings, loading };
 }

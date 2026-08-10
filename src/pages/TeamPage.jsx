@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 import { ExternalLink, MessageCircle, MapPin, ArrowRight } from "lucide-react";
 import SectionHeader from "../components/SectionHeader";
 import PageHero from "../components/PageHero";
@@ -40,7 +39,7 @@ function Avatar({ name, photo, size = "h-24 w-24", textSize = "text-2xl" }) {
 export default function TeamPage() {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
-  const settings = useSiteSettings();
+  const { settings } = useSiteSettings();
   const founder = settings?.founder;
 
   useEffect(() => {
@@ -48,10 +47,6 @@ export default function TeamPage() {
       .then(setPartners)
       .finally(() => setLoading(false));
   }, []);
-
-  if (settings && settings.sectionVisibility?.team === false) {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <div className="min-h-screen bg-[#edf4ff]">

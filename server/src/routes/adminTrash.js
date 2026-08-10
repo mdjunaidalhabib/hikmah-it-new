@@ -8,6 +8,7 @@ import Portfolio from "../models/Portfolio.js";
 import Partner from "../models/Partner.js";
 import Testimonial from "../models/Testimonial.js";
 import SiteSettings from "../models/SiteSettings.js";
+import { deleteFromCloudinary } from "../lib/cloudinary.js";
 
 const router = Router();
 
@@ -138,10 +139,16 @@ async function permanentlyDeleteItem(type, id) {
       return Package.findByIdAndDelete(id);
     case "service":
       return Service.findByIdAndDelete(id);
-    case "portfolio":
-      return Portfolio.findByIdAndDelete(id);
-    case "partner":
-      return Partner.findByIdAndDelete(id);
+    case "portfolio": {
+      const portfolioItem = await Portfolio.findByIdAndDelete(id);
+      if (portfolioItem?.imageUrl) await deleteFromCloudinary(portfolioItem.imageUrl);
+      return portfolioItem;
+    }
+    case "partner": {
+      const partner = await Partner.findByIdAndDelete(id);
+      if (partner?.photoUrl) await deleteFromCloudinary(partner.photoUrl);
+      return partner;
+    }
     case "testimonial":
       return Testimonial.findByIdAndDelete(id);
     case "paymentNumber": {

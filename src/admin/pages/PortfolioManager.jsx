@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Plus, Pencil, Trash2, Upload, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Eye, EyeOff, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { apiDelete, apiGet, apiPost, apiPut, apiUpload } from "../../lib/api";
+import { apiDelete, apiDeleteUpload, apiGet, apiPost, apiPut, apiUpload } from "../../lib/api";
 import { AdminCard, EmptyState, Modal, inputClass, labelClass } from "../components/ui";
 import { Skeleton } from "../../components/Skeleton";
 import Button from "../../components/Button";
@@ -65,6 +65,23 @@ export default function PortfolioManager() {
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handleImageRemove = async () => {
+    if (!form.imageUrl) return;
+    const ok = await confirm({ title: "ছবি ডিলিট করবেন?", message: "Cloudinary থেকেও ছবিটি স্থায়ীভাবে মুছে যাবে।", confirmLabel: "ডিলিট করুন" });
+    if (!ok) return;
+    setUploading(true);
+    try {
+      await apiDeleteUpload(form.imageUrl);
+      setForm((prev) => ({ ...prev, imageUrl: "" }));
+      toast.success("Image deleted");
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -191,11 +208,22 @@ export default function PortfolioManager() {
           <form className="grid gap-4" onSubmit={handleSubmit} noValidate>
             <div className="flex items-center gap-4">
               {form.imageUrl && (
-                <img src={form.imageUrl} alt="" className="h-16 w-24 rounded-lg border border-slate-200 object-cover" />
+                <div className="relative">
+                  <img src={form.imageUrl} alt="" className="h-16 w-24 rounded-lg border border-slate-200 object-cover" />
+                  <button
+                    type="button"
+                    onClick={handleImageRemove}
+                    disabled={uploading}
+                    className="absolute -right-1 -top-1 rounded-full bg-red-600 p-1 text-white shadow hover:bg-red-700 disabled:opacity-50"
+                    aria-label="Remove image"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
               )}
               <div>
-                <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600">
-                  <Upload size={14} /> {uploading ? "Uploading…" : "Upload Image"}
+                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 disabled:opacity-50">
+                  <Upload size={14} /> {uploading ? "Please wait…" : "Upload Image"}
                 </button>
                 <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
               </div>

@@ -54,3 +54,12 @@ export function apiUpload(file, preset = "image") {
     body: formData,
   }).then(handleResponse);
 }
+
+export function apiDeleteUpload(url) {
+  return fetch("/api/admin/upload/delete", {
+    method: "POST",
+    headers: JSON_HEADERS,
+    credentials: "include",
+    body: JSON.stringify({ url }),
+  }).then(handleResponse);
+}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Plus, Pencil, Trash2, Upload, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Eye, EyeOff, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { apiDelete, apiGet, apiPost, apiPut, apiUpload } from "../../lib/api";
+import { apiDelete, apiDeleteUpload, apiGet, apiPost, apiPut, apiUpload } from "../../lib/api";
 import { AdminCard, EmptyState, Modal, inputClass, labelClass } from "../components/ui";
 import { SkeletonRow } from "../../components/Skeleton";
 import Button from "../../components/Button";
@@ -114,6 +114,22 @@ export default function PartnersManager() {
     }
   };
 
+  const handleFounderPhotoRemove = async () => {
+    if (!founderForm.photoUrl) return;
+    const ok = await confirm({ title: "ছবি ডিলিট করবেন?", message: "Cloudinary থেকেও ছবিটি স্থায়ীভাবে মুছে যাবে।", confirmLabel: "ডিলিট করুন" });
+    if (!ok) return;
+    setUploadingFounderPhoto(true);
+    try {
+      await apiDeleteUpload(founderForm.photoUrl);
+      setFounderForm((prev) => ({ ...prev, photoUrl: "" }));
+      toast.success("Photo deleted");
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setUploadingFounderPhoto(false);
+    }
+  };
+
   const handleFounderSubmit = async (e) => {
     e.preventDefault();
     setSavingFounder(true);
@@ -170,6 +186,23 @@ export default function PartnersManager() {
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handlePhotoRemove = async () => {
+    if (!form.photoUrl) return;
+    const ok = await confirm({ title: "ছবি ডিলিট করবেন?", message: "Cloudinary থেকেও ছবিটি স্থায়ীভাবে মুছে যাবে।", confirmLabel: "ডিলিট করুন" });
+    if (!ok) return;
+    setUploading(true);
+    try {
+      await apiDeleteUpload(form.photoUrl);
+      setForm((prev) => ({ ...prev, photoUrl: "" }));
+      toast.success("Photo deleted");
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -326,11 +359,22 @@ export default function PartnersManager() {
           <form className="grid gap-4" onSubmit={handleSubmit} noValidate>
             <div className="flex items-center gap-4">
               {form.photoUrl && (
-                <img src={form.photoUrl} alt="" className="h-16 w-16 rounded-full border border-slate-200 object-cover" />
+                <div className="relative">
+                  <img src={form.photoUrl} alt="" className="h-16 w-16 rounded-full border border-slate-200 object-cover" />
+                  <button
+                    type="button"
+                    onClick={handlePhotoRemove}
+                    disabled={uploading}
+                    className="absolute -right-1 -top-1 rounded-full bg-red-600 p-1 text-white shadow hover:bg-red-700 disabled:opacity-50"
+                    aria-label="Remove photo"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
               )}
               <div>
-                <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600">
-                  <Upload size={14} /> {uploading ? "Uploading…" : "Upload Photo"}
+                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 disabled:opacity-50">
+                  <Upload size={14} /> {uploading ? "Please wait…" : "Upload Photo"}
                 </button>
                 <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
               </div>
@@ -399,15 +443,27 @@ export default function PartnersManager() {
           <form className="grid gap-4" onSubmit={handleFounderSubmit} noValidate>
             <div className="flex items-center gap-4">
               {founderForm.photoUrl && (
-                <img src={founderForm.photoUrl} alt="" className="h-16 w-16 rounded-full border border-slate-200 object-cover" />
+                <div className="relative">
+                  <img src={founderForm.photoUrl} alt="" className="h-16 w-16 rounded-full border border-slate-200 object-cover" />
+                  <button
+                    type="button"
+                    onClick={handleFounderPhotoRemove}
+                    disabled={uploadingFounderPhoto}
+                    className="absolute -right-1 -top-1 rounded-full bg-red-600 p-1 text-white shadow hover:bg-red-700 disabled:opacity-50"
+                    aria-label="Remove photo"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
               )}
               <div>
                 <button
                   type="button"
                   onClick={() => founderPhotoInputRef.current?.click()}
-                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600"
+                  disabled={uploadingFounderPhoto}
+                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 disabled:opacity-50"
                 >
-                  <Upload size={14} /> {uploadingFounderPhoto ? "Uploading…" : "Upload Photo"}
+                  <Upload size={14} /> {uploadingFounderPhoto ? "Please wait…" : "Upload Photo"}
                 </button>
                 <input ref={founderPhotoInputRef} type="file" accept="image/*" className="hidden" onChange={handleFounderPhotoUpload} />
               </div>

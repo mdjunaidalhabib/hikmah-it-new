@@ -9,7 +9,7 @@ import useSiteSettings from '../lib/useSiteSettings'
 const contactItem = "flex items-center gap-3 rounded-xl border border-blue-100 bg-white px-4 py-3 font-medium text-slate-700 shadow-md transition hover:border-blue-300 hover:text-blue-700"
 
 export default function ContactPage() {
-  const settings = useSiteSettings()
+  const { settings } = useSiteSettings()
   const phone = settings?.phone || brand.phone
   const phoneHref = settings?.phone ? `tel:+88${settings.phone.replace(/\D/g, "")}` : brand.phoneHref
   const email = settings?.email || brand.email

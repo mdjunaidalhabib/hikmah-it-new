@@ -11,12 +11,19 @@ async function start() {
     process.exit(1);
   }
 
+  if (!process.env.MONGODB_DB_NAME) {
+    console.error("MONGODB_DB_NAME is not set in server/.env");
+    process.exit(1);
+  }
+
   if (!process.env.JWT_SECRET) {
     console.error("JWT_SECRET is not set in server/.env");
     process.exit(1);
   }
 
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect(process.env.MONGODB_URI, {
+    dbName: process.env.MONGODB_DB_NAME,
+  });
   console.log("Connected to MongoDB");
 
   await seedAdmin();

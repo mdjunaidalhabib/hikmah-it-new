@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 import PageHero from "../components/PageHero";
 import PricingCard from "../components/PricingCard";
 import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { SkeletonCard } from "../components/Skeleton";
 import { apiGet } from "../lib/api";
-import useSiteSettings from "../lib/useSiteSettings";
 
 export default function PricingPage() {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const settings = useSiteSettings();
 
   useEffect(() => {
     apiGet("/public/packages")
@@ -24,10 +21,6 @@ export default function PricingPage() {
     acc[pkg.category].push(pkg);
     return acc;
   }, {});
-
-  if (settings && settings.sectionVisibility?.packages === false) {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <div className="bg-[#edf4ff] min-h-screen">

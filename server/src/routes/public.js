@@ -14,6 +14,8 @@ import { sendNewOrderEmail } from "../lib/mailer.js";
 const router = Router();
 
 router.get("/packages", async (req, res) => {
+  const settings = await SiteSettings.getSingleton();
+  if (settings.sectionVisibility?.packages === false) return res.json([]);
   const packages = await Package.find({ deletedAt: null, active: { $ne: false } }).sort({ category: 1, sortOrder: 1 });
   res.json(packages);
 });
@@ -25,16 +27,22 @@ router.get("/packages/:id", async (req, res) => {
 });
 
 router.get("/partners", async (req, res) => {
+  const settings = await SiteSettings.getSingleton();
+  if (settings.sectionVisibility?.team === false) return res.json([]);
   const partners = await Partner.find({ deletedAt: null, active: { $ne: false } }).sort({ sortOrder: 1 });
   res.json(partners);
 });
 
 router.get("/portfolio", async (req, res) => {
+  const settings = await SiteSettings.getSingleton();
+  if (settings.sectionVisibility?.portfolio === false) return res.json([]);
   const items = await Portfolio.find({ deletedAt: null, active: { $ne: false } }).sort({ sortOrder: 1 });
   res.json(items);
 });
 
 router.get("/services", async (req, res) => {
+  const settings = await SiteSettings.getSingleton();
+  if (settings.sectionVisibility?.services === false) return res.json([]);
   const items = await Service.find({ deletedAt: null, active: { $ne: false } }).sort({ sortOrder: 1 });
   res.json(items);
 });

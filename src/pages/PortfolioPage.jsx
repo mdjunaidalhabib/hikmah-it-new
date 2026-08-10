@@ -1,27 +1,20 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageHero from "../components/PageHero";
 import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { Skeleton } from "../components/Skeleton";
 import { apiGet } from "../lib/api";
-import useSiteSettings from "../lib/useSiteSettings";
 
 export default function PortfolioPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const settings = useSiteSettings();
 
   useEffect(() => {
     apiGet("/public/portfolio")
       .then(setItems)
       .finally(() => setLoading(false));
   }, []);
-
-  if (settings && settings.sectionVisibility?.portfolio === false) {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <div className="bg-[#edf4ff] min-h-screen">

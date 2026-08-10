@@ -17,9 +17,8 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Logo from "../components/Logo";
 import Button from "../components/Button";
-import { navItems, brand } from "../data/siteData";
+import { navItems } from "../data/siteData";
 import useSiteSettings from "../lib/useSiteSettings";
-import { SECTION_HREF_MAP, isSectionVisible } from "../lib/sectionVisibility";
 import { useUserAuth } from "../context/UserAuthContext";
 
 const iconMap = {
@@ -35,8 +34,8 @@ const iconMap = {
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-  const settings = useSiteSettings();
-  const { user, loading } = useUserAuth();
+  const { settings } = useSiteSettings();
+  const { user } = useUserAuth();
 
   useEffect(() => {
     setOpen(false);
@@ -49,9 +48,7 @@ export default function Navbar() {
     };
   }, [open]);
 
-  const allNavItems = [...navItems, { label: "আয় করুন", href: "/earn" }].filter(
-    (item) => !SECTION_HREF_MAP[item.href] || isSectionVisible(settings, SECTION_HREF_MAP[item.href])
-  );
+  const allNavItems = [...navItems, { label: "আয় করুন", href: "/earn" }];
 
   return (
     <>
@@ -88,31 +85,29 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
-            {!loading && (
-              <div className="hidden items-center gap-1.5 lg:flex">
-                {user ? (
+            <div className="hidden items-center gap-1.5 lg:flex">
+              {user ? (
+                <Link
+                  to="/profile"
+                  className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-blue-200 bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+                >
+                  <UserRound size={15} />
+                  {user.name?.split(" ")[0]}
+                </Link>
+              ) : (
+                <>
                   <Link
-                    to="/profile"
-                    className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-blue-200 bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+                    to="/login"
+                    className="shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
                   >
-                    <UserRound size={15} />
-                    {user.name?.split(" ")[0]}
+                    লগইন
                   </Link>
-                ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      className="shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
-                    >
-                      লগইন
-                    </Link>
-                    <Button href="/signup" variant="small" className="shrink-0 whitespace-nowrap">
-                      সাইন আপ
-                    </Button>
-                  </>
-                )}
-              </div>
-            )}
+                  <Button href="/signup" variant="small" className="shrink-0 whitespace-nowrap">
+                    সাইন আপ
+                  </Button>
+                </>
+              )}
+            </div>
 
             <Button href="/contact" variant="small" className="shrink-0 whitespace-nowrap">
               ফ্রি জানুন
@@ -230,39 +225,26 @@ export default function Navbar() {
 
         {/* Drawer footer CTA */}
         <div className="border-t border-slate-100 px-4 py-5">
-          {!loading && (
-            <div className="mb-3">
-              {user ? (
-                <Button href="/profile" variant="ghost-dark" className="w-full whitespace-nowrap" onClick={() => setOpen(false)}>
-                  <UserRound size={14} />
-                  আমার প্রোফাইল
+          <div className="mb-3">
+            {user ? (
+              <Button href="/profile" variant="ghost-dark" className="w-full whitespace-nowrap" onClick={() => setOpen(false)}>
+                <UserRound size={14} />
+                আমার প্রোফাইল
+              </Button>
+            ) : (
+              <div className="grid grid-cols-2 gap-2">
+                <Button href="/login" variant="small" className="w-full !px-2 whitespace-nowrap" onClick={() => setOpen(false)}>
+                  <LogIn size={14} />
+                  লগইন
                 </Button>
-              ) : (
-                <div className="grid grid-cols-2 gap-2">
-                  <Button href="/login" variant="small" className="w-full !px-2 whitespace-nowrap" onClick={() => setOpen(false)}>
-                    <LogIn size={14} />
-                    লগইন
-                  </Button>
-                  <Button href="/signup" variant="small" className="w-full !px-2 whitespace-nowrap" onClick={() => setOpen(false)}>
-                    <UserPlus size={14} />
-                    সাইন আপ
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
+                <Button href="/signup" variant="small" className="w-full !px-2 whitespace-nowrap" onClick={() => setOpen(false)}>
+                  <UserPlus size={14} />
+                  সাইন আপ
+                </Button>
+              </div>
+            )}
+          </div>
 
-          <Button href="/contact" variant="primary">
-            ফ্রি জানুন
-            <ArrowRight size={14} />
-          </Button>
-
-          <p className="mt-3 text-center text-[11px] text-slate-400">
-            📞{" "}
-            <a href={brand.phoneHref} className="text-slate-500 transition hover:text-blue-600">
-              {brand.phone}
-            </a>
-          </p>
         </div>
       </aside>
     </>

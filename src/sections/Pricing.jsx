@@ -2,13 +2,10 @@ import { useEffect, useState } from "react";
 import SectionHeader from "../components/SectionHeader";
 import PricingCard from "../components/PricingCard";
 import { apiGet } from "../lib/api";
-import useSiteSettings from "../lib/useSiteSettings";
-import { isSectionVisible } from "../lib/sectionVisibility";
 
 export default function Pricing() {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const settings = useSiteSettings();
 
   useEffect(() => {
     apiGet("/public/packages")
@@ -22,7 +19,6 @@ export default function Pricing() {
     return acc;
   }, {});
 
-  if (!isSectionVisible(settings, "packages")) return null;
   if (!loading && packages.length === 0) return null;
 
   return (
