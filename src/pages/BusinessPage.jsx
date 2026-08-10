@@ -1,30 +1,39 @@
+import { useEffect, useState } from 'react'
 import { ArrowRight, CheckCircle2, Globe2, MonitorSmartphone, Rocket } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
 import PageHero from '../components/PageHero'
 import PricingCard from '../components/PricingCard'
 import Seo from '../components/Seo'
 import Button from '../components/Button'
-import { businessWebsiteTypes, pricingGroups } from '../data/siteData'
+import { businessWebsiteTypes } from '../data/siteData'
+import { apiGet } from '../lib/api'
 
 const icons = [Rocket, MonitorSmartphone, Globe2]
 
 export default function BusinessPage() {
-  const websitePricing = pricingGroups[0]
+  const [plans, setPlans] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    apiGet('/public/packages')
+      .then((packages) => setPlans(packages.filter((p) => p.category === 'ওয়েবসাইট প্যাকেজ')))
+      .finally(() => setLoading(false))
+  }, [])
 
   return (
     <div className="bg-[#edf4ff] min-h-screen">
       <Seo
-        title="Landing Page, Portfolio & Business Website"
-        description="Professional website solutions for personal brand, service business, company profile and campaign-focused online presence."
+        title="ল্যান্ডিং পেজ, পোর্টফোলিও ও বিজনেস ওয়েবসাইট"
+        description="পার্সোনাল ব্র্যান্ড, সার্ভিস বিজনেস, কোম্পানি প্রোফাইল এবং ক্যাম্পেইন-ফোকাসড অনলাইন উপস্থিতির জন্য প্রফেশনাল ওয়েবসাইট সলিউশন।"
       />
       <PageHero
-        eyebrow="Business Website"
-        title="Landing Page, Portfolio & Business Website"
-        text="Professional website solutions for personal brand, service business, company profile and campaign-focused online presence."
+        eyebrow="বিজনেস ওয়েবসাইট"
+        title="ল্যান্ডিং পেজ, পোর্টফোলিও ও বিজনেস ওয়েবসাইট"
+        text="পার্সোনাল ব্র্যান্ড, সার্ভিস বিজনেস, কোম্পানি প্রোফাইল এবং ক্যাম্পেইন-ফোকাসড অনলাইন উপস্থিতির জন্য প্রফেশনাল ওয়েবসাইট সলিউশন।"
       >
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Button href="/contact">Start Your Website <ArrowRight size={16} /></Button>
-          <Button href="/portfolio" variant="ghost">See Live Projects</Button>
+          <Button href="/contact">ওয়েবসাইট শুরু করুন <ArrowRight size={16} /></Button>
+          <Button href="/portfolio" variant="ghost-dark">লাইভ প্রজেক্ট দেখুন</Button>
         </div>
       </PageHero>
 
@@ -55,23 +64,23 @@ export default function BusinessPage() {
               <span className="h-3 w-3 rounded-full bg-amber-500" />
               <span className="h-3 w-3 rounded-full bg-blue-500" />
               <span className="h-3 w-3 rounded-full bg-emerald-500" />
-              <strong className="ml-2 text-sm font-semibold tracking-wide text-slate-700">Website Preview</strong>
+              <strong className="ml-2 text-sm font-semibold tracking-wide text-slate-700">ওয়েবসাইট প্রিভিউ</strong>
             </div>
             <div className="rounded-3xl border border-blue-100 bg-white p-7">
-              <small className="text-sm font-semibold uppercase tracking-wide text-blue-700">Professional Website</small>
-              <h3 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.03em] text-slate-950">Build trust, showcase your work and collect leads</h3>
-              <p className="mt-4 text-[15px] leading-7 text-slate-600">Modern layout, service highlights, portfolio area, testimonials and WhatsApp/Facebook contact flow.</p>
+              <small className="text-sm font-semibold uppercase tracking-wide text-blue-700">প্রফেশনাল ওয়েবসাইট</small>
+              <h3 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.03em] text-slate-950">বিশ্বাস তৈরি করুন, কাজ প্রদর্শন করুন এবং লিড সংগ্রহ করুন</h3>
+              <p className="mt-4 text-[15px] leading-7 text-slate-600">আধুনিক লেআউট, সার্ভিস হাইলাইট, পোর্টফোলিও এরিয়া, টেস্টিমোনিয়াল এবং WhatsApp/Facebook কন্টাক্ট ফ্লো।</p>
             </div>
             <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-slate-700">
-              {["Clean responsive design","Lead focused structure","Domain separate"].map((item) => (
+              {["ক্লিন রেসপনসিভ ডিজাইন", "লিড-ফোকাসড স্ট্রাকচার", "ডোমেইন আলাদা"].map((item) => (
                 <span key={item} className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 shadow-sm">
                   <CheckCircle2 size={16} strokeWidth={2.2} /> {item}
                 </span>
               ))}
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Button href="/pricing">See Website Packages</Button>
-              <Button href="/portfolio" variant="ghost-dark">View Showcase</Button>
+              <Button href="/pricing">ওয়েবসাইট প্যাকেজ দেখুন</Button>
+              <Button href="/portfolio" variant="ghost-dark">শোকেস দেখুন</Button>
             </div>
           </div>
         </div>
@@ -80,12 +89,21 @@ export default function BusinessPage() {
       {/* Pricing */}
       <section className="py-8 lg:py-12 bg-white">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
-          <SectionHeader eyebrow="Packages" title="Website pricing packages" />
-          <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
-            {websitePricing.plans.map((plan) => (
-              <PricingCard key={plan.name} plan={plan} />
-            ))}
-          </div>
+          <SectionHeader eyebrow="প্যাকেজ" title="ওয়েবসাইট প্রাইসিং প্যাকেজ" />
+          {loading ? (
+            <p className="py-10 text-center text-sm text-slate-400">লোড হচ্ছে…</p>
+          ) : plans.length === 0 ? (
+            <p className="py-10 text-center text-sm text-slate-400">এখনো কোনো প্যাকেজ যোগ করা হয়নি।</p>
+          ) : (
+            <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
+              {plans.map((plan) => (
+                <PricingCard
+                  key={plan._id}
+                  plan={{ ...plan, price: plan.priceLabel || `৳${plan.priceAmount.toLocaleString('bn-BD')}` }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

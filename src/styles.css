@@ -5,14 +5,15 @@
 @tailwind utilities;
 
 @layer utilities {
-  .bg-hero-navy {
-    background-image: radial-gradient(circle at 20% 20%, #1d4ed8 0%, transparent 28%),
-      linear-gradient(135deg, #071028 0%, #0b1736 48%, #172554 100%);
+  .bg-hero-light {
+    background-image: radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.12) 0%, transparent 32%),
+      radial-gradient(circle at 90% 15%, rgba(245, 158, 11, 0.10) 0%, transparent 30%),
+      linear-gradient(160deg, #eff6ff 0%, #f8fafc 45%, #ecfdf5 100%);
   }
 
   .bg-grid-overlay {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(29, 78, 216, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29, 78, 216, 0.08) 1px, transparent 1px);
     background-size: 46px 46px;
   }
 }

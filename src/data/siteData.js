@@ -2,9 +2,7 @@ import {
   BadgeCheck,
   BarChart3,
   BookOpen,
-  Building2,
   Calculator,
-  CreditCard,
   Database,
   FileText,
   Globe2,
@@ -16,11 +14,8 @@ import {
   MonitorSmartphone,
   PackageCheck,
   Rocket,
-  School,
   Search,
-  ServerCog,
   ShieldCheck,
-  ShoppingBag,
   Smartphone,
   Users,
   WalletCards,
@@ -28,596 +23,256 @@ import {
 
 export const brand = {
   name: "Hikmah IT",
-  tagline: "Smart Digital Solution for Business & Education",
+  tagline: "ব্যবসা ও শিক্ষা প্রতিষ্ঠানের জন্য স্মার্ট ডিজিটাল সমাধান",
   phone: "01624114405",
   phoneHref: "tel:+8801624114405",
   whatsapp: "https://wa.me/8801624114405",
   email: "hikmahitcenter@gmail.com",
   emailHref: "mailto:hikmahitcenter@gmail.com",
-  location: "Bangladesh",
+  location: "বাংলাদেশ",
   facebook: "https://facebook.com/hikmahitbd",
 };
 
 export const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Project", href: "/portfolio" },
-  { label: "Team", href: "/team" },
-  { label: "About", href: "/about" },
+  { label: "হোম", href: "/" },
+  { label: "সার্ভিস", href: "/services" },
+  { label: "প্যাকেজ", href: "/pricing" },
+  { label: "প্রজেক্ট", href: "/portfolio" },
+  { label: "টিম", href: "/team" },
+  { label: "আমাদের সম্পর্কে", href: "/about" },
 ];
 
 export const quickLinks = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Project", href: "/portfolio" },
-  { label: "Team", href: "/team" },
-  { label: "About", href: "/about" },
-  { label: "Earn Money", href: "/earn" },
+  { label: "হোম", href: "/" },
+  { label: "সার্ভিস", href: "/services" },
+  { label: "প্যাকেজ", href: "/pricing" },
+  { label: "প্রজেক্ট", href: "/portfolio" },
+  { label: "টিম", href: "/team" },
+  { label: "আমাদের সম্পর্কে", href: "/about" },
+  { label: "আয় করুন", href: "/earn" },
 ];
 
 export const stats = [
-  { value: "5+", label: "Main Services" },
-  { value: "100%", label: "Responsive UI" },
-  { value: "Bkash", label: "BD Payment" },
-  { value: "SEO", label: "Ready Structure" },
-];
-
-export const services = [
-  {
-    icon: ShoppingBag,
-    title: "Full E-commerce Website",
-    text: "Product, order, customer, payment, delivery and reporting system with a clean admin panel.",
-    href: "/ecommerce",
-  },
-  {
-    icon: School,
-    title: "Madrasah Management System",
-    text: "Student, teacher, accounting, attendance, fee, result, notice and public website control system.",
-    href: "/madrasah",
-  },
-  {
-    icon: Building2,
-    title: "Business Website",
-    text: "Company website, service website, portfolio website and single page landing website for leads.",
-    href: "/business",
-  },
-  {
-    icon: MonitorSmartphone,
-    title: "Portfolio Website",
-    text: "Personal brand, agency, professional profile and work showcase website with strong visual layout.",
-    href: "/business",
-  },
-  {
-    icon: Rocket,
-    title: "Landing Page Website",
-    text: "Single page campaign website for product, course, event or service promotion with WhatsApp CTA.",
-    href: "/business",
-  },
-  {
-    icon: ServerCog,
-    title: "Hosting & Domain Service",
-    text: "Domain support plus international hosting purchase/payment/setup support; we do not sell our own hosting.",
-    href: "/hosting",
-  },
+  { value: "৫+", label: "প্রধান সার্ভিস" },
+  { value: "১০০%", label: "রেসপনসিভ ইউআই" },
+  { value: "বিকাশ", label: "বিডি পেমেন্ট" },
+  { value: "SEO", label: "রেডি স্ট্রাকচার" },
 ];
 
 export const businessWebsiteTypes = [
   {
-    title: "Landing Page",
-    tag: "Campaign Website",
-    text: "A focused single-page website for product, service, course, event or offer promotion with clear call-to-action.",
+    title: "ল্যান্ডিং পেজ",
+    tag: "ক্যাম্পেইন ওয়েবসাইট",
+    text: "প্রোডাক্ট, সার্ভিস, কোর্স, ইভেন্ট বা অফার প্রমোশনের জন্য স্পষ্ট কল-টু-অ্যাকশন সহ ফোকাসড সিঙ্গেল-পেজ ওয়েবসাইট।",
   },
   {
-    title: "Portfolio Website",
-    tag: "Professional Showcase",
-    text: "A polished portfolio website for personal brand, freelancer, agency or company profile with project showcase and contact flow.",
+    title: "পোর্টফোলিও ওয়েবসাইট",
+    tag: "প্রফেশনাল শোকেস",
+    text: "পার্সোনাল ব্র্যান্ড, ফ্রিল্যান্সার, এজেন্সি বা কোম্পানি প্রোফাইলের জন্য প্রজেক্ট শোকেস ও কন্টাক্ট ফ্লো সহ পলিশড পোর্টফোলিও ওয়েবসাইট।",
   },
   {
-    title: "Business Website",
-    tag: "Company Website",
-    text: "A complete business website for company profile, services, about, contact, trust-building and lead generation.",
+    title: "বিজনেস ওয়েবসাইট",
+    tag: "কোম্পানি ওয়েবসাইট",
+    text: "কোম্পানি প্রোফাইল, সার্ভিস, অ্যাবাউট, কন্টাক্ট, ট্রাস্ট-বিল্ডিং এবং লিড জেনারেশনের জন্য সম্পূর্ণ বিজনেস ওয়েবসাইট।",
   },
 ];
 
 export const ecommerceFeatures = [
   {
     icon: LayoutDashboard,
-    title: "Admin Dashboard",
-    text: "Sales overview, orders, customers, products and quick business insights.",
+    title: "অ্যাডমিন ড্যাশবোর্ড",
+    text: "সেলস ওভারভিউ, অর্ডার, কাস্টমার, প্রোডাক্ট এবং দ্রুত বিজনেস ইনসাইট।",
   },
   {
     icon: PackageCheck,
-    title: "Product Management",
-    text: "Category, stock, gallery, variant, discount and featured product control.",
+    title: "প্রোডাক্ট ম্যানেজমেন্ট",
+    text: "ক্যাটাগরি, স্টক, গ্যালারি, ভ্যারিয়েন্ট, ডিসকাউন্ট এবং ফিচার্ড প্রোডাক্ট কন্ট্রোল।",
   },
   {
     icon: WalletCards,
-    title: "Order & Payment",
-    text: "Cash on delivery, mobile banking, payment status and delivery workflow.",
+    title: "অর্ডার ও পেমেন্ট",
+    text: "ক্যাশ অন ডেলিভারি, মোবাইল ব্যাংকিং, পেমেন্ট স্ট্যাটাস এবং ডেলিভারি ওয়ার্কফ্লো।",
   },
   {
     icon: Users,
-    title: "Customer Panel",
-    text: "Customer account, order tracking, wishlist and profile management.",
+    title: "কাস্টমার প্যানেল",
+    text: "কাস্টমার অ্যাকাউন্ট, অর্ডার ট্র্যাকিং, উইশলিস্ট এবং প্রোফাইল ম্যানেজমেন্ট।",
   },
   {
     icon: Smartphone,
-    title: "Mobile Friendly Store",
-    text: "Fast and polished shopping experience for phone, tablet and desktop.",
+    title: "মোবাইল ফ্রেন্ডলি স্টোর",
+    text: "ফোন, ট্যাবলেট এবং ডেস্কটপের জন্য দ্রুত ও পলিশড শপিং এক্সপেরিয়েন্স।",
   },
   {
     icon: Search,
-    title: "SEO Ready Pages",
-    text: "Product SEO, meta data, clean URLs and search-friendly site structure.",
+    title: "SEO রেডি পেজ",
+    text: "প্রোডাক্ট SEO, মেটা ডাটা, ক্লিন URL এবং সার্চ-ফ্রেন্ডলি সাইট স্ট্রাকচার।",
   },
 ];
 
 export const hostingFeatures = [
-  "Domain name selection, availability checking and provider-based purchase guidance",
-  ".com, .net, .org and other extensions arranged based on current provider price",
-  "Domain support remains ৳1,500+ with purchase and DNS setup assistance",
-  "Hosting is purchased from international providers like Hostinger or Namecheap in the customer name",
-  "Bangladesh payment support through bKash, Nagad, Rocket or BD gateway",
-  "Hosting provider bill is separate; our hosting purchase/setup service charge is ৳300",
+  "ডোমেইন নেম সিলেকশন, অ্যাভেইলেবিলিটি চেকিং এবং প্রোভাইডার-ভিত্তিক পারচেজ গাইডেন্স",
+  ".com, .net, .org এবং অন্যান্য এক্সটেনশন বর্তমান প্রোভাইডার মূল্য অনুযায়ী ব্যবস্থা করা হয়",
+  "ডোমেইন সাপোর্ট ৳১,৫০০+ থেকে শুরু, পারচেজ ও DNS সেটআপ সহায়তা সহ",
+  "হোস্টিং কেনা হয় Hostinger বা Namecheap-এর মতো ইন্টারন্যাশনাল প্রোভাইডার থেকে, কাস্টমারের নামে",
+  "বিকাশ, নগদ, রকেট বা বিডি গেটওয়ের মাধ্যমে বাংলাদেশ পেমেন্ট সাপোর্ট",
+  "হোস্টিং প্রোভাইডারের বিল আলাদা; আমাদের হোস্টিং পারচেজ/সেটআপ সার্ভিস চার্জ ৳৩০০",
 ];
 
 export const madrasahFeatures = [
   {
     icon: GraduationCap,
-    title: "Student Management",
-    text: "Admission, profile, guardian details, class, section and roll management.",
+    title: "স্টুডেন্ট ম্যানেজমেন্ট",
+    text: "ভর্তি, প্রোফাইল, অভিভাবকের তথ্য, ক্লাস, সেকশন এবং রোল ম্যানেজমেন্ট।",
   },
   {
     icon: Users,
-    title: "Teacher & Staff",
-    text: "Teacher profile, staff information, department and permission control.",
+    title: "টিচার ও স্টাফ",
+    text: "টিচার প্রোফাইল, স্টাফ তথ্য, ডিপার্টমেন্ট এবং পারমিশন কন্ট্রোল।",
   },
   {
     icon: Calculator,
-    title: "Accounting Module",
-    text: "Income, expense, salary, fee collection, due report and financial summary.",
+    title: "অ্যাকাউন্টিং মডিউল",
+    text: "আয়, ব্যয়, বেতন, ফি কালেকশন, বকেয়া রিপোর্ট এবং আর্থিক সামারি।",
   },
   {
     icon: BookOpen,
-    title: "Class & Exam",
-    text: "Class routine, subject, exam, result and academic report management.",
+    title: "ক্লাস ও পরীক্ষা",
+    text: "ক্লাস রুটিন, বিষয়, পরীক্ষা এবং রেজাল্ট ও একাডেমিক রিপোর্ট ম্যানেজমেন্ট।",
   },
   {
     icon: Megaphone,
-    title: "Notice & Website",
-    text: "Admin controlled public website, notice, gallery, events and admission info.",
+    title: "নোটিশ ও ওয়েবসাইট",
+    text: "অ্যাডমিন কন্ট্রোলড পাবলিক ওয়েবসাইট, নোটিশ, গ্যালারি, ইভেন্ট এবং ভর্তি তথ্য।",
   },
   {
     icon: FileText,
-    title: "ID & Reports",
-    text: "Student list, attendance, certificate and downloadable reports.",
+    title: "আইডি ও রিপোর্ট",
+    text: "স্টুডেন্ট লিস্ট, অ্যাটেন্ডেন্স, সার্টিফিকেট এবং ডাউনলোডযোগ্য রিপোর্ট।",
   },
 ];
 
 export const workProcess = [
   {
-    step: "01",
-    title: "Requirement",
-    text: "We understand your business, package, domain need, international hosting purchase flow and target customers.",
+    step: "০১",
+    title: "প্রয়োজন বোঝা",
+    text: "আমরা আপনার ব্যবসা, প্যাকেজ, ডোমেইন প্রয়োজন, ইন্টারন্যাশনাল হোস্টিং পারচেজ ফ্লো এবং টার্গেট কাস্টমার বুঝি।",
   },
   {
-    step: "02",
-    title: "Design",
-    text: "We prepare clean UI direction with brand color, layout and conversion sections.",
+    step: "০২",
+    title: "ডিজাইন",
+    text: "আমরা ব্র্যান্ড কালার, লেআউট এবং কনভার্সন সেকশন সহ ক্লিন ইউআই ডিরেকশন তৈরি করি।",
   },
   {
-    step: "03",
-    title: "Development",
-    text: "We build responsive pages, reusable components and admin-ready structure.",
+    step: "০৩",
+    title: "ডেভেলপমেন্ট",
+    text: "আমরা রেসপনসিভ পেজ, রিইউজেবল কম্পোনেন্ট এবং অ্যাডমিন-রেডি স্ট্রাকচার তৈরি করি।",
   },
   {
-    step: "04",
-    title: "Launch",
-    text: "We test, optimize, deploy and guide you for content and future maintenance.",
-  },
-];
-
-export const pricingGroups = [
-  {
-    title: "Website Packages",
-    plans: [
-      {
-        name: "Landing Page",
-        price: "৳5,000",
-        text: "Single page conversion website for service, product, course or campaign.",
-        features: [
-          "Premium one-page design",
-          "Hero, features, pricing and CTA",
-          "WhatsApp/Facebook CTA",
-          "Fast mobile responsive UI",
-          "Hosting setup support",
-          "Domain separate purchase",
-        ],
-        highlighted: false,
-      },
-      {
-        name: "Portfolio Website",
-        price: "৳7,000",
-        text: "Professional portfolio website for personal brand, freelancer, agency or business profile.",
-        features: [
-          "Home/about/portfolio/contact",
-          "Project showcase gallery",
-          "Clickable live project links",
-          "Client review section",
-          "SEO-ready structure",
-          "Hosting setup support",
-          "Domain separate purchase",
-        ],
-        highlighted: true,
-      },
-      {
-        name: "Business Website",
-        price: "৳9,000",
-        text: "Company/service website for small business, institute, shop or organization.",
-        features: [
-          "Professional business homepage",
-          "Service details section",
-          "Lead generation CTA",
-          "Google map/contact section",
-          "Basic SEO structure",
-          "Hosting setup support",
-          "Domain separate purchase",
-        ],
-        highlighted: false,
-      },
-    ],
-  },
-  {
-    title: "E-commerce Website",
-    plans: [
-      {
-        name: "Starter E-commerce",
-        price: "৳10,000",
-        period: "/year",
-        renewal: "Renewal ৳2,500/year",
-        limits: ["Up to 50 Products", "Up to 100 Orders/month"],
-        text: "Perfect for new businesses launching their first online store.",
-        features: [
-          "Basic admin panel",
-          "Product & category management",
-          "Order & payment status tracking",
-          "Manual courier entry",
-          "Mobile-friendly storefront",
-          "Hosting setup support",
-        ],
-        highlighted: false,
-      },
-      {
-        name: "Advanced E-commerce",
-        price: "৳15,000",
-        period: "/year",
-        renewal: "Renewal ৳4,000/year",
-        limits: ["Up to 200 Products", "Up to 500 Orders/month"],
-        text: "Our most popular package with advanced admin panel and complete selling features.",
-        features: [
-          "Advanced admin panel",
-          "Product/category/stock control",
-          "One-click courier entry flow",
-          "Customer order tracking",
-          "SEO-ready product pages",
-          "Hosting setup support",
-          "Training/support guidance",
-        ],
-        highlighted: true,
-      },
-      {
-        name: "Business E-commerce",
-        price: "৳22,000",
-        period: "/year",
-        renewal: "Renewal ৳6,000/year",
-        limits: ["Unlimited Products", "Unlimited Orders"],
-        text: "For growing online businesses that need unlimited scale and advanced reporting.",
-        features: [
-          "Everything in Advanced package",
-          "Unlimited product & order volume",
-          "Advanced reporting & analytics",
-          "Priority support",
-          "Role-based dashboard access",
-          "Hosting setup support",
-        ],
-        highlighted: false,
-      },
-      {
-        name: "Reseller Panel",
-        price: "৳35,000",
-        period: "/year",
-        renewal: "Renewal ৳8,000/year",
-        limits: ["Unlimited Products", "Multi-Reseller Accounts"],
-        text: "Premium e-commerce system with everything plus a full reseller panel.",
-        features: [
-          "Everything in Business package",
-          "Reseller panel included",
-          "Reseller order management",
-          "Advanced reporting workflow",
-          "Role-based dashboard flow",
-          "Hosting setup support",
-        ],
-        highlighted: false,
-      },
-      {
-        name: "Custom",
-        price: "Custom",
-        text: "For businesses with unique requirements beyond standard packages.",
-        features: [
-          "Fully custom feature development",
-          "Custom integrations & APIs",
-          "Dedicated project manager",
-          "Flexible payment terms",
-          "Priority support & training",
-        ],
-        highlighted: false,
-      },
-    ],
-  },
-  {
-    title: "Madrasah Management System",
-    plans: [
-      {
-        name: "Basic",
-        price: "৳20,000",
-        limits: ["Up to 200 Students"],
-        text: "Essential management tools for small madrasahs and academies.",
-        features: [
-          "Student & teacher management",
-          "Basic accounting & fee collection",
-          "Attendance & result management",
-          "Static public website (info pages)",
-        ],
-        highlighted: false,
-      },
-      {
-        name: "Standard",
-        price: "৳35,000",
-        limits: ["Up to 500 Students"],
-        text: "Our most popular package for growing institutions needing full digital control.",
-        features: [
-          "Everything in Basic",
-          "Advanced accounting (income/expense/salary)",
-          "Exam & result management with report cards",
-          "Dynamic public website (notice/admission/gallery)",
-          "Role-based access for staff",
-        ],
-        highlighted: true,
-      },
-      {
-        name: "Premium",
-        price: "৳50,000+",
-        limits: ["Unlimited Students"],
-        text: "Complete solution for large institutions with multi-branch or custom needs.",
-        features: [
-          "Everything in Standard",
-          "SMS/Email notification system",
-          "Multi-branch/campus support",
-          "Custom feature development",
-          "Dedicated support & training",
-        ],
-        highlighted: false,
-      },
-    ],
-  },
-  {
-    title: "Domain & Hosting Support",
-    plans: [
-      {
-        name: "Domain Purchase Support",
-        price: "৳1,500+",
-        text: "We help customers purchase domains from trusted international providers.",
-        features: [
-          "Domain name consultation",
-          "Support for .com, .net, .org, and other extensions",
-          "Domain availability checking",
-          "Purchase assistance from international providers",
-          "Final price depends on provider and extension",
-        ],
-        highlighted: false,
-      },
-      {
-        name: "Hosting Payment Assistance",
-        price: "৳300 service charge",
-        text: "We do not sell hosting directly. We only provide payment assistance for international hosting purchases.",
-        features: [
-          "Support for Hostinger, Namecheap, and similar providers",
-          "bKash, Nagad, Rocket, and local gateway payment support",
-          "Customer pays hosting bill directly to provider",
-          "Secure and simple payment assistance",
-        ],
-        highlighted: true,
-      },
-    ],
-  },
-];
-
-export const portfolio = [
-  {
-    title: "Openup — Online Store",
-    category: "E-commerce + Admin Panel",
-    image: "/preview/openup_banner.png",
-    url: "https://openupbd.com",
-    text: "Product, order, payment and admin-panel based online shop for Openup.",
-  },
-  {
-    title: "Glorix — Online Store",
-    category: "E-commerce + Admin Panel",
-    image: "/preview/glorix_banner.png",
-    url: "https://openupbd.com",
-    text: "Product, order, payment and admin-panel based online shop for Glorix.",
-  },
-  {
-    title: "Cartvan — Online Store",
-    category: "E-commerce + Admin Panel",
-    image: "/preview/cartvan_banner.png",
-    url: "https://openupbd.com",
-    text: "Product, order, payment and admin-panel based online shop for Cartvan.",
-  },
-  {
-    title: "Company Website Preview",
-    category: "Business Website",
-    image: "/preview/hikmahit_banner.webp",
-    url: "https://hikmahit.vercel.app",
-    text: "Professional company website layout for service and lead generation.",
-  },
-  {
-    title: "Campaign Page Preview",
-    category: "Landing Page",
-    image: "/preview/habibs_fashion_banner.webp",
-    url: "https://habibsfashion.com",
-    text: "One-page offer, campaign or product promotion website preview.",
+    step: "০৪",
+    title: "লঞ্চ",
+    text: "আমরা টেস্ট, অপ্টিমাইজ, ডেপ্লয় করি এবং কন্টেন্ট ও ভবিষ্যৎ মেইনটেন্যান্সের জন্য আপনাকে গাইড করি।",
   },
 ];
 
 export const faq = [
   {
-    q: "Will my website be mobile responsive?",
-    a: "Yes, all websites are fully responsive for mobile, tablet, and desktop devices.",
+    q: "আমার ওয়েবসাইট কি মোবাইল রেসপনসিভ হবে?",
+    a: "হ্যাঁ, সব ওয়েবসাইট মোবাইল, ট্যাবলেট এবং ডেস্কটপের জন্য সম্পূর্ণ রেসপনসিভ।",
   },
   {
-    q: "Can you develop custom web applications?",
-    a: "Yes, we create custom dashboards, management systems, SaaS platforms, and automation tools.",
+    q: "আপনারা কি কাস্টম ওয়েব অ্যাপ্লিকেশন তৈরি করতে পারেন?",
+    a: "হ্যাঁ, আমরা কাস্টম ড্যাশবোর্ড, ম্যানেজমেন্ট সিস্টেম, SaaS প্ল্যাটফর্ম এবং অটোমেশন টুলস তৈরি করি।",
   },
   {
-    q: "Will my website be SEO friendly?",
-    a: "Yes, we follow SEO best practices including optimized structure, fast loading speed, and clean code.",
+    q: "আমার ওয়েবসাইট কি SEO ফ্রেন্ডলি হবে?",
+    a: "হ্যাঁ, আমরা অপ্টিমাইজড স্ট্রাকচার, দ্রুত লোডিং স্পিড এবং ক্লিন কোড সহ SEO বেস্ট প্র্যাকটিস অনুসরণ করি।",
   },
   {
-    q: "Do you work with React and Next.js?",
-    a: "Yes, we use modern technologies like React, Next.js, Node.js, and Tailwind CSS.",
+    q: "আপনারা কি React এবং Next.js নিয়ে কাজ করেন?",
+    a: "হ্যাঁ, আমরা React, Next.js, Node.js এবং Tailwind CSS-এর মতো আধুনিক টেকনোলজি ব্যবহার করি।",
   },
   {
-    q: "Can you integrate payment gateways?",
-    a: "Yes, we integrate payment gateways such as SSLCommerz, bKash, Nagad, Rocket, and international solutions.",
+    q: "আপনারা কি পেমেন্ট গেটওয়ে ইন্টিগ্রেট করতে পারেন?",
+    a: "হ্যাঁ, আমরা SSLCommerz, বিকাশ, নগদ, রকেট এবং ইন্টারন্যাশনাল সলিউশনের মতো পেমেন্ট গেটওয়ে ইন্টিগ্রেট করি।",
   },
   {
-    q: "Do you offer website maintenance services?",
-    a: "Yes, we provide ongoing maintenance, updates, security monitoring, and performance optimization.",
+    q: "আপনারা কি ওয়েবসাইট মেইনটেন্যান্স সার্ভিস দেন?",
+    a: "হ্যাঁ, আমরা চলমান মেইনটেন্যান্স, আপডেট, সিকিউরিটি মনিটরিং এবং পারফরম্যান্স অপ্টিমাইজেশন প্রদান করি।",
   },
   {
-    q: "Will my website be secure?",
-    a: "Yes, we implement modern security practices, secure authentication, and protection systems.",
+    q: "আমার ওয়েবসাইট কি নিরাপদ হবে?",
+    a: "হ্যাঁ, আমরা আধুনিক সিকিউরিটি প্র্যাকটিস, সিকিউর অথেন্টিকেশন এবং প্রোটেকশন সিস্টেম ব্যবহার করি।",
   },
   {
-    q: "Can you improve website speed and performance?",
-    a: "Yes, we optimize websites using caching, image compression, lazy loading, and performance tuning.",
+    q: "আপনারা কি ওয়েবসাইটের স্পিড ও পারফরম্যান্স উন্নত করতে পারেন?",
+    a: "হ্যাঁ, আমরা ক্যাশিং, ইমেজ কম্প্রেশন, লেজি লোডিং এবং পারফরম্যান্স টিউনিং দিয়ে ওয়েবসাইট অপ্টিমাইজ করি।",
   },
   {
-    q: "Do you provide UI/UX design services?",
-    a: "Yes, we create clean, modern, and professional UI/UX designs tailored to your business needs.",
+    q: "আপনারা কি UI/UX ডিজাইন সার্ভিস দেন?",
+    a: "হ্যাঁ, আমরা আপনার ব্যবসার প্রয়োজন অনুযায়ী ক্লিন, আধুনিক এবং প্রফেশনাল UI/UX ডিজাইন তৈরি করি।",
   },
   {
-    q: "Do you provide source code after project completion?",
-    a: "Yes, complete source code and project files are provided after project delivery.",
+    q: "প্রজেক্ট শেষ হওয়ার পর কি সোর্স কোড দেওয়া হয়?",
+    a: "হ্যাঁ, প্রজেক্ট ডেলিভারির পর সম্পূর্ণ সোর্স কোড এবং প্রজেক্ট ফাইল প্রদান করা হয়।",
   },
 ];
 
 export const trustItems = [
-  { icon: ShieldCheck, title: "Secure Structure" },
-  { icon: MonitorSmartphone, title: "Responsive Design" },
-  { icon: Database, title: "Admin-ready Flow" },
-  { icon: Headphones, title: "Support Friendly" },
-  { icon: Rocket, title: "Fast Loading" },
-  { icon: BadgeCheck, title: "Professional UI" },
-  { icon: LockKeyhole, title: "Trust Focused" },
-  { icon: BarChart3, title: "Growth Ready" },
+  { icon: ShieldCheck, title: "সিকিউর স্ট্রাকচার" },
+  { icon: MonitorSmartphone, title: "রেসপনসিভ ডিজাইন" },
+  { icon: Database, title: "অ্যাডমিন-রেডি ফ্লো" },
+  { icon: Headphones, title: "সাপোর্ট ফ্রেন্ডলি" },
+  { icon: Rocket, title: "দ্রুত লোডিং" },
+  { icon: BadgeCheck, title: "প্রফেশনাল ইউআই" },
+  { icon: LockKeyhole, title: "ট্রাস্ট ফোকাসড" },
+  { icon: BarChart3, title: "গ্রোথ রেডি" },
 ];
 
 // ── Team & About Data ──────────────────────────────────────────────
-export const owner = {
-  name: "Md Junaid Al Habib",
-  role: "Founder & CEO",
-  location: "Dewanganj, Jamalpur",
-  bio: "Passionate web developer and entrepreneur with 3+ years of experience building modern websites, e-commerce platforms and management systems for businesses and educational institutions across Bangladesh.",
-  skills: ["React", "Next.js", "Node.js", "Tailwind CSS", "UI/UX", "SEO"],
-  photo: "/team/junaid.jpeg", // Owner Photo
-  facebook: "https://www.facebook.com/share/1Biz9s6ueR",
-  whatsapp: "https://wa.me/8801624114405",
-};
-
-export const teamMembers = [
-  {
-    name: "Md Mazharul Islam",
-    role: "Business Development Partner",
-    location: "Jamalpur, Bangladesh",
-    earning: "৳20,000+",
-    photo: "/team/member1.jpeg",
-    skills: [
-      "Business Development",
-      "Sales Strategy",
-      "Partnership Management",
-    ],
-    facebook: "#",
-    whatsapp: "#",
-  },
-  {
-    name: "Md Omar Faruk",
-    role: "Marketing Partner",
-    location: "Dhaka, Bangladesh",
-    earning: "৳15,000+",
-    photo: "/team/member2.jpeg",
-    skills: ["Digital Marketing", "Lead Generation", "Client Communication"],
-    facebook: "#",
-    whatsapp: "#",
-  },
-  {
-    name: "Md kawser Hossain",
-    role: "Referral Partner",
-    location: "Mymensingh, Bangladesh",
-    earning: "৳10,000+",
-    photo: "/team/member3.jpeg",
-    skills: ["Client Referral", "Networking", "Relationship Building"],
-    facebook: "#",
-    whatsapp: "#",
-  },
-];
-
 export const joinRoles = [
   {
-    role: "Referral Partner",
-    desc: "Refer clients to Hikmah IT and earn commission on every successful project. No technical skills required — just bring potential clients.",
-    earn: "৳500–2,000 per referral",
+    role: "রেফারেল পার্টনার",
+    desc: "Hikmah IT-তে ক্লায়েন্ট রেফার করুন এবং প্রতিটি সফল প্রজেক্টে কমিশন আয় করুন। কোনো টেকনিক্যাল স্কিল লাগবে না — শুধু সম্ভাব্য ক্লায়েন্ট নিয়ে আসুন।",
+    earn: "প্রতি রেফারেলে ৳৫০০–২,০০০",
     icon: "🤝",
   },
   {
-    role: "Marketing Partner",
-    desc: "Promote Hikmah IT services through social media and personal networks to generate leads and earn commissions.",
-    earn: "৳1,000–5,000 per client",
+    role: "মার্কেটিং পার্টনার",
+    desc: "সোশ্যাল মিডিয়া ও পার্সোনাল নেটওয়ার্কের মাধ্যমে Hikmah IT-এর সার্ভিস প্রমোট করে লিড জেনারেট করুন এবং কমিশন আয় করুন।",
+    earn: "প্রতি ক্লায়েন্টে ৳১,০০০–৫,০০০",
     icon: "📢",
   },
   {
-    role: "Business Development Partner",
-    desc: "Connect us with businesses, schools, madrasas, and organizations for long-term projects and corporate deals.",
-    earn: "৳5,000–20,000+ per project",
+    role: "বিজনেস ডেভেলপমেন্ট পার্টনার",
+    desc: "দীর্ঘমেয়াদী প্রজেক্ট ও কর্পোরেট ডিলের জন্য ব্যবসা, স্কুল, মাদরাসা এবং প্রতিষ্ঠানের সাথে আমাদের সংযুক্ত করুন।",
+    earn: "প্রতি প্রজেক্টে ৳৫,০০০–২০,০০০+",
     icon: "💼",
   },
 ];
 
 export const aboutStats = [
-  { value: "3+", label: "Years Experience" },
-  { value: "50+", label: "Projects Delivered" },
-  { value: "30+", label: "Happy Clients" },
-  { value: "10+", label: "Team Members" },
+  { value: "৩+", label: "বছরের অভিজ্ঞতা" },
+  { value: "৫০+", label: "সম্পন্ন প্রজেক্ট" },
+  { value: "৩০+", label: "সন্তুষ্ট ক্লায়েন্ট" },
+  { value: "১০+", label: "টিম মেম্বার" },
 ];
 
 export const whyUs = [
   {
-    title: "Bangladesh-Focused",
-    text: "We understand local business needs, Bangla content, bKash payments and BD-specific requirements.",
+    title: "বাংলাদেশ-ফোকাসড",
+    text: "আমরা লোকাল বিজনেস প্রয়োজন, বাংলা কন্টেন্ট, বিকাশ পেমেন্ট এবং বিডি-নির্দিষ্ট প্রয়োজনীয়তা বুঝি।",
   },
   {
-    title: "Affordable Pricing",
-    text: "Professional-grade websites at prices that work for small businesses and institutions in Bangladesh.",
+    title: "সাশ্রয়ী মূল্য",
+    text: "বাংলাদেশের ছোট ব্যবসা ও প্রতিষ্ঠানের জন্য উপযোগী দামে প্রফেশনাল-গ্রেড ওয়েবসাইট।",
   },
   {
-    title: "End-to-End Support",
-    text: "From domain purchase to final launch and beyond — we guide you through every single step.",
+    title: "এন্ড-টু-এন্ড সাপোর্ট",
+    text: "ডোমেইন কেনা থেকে শুরু করে ফাইনাল লঞ্চ এবং তার পরেও — প্রতিটি ধাপে আমরা আপনাকে গাইড করি।",
   },
   {
-    title: "Modern Technology",
-    text: "React, Next.js, Tailwind CSS — fast, scalable and SEO-friendly tech stack for every project.",
+    title: "আধুনিক টেকনোলজি",
+    text: "React, Next.js, Tailwind CSS — প্রতিটি প্রজেক্টের জন্য দ্রুত, স্কেলেবল এবং SEO-ফ্রেন্ডলি টেক স্ট্যাক।",
   },
 ];

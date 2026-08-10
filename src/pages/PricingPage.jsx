@@ -1,49 +1,87 @@
-import SectionHeader from '../components/SectionHeader'
-import PageHero from '../components/PageHero'
-import PricingCard from '../components/PricingCard'
-import Seo from '../components/Seo'
-import Button from '../components/Button'
-import { pricingGroups } from '../data/siteData'
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import PageHero from "../components/PageHero";
+import PricingCard from "../components/PricingCard";
+import Seo from "../components/Seo";
+import Button from "../components/Button";
+import { SkeletonCard } from "../components/Skeleton";
+import { apiGet } from "../lib/api";
+import useSiteSettings from "../lib/useSiteSettings";
 
 export default function PricingPage() {
+  const [packages, setPackages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const settings = useSiteSettings();
+
+  useEffect(() => {
+    apiGet("/public/packages")
+      .then(setPackages)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const grouped = packages.reduce((acc, pkg) => {
+    acc[pkg.category] = acc[pkg.category] || [];
+    acc[pkg.category].push(pkg);
+    return acc;
+  }, {});
+
+  if (settings && settings.sectionVisibility?.packages === false) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className="bg-[#edf4ff] min-h-screen">
       <Seo
-        title="Pricing & Packages"
-        description="Affordable pricing for websites, e-commerce stores, madrasah management systems and domain/hosting support in Bangladesh."
+        title="প্যাকেজ ও মূল্য"
+        description="বাংলাদেশে ওয়েবসাইট, ই-কমার্স স্টোর, মাদরাসা ম্যানেজমেন্ট সিস্টেম এবং ডোমেইন/হোস্টিং সাপোর্টের জন্য সাশ্রয়ী মূল্য।"
       />
       <PageHero
-        eyebrow="Packages"
-        title="Professional Service Packages"
-        text="Affordable pricing for websites, e-commerce stores, madrasah management systems and domain/hosting support."
+        eyebrow="প্যাকেজ"
+        title="প্রফেশনাল সার্ভিস প্যাকেজ"
+        text="ওয়েবসাইট, ই-কমার্স স্টোর, মাদরাসা ম্যানেজমেন্ট সিস্টেম এবং ডোমেইন/হোস্টিং সাপোর্টের জন্য সাশ্রয়ী মূল্য।"
       />
 
-      {/* Pricing Groups */}
       <section className="py-12 lg:py-16">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
-          <div className="grid gap-14">
-            {pricingGroups.map((group) => (
-              <div key={group.title}>
-                <h3 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">{group.title}</h3>
-                <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
-                  {group.plans.map((plan) => (
-                    <PricingCard key={plan.name} plan={plan} />
-                  ))}
+          {loading ? (
+            <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
+            </div>
+          ) : packages.length === 0 ? (
+            <p className="py-10 text-center text-sm text-slate-400">এখনো কোনো প্যাকেজ যোগ করা হয়নি। শীঘ্রই আসছে।</p>
+          ) : (
+            <div className="grid gap-14">
+              {Object.entries(grouped).map(([category, plans]) => (
+                <div key={category}>
+                  <h3 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">{category}</h3>
+                  <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
+                    {plans.map((plan) => (
+                      <PricingCard
+                        key={plan._id}
+                        plan={{
+                          ...plan,
+                          price: plan.priceLabel || `৳${plan.priceAmount.toLocaleString("bn-BD")}`,
+                        }}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Bottom CTA */}
       <section className="py-12 bg-white text-center">
         <div className="mx-auto w-[min(600px,calc(100%-40px))]">
-          <h2 className="text-3xl font-bold text-slate-900">Not sure which package?</h2>
-          <p className="mt-3 text-slate-600">Contact us on WhatsApp and we will recommend the best option for your needs.</p>
+          <h2 className="text-2xl font-bold text-slate-900">কোন প্যাকেজ নিবেন বুঝতে পারছেন না?</h2>
+          <p className="mt-3 text-slate-600">WhatsApp-এ যোগাযোগ করুন, আমরা আপনার প্রয়োজন অনুযায়ী সেরা অপশন সাজেস্ট করব।</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button href="/contact">Contact Us Now</Button>
-            <Button href="/services" variant="ghost-dark">See All Services</Button>
+            <Button href="/contact">এখনই যোগাযোগ করুন</Button>
+            <Button href="/services" variant="ghost-dark">সব সার্ভিস দেখুন</Button>
           </div>
         </div>
       </section>

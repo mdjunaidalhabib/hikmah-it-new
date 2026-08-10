@@ -1,10 +1,10 @@
-import { Globe2, Mail, MapPin, PhoneCall } from "lucide-react";
+import { Clock3, Globe2, Mail, MapPin, PhoneCall, ShieldCheck } from "lucide-react";
 import SectionHeader from "../components/SectionHeader";
 import ContactForm from "../components/ContactForm";
 import { brand } from "../data/siteData";
 
 const contactItem =
-  "flex items-center gap-3 rounded-xl border border-blue-100 bg-white px-4 py-3 font-medium text-slate-700 shadow-md transition hover:border-blue-300 hover:text-blue-700";
+  "group flex items-center gap-3 rounded-xl border border-blue-100 bg-white px-4 py-3 font-medium text-slate-700 shadow-md transition duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-700 hover:shadow-lg";
 
 export default function Contact() {
   return (
@@ -12,9 +12,9 @@ export default function Contact() {
       <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
         <SectionHeader
           align="center"
-          eyebrow="Contact"
-          title="Ready to make your website professional?"
-          text="Send project details: business type, needed package, hosting/domain requirement, admin panel features and launch target."
+          eyebrow="যোগাযোগ"
+          title="আপনার ওয়েবসাইট প্রফেশনাল করতে প্রস্তুত?"
+          text="প্রজেক্টের বিস্তারিত পাঠান: ব্যবসার ধরন, প্রয়োজনীয় প্যাকেজ, হোস্টিং/ডোমেইন প্রয়োজনীয়তা, অ্যাডমিন প্যানেল ফিচার এবং লঞ্চ টার্গেট।"
         />
 
         <div className="mt-12 grid items-start gap-8 lg:grid-cols-2">
@@ -37,12 +37,23 @@ export default function Contact() {
                 rel="noreferrer"
               >
                 <Globe2 size={18} />
-                <span>Visit Facebook Page</span>
+                <span>ফেসবুক পেজ দেখুন</span>
               </a>
 
               <div className={contactItem}>
                 <MapPin size={18} />
                 <span>{brand.location}</span>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="flex items-center gap-3 rounded-xl bg-blue-50/70 px-4 py-3 text-sm font-medium text-blue-800">
+                <Clock3 size={18} className="shrink-0 text-blue-600" />
+                <span>সাধারণত ২৪ ঘণ্টার মধ্যে রিপ্লাই</span>
+              </div>
+              <div className="flex items-center gap-3 rounded-xl bg-emerald-50/70 px-4 py-3 text-sm font-medium text-emerald-800">
+                <ShieldCheck size={18} className="shrink-0 text-emerald-600" />
+                <span>বিনামূল্যে পরামর্শ</span>
               </div>
             </div>
           </div>

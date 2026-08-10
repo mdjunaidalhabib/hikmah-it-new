@@ -18,17 +18,16 @@ export default class ErrorBoundary extends Component {
       return (
         <div className="grid min-h-[70vh] place-items-center bg-[#edf4ff] px-6 py-16 text-center">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Something went wrong</h1>
+            <h1 className="text-3xl font-bold text-slate-900">কিছু একটা সমস্যা হয়েছে</h1>
             <p className="mt-3 max-w-md text-slate-600">
-              An unexpected error occurred while loading this page. Please try
-              refreshing or go back to the homepage.
+              পেজটি লোড করার সময় একটি অপ্রত্যাশিত সমস্যা হয়েছে। পেজটি রিফ্রেশ করুন অথবা হোমপেজে ফিরে যান।
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button type="button" onClick={() => window.location.reload()}>
-                <RefreshCcw size={16} /> Refresh Page
+                <RefreshCcw size={16} /> রিফ্রেশ করুন
               </Button>
               <Button href="/" variant="ghost-dark">
-                <Home size={16} /> Back to Home
+                <Home size={16} /> হোমপেজে ফিরুন
               </Button>
             </div>
           </div>

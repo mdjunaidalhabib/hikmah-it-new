@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 
 export default function Seo({ title, description }) {
-  const fullTitle = title ? `${title} | Hikmah IT` : "Hikmah IT | E-commerce & Madrasah Management Software";
+  const fullTitle = title ? `${title} | Hikmah IT` : "Hikmah IT | ই-কমার্স ও মাদরাসা ম্যানেজমেন্ট সফটওয়্যার";
 
   return (
     <Helmet>

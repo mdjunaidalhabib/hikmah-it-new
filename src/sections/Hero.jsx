@@ -1,54 +1,68 @@
 import { ArrowRight, CheckCircle2, PlayCircle } from "lucide-react";
 import Button from "../components/Button";
-import { brand } from "../data/siteData";
+import { brand, aboutStats } from "../data/siteData";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-hero-navy pt-10 pb-16 text-white sm:pt-14 sm:pb-20 lg:py-24" id="home">
-      <div className="absolute inset-0 opacity-15 bg-grid-overlay" />
+    <section className="relative overflow-hidden bg-hero-light pt-10 pb-16 sm:pt-14 sm:pb-20 lg:py-24" id="home">
+      <div className="absolute inset-0 opacity-70 bg-grid-overlay" />
       <div className="relative mx-auto grid w-[min(1180px,calc(100%-40px))] items-center gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12">
         <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-blue-300/25 bg-blue-500/15 px-3.5 py-2 text-sm font-semibold text-blue-100">
+          <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 shadow-sm shadow-blue-900/5">
             <CheckCircle2 size={18} />
-            Professional Website & Software Agency
+            প্রফেশনাল ওয়েবসাইট ও সফটওয়্যার এজেন্সি
           </span>
-          <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.05] tracking-[-0.03em] sm:text-5xl lg:text-7xl">
-            E-commerce, Business Website, Hosting & Madrasah Management System.
+          <h1 className="mt-5 max-w-2xl text-2xl font-semibold leading-snug tracking-[-0.02em] text-slate-950 sm:text-3xl sm:leading-[1.3] lg:text-[2.65rem] lg:leading-[1.2]">
+            <span className="sm:block">মাদরাসা ম্যানেজমেন্ট সিস্টেম, </span>
+            <span className="sm:block">ই-কমার্স ওয়েবসাইট, </span>
+            <span className="sm:block">পোর্টফোলিও ও বিজনেস ওয়েবসাইট, </span>
+            <span className="sm:block bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">ডোমেইন ও হোস্টিং সার্ভিস।</span>
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
-            {brand.name} helps businesses and institutions launch modern websites, e-commerce platforms, admin dashboards, portfolio/landing pages, hosting-domain support and digital management systems with premium UI.
+          <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+            {brand.name} ব্যবসা ও প্রতিষ্ঠানকে আধুনিক ওয়েবসাইট, ই-কমার্স প্ল্যাটফর্ম, অ্যাডমিন ড্যাশবোর্ড, পোর্টফোলিও/ল্যান্ডিং পেজ, হোস্টিং-ডোমেইন সাপোর্ট এবং প্রিমিয়াম ইউআই সহ ডিজিটাল ম্যানেজমেন্ট সিস্টেম তৈরিতে সাহায্য করে।
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button href="/contact">
-              Start Your Project <ArrowRight size={18} />
+              প্রজেক্ট শুরু করুন <ArrowRight size={18} />
             </Button>
-            <Button href="/services" variant="ghost">
-              <PlayCircle size={18} /> View Services
+            <Button href="/services" variant="ghost-dark">
+              <PlayCircle size={18} /> সার্ভিস দেখুন
             </Button>
           </div>
+
+          {/* Stats row — real numbers, reused from About page data */}
+          <div className="mt-9 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-slate-200/70 pt-7 sm:grid-cols-4">
+            {aboutStats.map((stat) => (
+              <div key={stat.label}>
+                <p className="text-2xl font-extrabold tracking-tight text-slate-950 sm:text-[1.75rem]">{stat.value}</p>
+                <p className="mt-0.5 text-xs font-medium text-slate-500 sm:text-sm">{stat.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="hidden rounded-[2rem] border border-blue-300/20 bg-white/10 p-5 shadow-2xl shadow-blue-950/30 backdrop-blur-xl lg:block">
-          <div className="rounded-3xl border border-blue-300/15 bg-gradient-to-br from-[#13245a] via-[#0f1d44] to-[#0b1736] p-6">
-            <div className="mb-6 flex items-center justify-between gap-3">
-              <span className="rounded-full bg-blue-500/20 px-3 py-1.5 text-sm font-semibold text-blue-100">Live Project Preview</span>
-              <span className="text-sm text-slate-300">Premium UI</span>
+        <div className="hidden rounded-[2rem] border border-blue-100 bg-white/80 p-5 shadow-[0_30px_60px_-15px_rgba(29,78,216,0.25)] backdrop-blur-xl lg:block">
+          <div className="relative overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-6">
+            <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-cyan-300/20 blur-3xl" />
+            <div className="relative mb-6 flex items-center justify-between gap-3">
+              <span className="rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold text-white ring-1 ring-white/20">লাইভ প্রজেক্ট প্রিভিউ</span>
+              <span className="text-sm text-blue-100">প্রিমিয়াম ইউআই</span>
             </div>
-            <h3 className="max-w-sm text-2xl font-bold leading-tight tracking-[-0.02em] text-white">
-              Modern websites, e-commerce stores & management systems built for growth.
+            <h3 className="relative max-w-sm text-lg font-medium leading-snug tracking-[-0.01em] text-white">
+              গ্রোথের জন্য তৈরি আধুনিক ওয়েবসাইট, ই-কমার্স স্টোর ও ম্যানেজমেন্ট সিস্টেম।
             </h3>
-            <div className="mt-6 grid gap-3">
-              {["E-commerce Store","Madrasah Management","Portfolio & Business Website","Landing Page","Hosting & Domain"].map((item) => (
-                <div key={item} className="flex items-center justify-between rounded-2xl border border-blue-300/15 bg-white/10 px-4 py-3">
-                  <span className="text-sm font-medium text-slate-100">{item}</span>
+            <div className="relative mt-6 grid gap-3">
+              {["মাদরাসা ম্যানেজমেন্ট", "ই-কমার্স স্টোর", "পোর্টফোলিও ও বিজনেস ওয়েবসাইট", "ল্যান্ডিং পেজ", "হোস্টিং ও ডোমেইন"].map((item) => (
+                <div key={item} className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 transition hover:bg-white/15">
+                  <span className="text-sm font-medium text-white">{item}</span>
                   <CheckCircle2 size={18} className="text-cyan-200" />
                 </div>
               ))}
             </div>
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3">
-            {["Fast Delivery","Responsive Design","SEO Friendly","Secure Setup"].map((item) => (
-              <div key={item} className="rounded-2xl border border-blue-300/15 bg-blue-500/10 p-4">
-                <span className="text-sm font-medium text-blue-100">{item}</span>
+            {["দ্রুত ডেলিভারি", "রেসপনসিভ ডিজাইন", "SEO ফ্রেন্ডলি", "সিকিউর সেটআপ"].map((item) => (
+              <div key={item} className="rounded-2xl border border-blue-100 bg-blue-50 p-4 transition hover:border-blue-200 hover:bg-blue-100/60">
+                <span className="text-sm font-medium text-blue-700">{item}</span>
               </div>
             ))}
           </div>

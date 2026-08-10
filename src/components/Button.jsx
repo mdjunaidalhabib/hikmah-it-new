@@ -10,17 +10,17 @@ export default function Button({
   ...rest
 }) {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-full border font-medium transition duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0";
+    "inline-flex items-center justify-center gap-2 rounded-full border font-medium transition duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0";
 
   const styles = {
     primary:
-      "border-blue-600 bg-blue-600 px-6 py-3 text-sm text-white shadow-lg shadow-blue-950/20 hover:bg-blue-700",
+      "border-blue-600 bg-gradient-to-b from-blue-500 to-blue-700 px-6 py-3 text-sm text-white shadow-lg shadow-blue-950/25 hover:shadow-xl hover:shadow-blue-600/30 hover:from-blue-500 hover:to-blue-600",
     small:
-      "border-blue-600 bg-blue-600 px-3.5 py-2 text-xs text-white shadow-md shadow-blue-950/20 hover:bg-blue-700",
+      "border-blue-600 bg-gradient-to-b from-blue-500 to-blue-700 px-3.5 py-2 text-xs text-white shadow-md shadow-blue-950/25 hover:shadow-lg hover:shadow-blue-600/30",
     ghost:
-      "border-white/20 bg-white/10 px-6 py-3 text-sm text-white hover:bg-white/15",
+      "border-white/20 bg-white/10 px-6 py-3 text-sm text-white backdrop-blur-sm hover:bg-white/15",
     "ghost-dark":
-      "border-slate-200 bg-white px-6 py-3 text-sm text-slate-900 hover:border-blue-200 hover:text-blue-700",
+      "border-slate-200 bg-white px-6 py-3 text-sm text-slate-900 shadow-sm hover:border-blue-300 hover:text-blue-700 hover:shadow-md",
   };
 
   const cls = `${base} ${styles[variant] || styles.primary} ${className}`;

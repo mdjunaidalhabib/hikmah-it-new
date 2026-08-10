@@ -39,31 +39,31 @@ export default function EarnPage() {
   return (
     <div className="min-h-screen bg-[#edf4ff]">
       <Seo
-        title="Earn Money with Hikmah IT"
-        description="Join Hikmah IT's referral and marketing partner program — refer clients and earn commission on every successful project."
+        title="Hikmah IT-এর সাথে আয় করুন"
+        description="Hikmah IT-এর রেফারেল ও মার্কেটিং পার্টনার প্রোগ্রামে যোগ দিন — ক্লায়েন্ট রেফার করুন এবং প্রতিটি সফল প্রজেক্টে কমিশন আয় করুন।"
       />
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_30%_0%,#1d4ed8_0%,transparent_55%),linear-gradient(160deg,#071028_0%,#0b1736_50%,#172554_100%)] py-10 text-white">
-        <div className="pointer-events-none absolute inset-0 opacity-10 [background-image:linear-gradient(rgba(255,255,255,.15)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.15)_1px,transparent_1px)] [background-size:48px_48px]" />
+      <section className="relative overflow-hidden bg-hero-light py-10">
+        <div className="absolute inset-0 opacity-70 bg-grid-overlay" />
 
         {/* floating glow blobs */}
-        <div className="pointer-events-none absolute left-1/4 top-0 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
-        <div className="pointer-events-none absolute right-10 top-10 h-48 w-48 rounded-full bg-indigo-400/15 blur-2xl" />
+        <div className="pointer-events-none absolute left-1/4 top-0 h-72 w-72 rounded-full bg-blue-400/15 blur-3xl" />
+        <div className="pointer-events-none absolute right-10 top-10 h-48 w-48 rounded-full bg-emerald-300/15 blur-2xl" />
 
         <div className="relative mx-auto w-[min(820px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-blue-500/20 px-4 py-1.5 text-sm font-semibold text-blue-200 backdrop-blur">
-            💰 Referral Partner Program
+          <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-semibold text-blue-700 backdrop-blur">
+            💰 রেফারেল পার্টনার প্রোগ্রাম
           </span>
 
-          <h1 className="mt-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="mt-6 text-3xl font-medium leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
             রেফার করুন,{" "}
-            <span className="bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
               আয় করুন
             </span>
           </h1>
 
-          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
+          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
             Hikmah IT-এর পার্টনার হয়ে প্রতিটি সফল ক্লায়েন্ট রেফারেলের জন্য আকর্ষণীয় কমিশন উপার্জন করুন — কোনো টেকনিক্যাল স্কিল ছাড়াই।
           </p>
 
@@ -72,7 +72,7 @@ export default function EarnPage() {
               <MessageCircle size={16} />
               এখনই যোগ দিন
             </Button>
-            <Button href="/contact" variant="ghost">
+            <Button href="/contact" variant="ghost-dark">
               আরও জানুন
               <ArrowRight size={16} />
             </Button>
@@ -81,13 +81,13 @@ export default function EarnPage() {
           {/* Quick stat strip */}
           <div className="mt-12 flex flex-wrap justify-center gap-6 sm:gap-10">
             {[
-              { value: "৳500+", label: "প্রতি রেফারেলে" },
-              { value: "৳20k+", label: "সর্বোচ্চ আয়" },
-              { value: "24h", label: "পেমেন্ট টাইম" },
+              { value: "৳৫০০+", label: "প্রতি রেফারেলে" },
+              { value: "৳২০k+", label: "সর্বোচ্চ আয়" },
+              { value: "২৪ ঘণ্টা", label: "পেমেন্ট টাইম" },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <p className="text-3xl font-black text-white">{s.value}</p>
-                <p className="mt-0.5 text-xs font-medium text-slate-400 uppercase tracking-widest">{s.label}</p>
+                <p className="text-2xl font-bold text-slate-900">{s.value}</p>
+                <p className="mt-0.5 text-xs font-medium text-slate-500 uppercase tracking-widest">{s.label}</p>
               </div>
             ))}
           </div>
@@ -101,7 +101,7 @@ export default function EarnPage() {
             <span className="inline-block rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-600">
               কেন আমাদের সাথে?
             </span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
               পার্টনারদের সুবিধাসমূহ
             </h2>
           </div>
@@ -112,7 +112,7 @@ export default function EarnPage() {
                 key={label}
                 className="flex flex-col items-center gap-3 rounded-2xl border border-blue-100 bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg"
               >
-                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-blue-600 to-slate-800 text-white shadow-md shadow-blue-900/20">
+                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-md shadow-blue-900/20">
                   <Icon size={20} />
                 </div>
                 <p className="text-sm font-semibold leading-tight text-slate-700">{label}</p>
@@ -127,9 +127,9 @@ export default function EarnPage() {
         <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
           <div className="mb-10 text-center">
             <span className="inline-block rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-600">
-              Partner Tiers
+              পার্টনার ক্যাটাগরি
             </span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
               আপনার পার্টনার ক্যাটাগরি বেছে নিন
             </h2>
             <p className="mx-auto mt-3 max-w-lg text-slate-500">
@@ -143,19 +143,19 @@ export default function EarnPage() {
                 key={role.role}
                 className={`relative overflow-hidden rounded-[2rem] border p-8 transition hover:-translate-y-1 hover:shadow-2xl ${
                   i === 1
-                    ? "border-blue-400 bg-gradient-to-b from-[#071028] to-[#0f2150] text-white shadow-xl shadow-blue-950/30"
+                    ? "border-blue-500 bg-gradient-to-b from-blue-600 to-indigo-700 text-white shadow-xl shadow-blue-900/20"
                     : "border-slate-200 bg-white shadow-lg"
                 }`}
               >
                 {i === 1 && (
                   <span className="absolute right-5 top-5 rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-slate-900">
-                    Most Popular
+                    সবচেয়ে জনপ্রিয়
                   </span>
                 )}
 
                 <div className="text-4xl">{role.icon}</div>
 
-                <h3 className={`mt-4 text-xl font-extrabold ${i === 1 ? "text-white" : "text-slate-900"}`}>
+                <h3 className={`mt-4 text-xl font-medium ${i === 1 ? "text-white" : "text-slate-900"}`}>
                   {role.role}
                 </h3>
 
@@ -195,7 +195,7 @@ export default function EarnPage() {
             <span className="inline-block rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-600">
               প্রক্রিয়া
             </span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
               কিভাবে আয় করবেন?
             </h2>
           </div>
@@ -211,7 +211,7 @@ export default function EarnPage() {
                   i % 2 === 0 ? "lg:mr-auto" : "lg:ml-auto"
                 }`}
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-slate-800 text-sm font-black text-white shadow-md shadow-blue-900/25">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-sm font-bold text-white shadow-md shadow-blue-900/20">
                   {step.number}
                 </div>
                 <div>
@@ -225,17 +225,17 @@ export default function EarnPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="bg-gradient-to-br from-[#071028] to-[#0b1736] py-16 text-white lg:py-20">
-        <div className="mx-auto w-[min(700px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-blue-300/25 bg-blue-500/15 px-4 py-1.5 text-sm font-semibold text-blue-200">
+      <section className="bg-white py-16 text-center lg:py-20">
+        <div className="mx-auto w-[min(700px,calc(100%-40px))]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-semibold text-blue-700">
             🚀 শুরু করুন আজই
           </span>
 
-          <h2 className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
             পার্টনার হিসেবে যোগ দিন
           </h2>
 
-          <p className="mt-4 text-lg text-slate-300">
+          <p className="mt-4 text-base text-slate-600">
             আজই আমাদের সাথে যোগ দিন এবং আপনার নেটওয়ার্ককে আয়ের সুযোগে পরিণত করুন।
           </p>
 
@@ -244,8 +244,8 @@ export default function EarnPage() {
               <MessageCircle size={16} />
               WhatsApp-এ যোগ দিন
             </Button>
-            <Button href="/contact" variant="ghost">
-              Contact করুন
+            <Button href="/contact" variant="ghost-dark">
+              যোগাযোগ করুন
               <ArrowRight size={16} />
             </Button>
           </div>
