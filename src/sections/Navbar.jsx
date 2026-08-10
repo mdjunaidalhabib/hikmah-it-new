@@ -53,7 +53,7 @@ export default function Navbar() {
   return (
     <>
       {/* ── Header bar ── */}
-      <header className="sticky top-0 z-50 bg-gradient-to-r from-blue-50 via-blue-100/90 to-blue-50 shadow-sm shadow-blue-950/10 backdrop-blur-xl border-b border-blue-200/80">
+      <header className="sticky top-0 z-50 bg-white shadow-sm shadow-blue-950/5 backdrop-blur-xl border-b border-slate-200">
         <div className="mx-auto flex h-[60px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-3">
           {/* Logo */}
           <Link to="/" className="shrink-0" aria-label="Hikmah IT হোম">
@@ -74,7 +74,7 @@ export default function Navbar() {
                         : "bg-gradient-to-b from-blue-600 to-blue-700 text-white shadow-sm shadow-blue-950/25"
                       : label === "আয় করুন"
                         ? "text-amber-600 hover:bg-amber-50 hover:text-amber-700"
-                        : "text-slate-600 hover:bg-blue-50/70 hover:text-blue-700"
+                        : "text-slate-900 hover:bg-blue-50 hover:text-blue-700"
                   }`
                 }
               >
@@ -98,7 +98,7 @@ export default function Navbar() {
                 <>
                   <Link
                     to="/login"
-                    className="shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                    className="shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
                   >
                     লগইন
                   </Link>
@@ -156,7 +156,7 @@ export default function Navbar() {
 
         {/* Nav links */}
         <nav className="flex-1 overflow-y-auto px-3 py-5">
-          <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
+          <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">
             নেভিগেশন
           </p>
 
@@ -177,7 +177,7 @@ export default function Navbar() {
                             : "bg-blue-50 text-blue-700"
                           : isEarn
                             ? "text-amber-600 hover:bg-amber-50 hover:text-amber-700"
-                            : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                            : "text-slate-900 hover:bg-slate-100"
                       }`
                     }
                   >
@@ -201,7 +201,7 @@ export default function Navbar() {
                                 : "bg-blue-100 text-blue-600"
                               : isEarn
                                 ? "bg-amber-50 text-amber-500 group-hover:bg-amber-100"
-                                : "bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-600"
+                                : "bg-slate-100 text-slate-600 group-hover:bg-slate-200 group-hover:text-slate-900"
                           }`}
                         >
                           <Icon size={15} />

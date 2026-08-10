@@ -2,11 +2,19 @@ import bcrypt from "bcryptjs";
 import AdminUser from "../models/AdminUser.js";
 
 export async function seedAdmin() {
-  const count = await AdminUser.countDocuments();
-  if (count > 0) return;
-
   const email = process.env.ADMIN_EMAIL;
   const password = process.env.ADMIN_PASSWORD;
+
+  const existing = await AdminUser.findOne();
+
+  if (existing) {
+    if (email && existing.email !== email.toLowerCase().trim()) {
+      existing.email = email.toLowerCase().trim();
+      await existing.save();
+      console.log(`[seedAdmin] Synced admin email from server/.env to ${existing.email}`);
+    }
+    return;
+  }
 
   if (!email || !password) {
     console.warn(
