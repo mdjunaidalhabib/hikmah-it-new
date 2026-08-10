@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 
 import adminAuthRouter from "./routes/adminAuth.js";
 import adminPackagesRouter from "./routes/adminPackages.js";
@@ -50,6 +53,16 @@ app.use("/api/admin/trash", requireAdminAuth, adminTrashRouter);
 
 app.use("/api/user", userAuthRouter);
 app.use("/api/public", publicRouter);
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const distDir = path.join(__dirname, "..", "..", "dist");
+
+if (fs.existsSync(distDir)) {
+  app.use(express.static(distDir));
+  app.get(/^(?!\/api\/).*/, (req, res) => {
+    res.sendFile(path.join(distDir, "index.html"));
+  });
+}
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
