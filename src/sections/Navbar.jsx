@@ -34,8 +34,8 @@ const iconMap = {
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-  const { settings } = useSiteSettings();
-  const { user } = useUserAuth();
+  const { settings, loading: settingsLoading } = useSiteSettings();
+  const { user, loading: userLoading } = useUserAuth();
 
   useEffect(() => {
     setOpen(false);
@@ -53,11 +53,14 @@ export default function Navbar() {
   return (
     <>
       {/* ── Header bar ── */}
-      <header className="sticky top-0 z-50 bg-white shadow-sm shadow-blue-950/5 backdrop-blur-xl border-b border-slate-200">
-        <div className="mx-auto flex h-[60px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-3">
+      <header className="sticky top-0 z-50 bg-brand-600 shadow-md shadow-brand-950/20">
+        <div className="mx-auto flex h-[84px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-3">
           {/* Logo */}
           <Link to="/" className="shrink-0" aria-label="Hikmah IT হোম">
-            <Logo src={settings?.logoUrl} />
+            <Logo
+              src={settings?.logoUrl}
+              className={`h-16 w-[206px] shrink-0 object-contain object-left sm:h-[70px] sm:w-[226px] lg:h-20 lg:w-[258px] ${settingsLoading ? "invisible" : ""}`}
+            />
           </Link>
 
           {/* Desktop nav */}
@@ -67,14 +70,14 @@ export default function Navbar() {
                 key={href}
                 to={href}
                 className={({ isActive }) =>
-                  `relative rounded-xl px-3.5 py-2 text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 ${
+                  `relative rounded-xl px-3.5 py-2 text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40 ${
                     isActive
                       ? label === "আয় করুন"
-                        ? "bg-gradient-to-b from-amber-400 to-amber-600 text-white shadow-sm shadow-amber-600/30"
-                        : "bg-gradient-to-b from-blue-600 to-blue-700 text-white shadow-sm shadow-blue-950/25"
+                        ? "bg-white text-amber-600 shadow-sm shadow-black/10"
+                        : "bg-white text-brand-700 shadow-sm shadow-black/10"
                       : label === "আয় করুন"
-                        ? "text-amber-600 hover:bg-amber-50 hover:text-amber-700"
-                        : "text-slate-900 hover:bg-blue-50 hover:text-blue-700"
+                        ? "text-amber-100 hover:bg-white/15 hover:text-white"
+                        : "text-white/90 hover:bg-white/15 hover:text-white"
                   }`
                 }
               >
@@ -85,11 +88,11 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
-            <div className="hidden items-center gap-1.5 lg:flex">
+            <div className={`hidden min-w-[190px] items-center justify-end gap-1.5 lg:flex ${userLoading ? "invisible" : ""}`}>
               {user ? (
                 <Link
                   to="/profile"
-                  className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-blue-200 bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+                  className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/25 bg-white/15 px-3.5 py-2 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25"
                 >
                   <UserRound size={15} />
                   {user.name?.split(" ")[0]}
@@ -98,18 +101,26 @@ export default function Navbar() {
                 <>
                   <Link
                     to="/login"
-                    className="shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+                    className="shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-white/90 transition hover:bg-white/15 hover:text-white"
                   >
                     লগইন
                   </Link>
-                  <Button href="/signup" variant="small" className="shrink-0 whitespace-nowrap">
+                  <Button
+                    href="/signup"
+                    variant="white"
+                    className="shrink-0 whitespace-nowrap"
+                  >
                     সাইন আপ
                   </Button>
                 </>
               )}
             </div>
 
-            <Button href="/contact" variant="small" className="shrink-0 whitespace-nowrap">
+            <Button
+              href="/contact"
+              variant="white"
+              className="shrink-0 whitespace-nowrap"
+            >
               ফ্রি জানুন
             </Button>
 
@@ -118,7 +129,7 @@ export default function Navbar() {
               type="button"
               onClick={() => setOpen(true)}
               aria-label="মেনু খুলুন"
-              className="relative grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-b from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-950/25 transition hover:shadow-xl hover:shadow-blue-600/30 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 lg:hidden"
+              className="relative grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-brand-700 shadow-md shadow-black/10 transition hover:bg-brand-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40 lg:hidden"
             >
               <Menu size={19} />
             </button>
@@ -130,25 +141,34 @@ export default function Navbar() {
       <div
         onClick={() => setOpen(false)}
         className={`fixed inset-0 z-[60] bg-slate-950/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          open
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
       />
 
       {/* ── Drawer (LEFT side) ── */}
       <aside
-        className={`fixed left-0 top-0 z-[70] flex h-full w-[82vw] max-w-[320px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] lg:hidden ${
+        className={`fixed left-0 top-0 z-[70] flex h-full w-[82vw] max-w-[320px] flex-col bg-brand-50 shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] lg:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Drawer header */}
-        <div className="flex items-center justify-between border-b border-slate-200/70 px-5 py-4">
-          <Link to="/" onClick={() => setOpen(false)} aria-label="Hikmah IT হোম">
-            <Logo src={settings?.logoUrl} />
+        <div className="flex items-center justify-between border-b border-brand-100 px-5 py-4">
+          <Link
+            to="/"
+            onClick={() => setOpen(false)}
+            aria-label="Hikmah IT হোম"
+          >
+            <Logo
+              src={settings?.logoUrl}
+              className={`h-14 w-[180px] shrink-0 object-contain object-left ${settingsLoading ? "invisible" : ""}`}
+            />
           </Link>
           <button
             onClick={() => setOpen(false)}
             aria-label="মেনু বন্ধ করুন"
-            className="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 transition hover:border-slate-300 hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50"
+            className="grid h-8 w-8 place-items-center rounded-lg border border-brand-200 bg-white text-slate-500 transition hover:border-brand-300 hover:bg-brand-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50"
           >
             <X size={16} />
           </button>
@@ -170,38 +190,27 @@ export default function Navbar() {
                     to={href}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 ${
+                      `group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 ${
                         isActive
                           ? isEarn
-                            ? "bg-amber-50 text-amber-700"
-                            : "bg-blue-50 text-blue-700"
+                            ? "bg-amber-500 text-white shadow-sm shadow-amber-950/20"
+                            : "bg-brand-600 text-white shadow-sm shadow-brand-950/20"
                           : isEarn
-                            ? "text-amber-600 hover:bg-amber-50 hover:text-amber-700"
-                            : "text-slate-900 hover:bg-slate-100"
+                            ? "text-amber-700 hover:bg-white/70 hover:text-amber-700"
+                            : "text-slate-900 hover:bg-white/70 hover:text-brand-700"
                       }`
                     }
                   >
                     {({ isActive }) => (
                       <>
-                        {/* Active left accent bar */}
-                        {isActive && (
-                          <span
-                            className={`absolute left-0 top-1/2 h-[55%] w-[3px] -translate-y-1/2 rounded-r-full ${
-                              isEarn ? "bg-amber-500" : "bg-blue-600"
-                            }`}
-                          />
-                        )}
-
                         {/* Icon box */}
                         <span
                           className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg transition ${
                             isActive
-                              ? isEarn
-                                ? "bg-amber-100 text-amber-600"
-                                : "bg-blue-100 text-blue-600"
+                              ? "bg-white/20 text-white"
                               : isEarn
-                                ? "bg-amber-50 text-amber-500 group-hover:bg-amber-100"
-                                : "bg-slate-100 text-slate-600 group-hover:bg-slate-200 group-hover:text-slate-900"
+                                ? "bg-white text-amber-500 group-hover:bg-amber-100"
+                                : "bg-white text-slate-600 group-hover:bg-brand-100 group-hover:text-brand-700"
                           }`}
                         >
                           <Icon size={15} />
@@ -209,8 +218,13 @@ export default function Navbar() {
 
                         <span className="flex-1">{label}</span>
 
-                        {isEarn && (
+                        {isEarn && !isActive && (
                           <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold tracking-wide text-amber-700">
+                            NEW
+                          </span>
+                        )}
+                        {isEarn && isActive && (
+                          <span className="rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-bold tracking-wide text-white">
                             NEW
                           </span>
                         )}
@@ -224,27 +238,41 @@ export default function Navbar() {
         </nav>
 
         {/* Drawer footer CTA */}
-        <div className="border-t border-slate-100 px-4 py-5">
+        <div className="border-t border-brand-100 px-4 py-5">
           <div className="mb-3">
             {user ? (
-              <Button href="/profile" variant="ghost-dark" className="w-full whitespace-nowrap" onClick={() => setOpen(false)}>
+              <Button
+                href="/profile"
+                variant="ghost-dark"
+                className="w-full whitespace-nowrap"
+                onClick={() => setOpen(false)}
+              >
                 <UserRound size={14} />
                 আমার প্রোফাইল
               </Button>
             ) : (
               <div className="grid grid-cols-2 gap-2">
-                <Button href="/login" variant="small" className="w-full !px-2 whitespace-nowrap" onClick={() => setOpen(false)}>
+                <Button
+                  href="/login"
+                  variant="small"
+                  className="w-full !px-2 whitespace-nowrap"
+                  onClick={() => setOpen(false)}
+                >
                   <LogIn size={14} />
                   লগইন
                 </Button>
-                <Button href="/signup" variant="small" className="w-full !px-2 whitespace-nowrap" onClick={() => setOpen(false)}>
+                <Button
+                  href="/signup"
+                  variant="small"
+                  className="w-full !px-2 whitespace-nowrap"
+                  onClick={() => setOpen(false)}
+                >
                   <UserPlus size={14} />
                   সাইন আপ
                 </Button>
               </div>
             )}
           </div>
-
         </div>
       </aside>
     </>

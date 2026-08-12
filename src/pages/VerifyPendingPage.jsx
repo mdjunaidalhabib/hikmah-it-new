@@ -5,7 +5,7 @@ import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { useUserAuth } from "../context/UserAuthContext";
 import { apiPost } from "../lib/api";
-import { inputClass } from "../admin/components/ui";
+import { inputClass } from "../components/formStyles";
 
 const RESEND_COOLDOWN = 60;
 
@@ -123,9 +123,9 @@ export default function VerifyPendingPage() {
   const bothVerified = user.emailVerified && user.mobileVerified;
 
   return (
-    <div className="grid min-h-screen place-items-center bg-[#edf4ff] px-4 py-12">
+    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
       <Seo title="অ্যাকাউন্ট ভেরিফিকেশন" description="আপনার ইমেইল ও মোবাইল নাম্বার ভেরিফাই করুন।" />
-      <div className="w-full max-w-md rounded-[2rem] border border-blue-100 bg-white p-8 shadow-xl">
+      <div className="w-full max-w-md rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
         <h1 className="text-center text-xl font-bold text-slate-900">অ্যাকাউন্ট ভেরিফিকেশন</h1>
         <p className="mt-1 text-center text-sm text-slate-500">
           {bothVerified ? "আপনার অ্যাকাউন্ট সম্পূর্ণভাবে ভেরিফাইড।" : "অর্ডার করতে হলে ইমেইল ও মোবাইল দুটোই ভেরিফাই করতে হবে।"}

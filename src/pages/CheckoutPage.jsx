@@ -10,7 +10,7 @@ import useSiteSettings from "../lib/useSiteSettings";
 import { useUserAuth } from "../context/UserAuthContext";
 
 const inputClass =
-  "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-3 focus:ring-blue-100";
+  "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100";
 const invalidInputClass =
   "mt-1 w-full rounded-xl border border-red-400 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-500 focus:ring-3 focus:ring-red-100";
 
@@ -110,10 +110,10 @@ export default function CheckoutPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#edf4ff] py-12 lg:py-16">
+      <div className="min-h-screen bg-brand-50 py-12 lg:py-16">
         <div className="mx-auto grid w-[min(1000px,calc(100%-40px))] gap-8 lg:grid-cols-[1fr_1.2fr]">
           <div className="grid gap-6">
-            <div className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-lg">
+            <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg">
               <Skeleton className="h-5 w-24" />
               <Skeleton className="mt-3 h-7 w-2/3" />
               <Skeleton className="mt-2 h-8 w-1/3" />
@@ -124,7 +124,7 @@ export default function CheckoutPage() {
               <Skeleton className="mt-2 h-14 w-full" />
             </div>
           </div>
-          <div className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-xl lg:p-8">
+          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8">
             <Skeleton className="h-6 w-40" />
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton key={i} className="mt-4 h-10 w-full" />
@@ -137,7 +137,7 @@ export default function CheckoutPage() {
 
   if (notFound) {
     return (
-      <div className="grid min-h-[60vh] place-items-center bg-[#edf4ff] px-6 text-center">
+      <div className="grid min-h-[60vh] place-items-center bg-brand-50 px-6 text-center">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">প্যাকেজটি খুঁজে পাওয়া যায়নি</h1>
           <p className="mt-2 text-slate-600">এই প্যাকেজটি হয়তো সরিয়ে নেওয়া হয়েছে।</p>
@@ -149,7 +149,7 @@ export default function CheckoutPage() {
 
   if (user && !(user.emailVerified && user.mobileVerified)) {
     return (
-      <div className="grid min-h-[60vh] place-items-center bg-[#edf4ff] px-6 text-center">
+      <div className="grid min-h-[60vh] place-items-center bg-brand-50 px-6 text-center">
         <div className="max-w-md rounded-[2rem] border border-amber-200 bg-white p-8 shadow-xl">
           <ShieldCheck className="mx-auto text-amber-500" size={48} />
           <h1 className="mt-4 text-2xl font-bold text-slate-900">অ্যাকাউন্ট ভেরিফিকেশন প্রয়োজন</h1>
@@ -164,7 +164,7 @@ export default function CheckoutPage() {
 
   if (submitted) {
     return (
-      <div className="grid min-h-[60vh] place-items-center bg-[#edf4ff] px-6 text-center">
+      <div className="grid min-h-[60vh] place-items-center bg-brand-50 px-6 text-center">
         <div className="max-w-md rounded-[2rem] border border-emerald-200 bg-white p-8 shadow-xl">
           <CheckCircle2 className="mx-auto text-emerald-500" size={48} />
           <h1 className="mt-4 text-2xl font-bold text-slate-900">অর্ডার সাবমিট হয়েছে!</h1>
@@ -178,15 +178,15 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#edf4ff] py-12 lg:py-16">
+    <div className="min-h-screen bg-brand-50 py-12 lg:py-16">
       <Seo title="চেকআউট" description="আপনার প্যাকেজের জন্য পেমেন্ট সম্পন্ন করুন।" />
       <div className="mx-auto grid w-[min(1000px,calc(100%-40px))] gap-8 lg:grid-cols-[1fr_1.2fr]">
         {/* Package summary + payment instructions */}
         <div className="grid gap-6">
-          <div className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-lg">
-            <span className="inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">{pkg.category}</span>
+          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg">
+            <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700">{pkg.category}</span>
             <h2 className="mt-3 text-2xl font-medium text-slate-900">{pkg.name}</h2>
-            <p className="mt-1 text-3xl font-bold text-blue-600">{formatPrice(pkg)}</p>
+            <p className="mt-1 text-3xl font-bold text-brand-600">{formatPrice(pkg)}</p>
             {pkg.text && <p className="mt-3 text-sm leading-6 text-slate-600">{pkg.text}</p>}
           </div>
 
@@ -239,7 +239,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Form */}
-        <form className="grid gap-4 rounded-[2rem] border border-blue-100 bg-white p-6 shadow-xl lg:p-8" onSubmit={handleSubmit} noValidate>
+        <form className="grid gap-4 rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8" onSubmit={handleSubmit} noValidate>
           <h3 className="text-xl font-bold text-slate-900">আপনার তথ্য দিন</h3>
 
           <label className="text-sm font-medium text-slate-700">
@@ -289,7 +289,7 @@ export default function CheckoutPage() {
           </Button>
 
           <p className="text-center text-xs text-slate-400">
-            কোনো সমস্যা হলে <Link to="/contact" className="text-blue-600 hover:underline">যোগাযোগ করুন</Link>
+            কোনো সমস্যা হলে <Link to="/contact" className="text-brand-600 hover:underline">যোগাযোগ করুন</Link>
           </p>
         </form>
       </div>

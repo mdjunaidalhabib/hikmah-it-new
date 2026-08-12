@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { apiPost } from "../lib/api";
-import { inputClass, labelClass } from "../admin/components/ui";
+import { inputClass, labelClass } from "../components/formStyles";
 
 export default function ForgotPasswordPage() {
   const navigate = useNavigate();
@@ -29,9 +29,9 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="grid min-h-screen place-items-center bg-[#edf4ff] px-4 py-12">
+    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
       <Seo title="পাসওয়ার্ড ভুলে গেছেন" description="আপনার Hikmah IT অ্যাকাউন্টের পাসওয়ার্ড রিসেট করুন।" />
-      <div className="w-full max-w-sm rounded-[2rem] border border-blue-100 bg-white p-8 shadow-xl">
+      <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
         <h1 className="text-center text-xl font-bold text-slate-900">পাসওয়ার্ড ভুলে গেছেন?</h1>
         <p className="mt-1 text-center text-sm text-slate-500">আপনার ইমেইলে একটি ভেরিফিকেশন কোড পাঠানো হবে।</p>
 
@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
           </form>
         )}
 
-        <Link to="/login" className="mt-4 block text-center text-sm font-medium text-blue-600 hover:text-blue-700">
+        <Link to="/login" className="mt-4 block text-center text-sm font-medium text-brand-600 hover:text-brand-700">
           লগইনে ফিরে যান
         </Link>
       </div>

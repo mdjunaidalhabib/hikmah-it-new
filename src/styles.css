@@ -6,20 +6,20 @@
 
 @layer base {
   body {
-    background-color: #edf4ff;
+    background-color: #fff8f4;
   }
 }
 
 @layer utilities {
   .bg-hero-light {
-    background-image: radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.12) 0%, transparent 32%),
+    background-image: radial-gradient(circle at 15% 10%, rgba(247, 86, 5, 0.12) 0%, transparent 32%),
       radial-gradient(circle at 90% 15%, rgba(245, 158, 11, 0.10) 0%, transparent 30%),
-      linear-gradient(160deg, #eff6ff 0%, #f8fafc 45%, #ecfdf5 100%);
+      linear-gradient(160deg, #fff5f0 0%, #f8fafc 45%, #fff7ed 100%);
   }
 
   .bg-grid-overlay {
-    background-image: linear-gradient(rgba(29, 78, 216, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(29, 78, 216, 0.08) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(247, 86, 5, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(247, 86, 5, 0.07) 1px, transparent 1px);
     background-size: 46px 46px;
   }
 }

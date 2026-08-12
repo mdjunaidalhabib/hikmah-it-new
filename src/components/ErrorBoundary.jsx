@@ -16,7 +16,7 @@ export default class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="grid min-h-[70vh] place-items-center bg-[#edf4ff] px-6 py-16 text-center">
+        <div className="grid min-h-[70vh] place-items-center bg-brand-50 px-6 py-16 text-center">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">কিছু একটা সমস্যা হয়েছে</h1>
             <p className="mt-3 max-w-md text-slate-600">

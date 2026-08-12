@@ -10,6 +10,21 @@ import { computeReorderChanges } from "../lib/reorder";
 
 const emptyFounder = { name: "", role: "", location: "", bio: "", skills: [], photoUrl: "", facebook: "", whatsapp: "" };
 
+function extractWhatsappNumber(value) {
+  if (!value) return "";
+  const match = value.match(/wa\.me\/(\d+)/);
+  return match ? match[1] : value.replace(/\D/g, "");
+}
+
+function toWhatsappLink(value) {
+  let digits = (value || "").replace(/\D/g, "");
+  if (!digits) return "";
+  if (!digits.startsWith("880")) {
+    digits = digits.startsWith("0") ? `88${digits}` : `880${digits}`;
+  }
+  return `https://wa.me/${digits}`;
+}
+
 function FounderViewField({ label, value }) {
   return (
     <div>
@@ -33,7 +48,7 @@ const emptyForm = {
 };
 
 function toFormState(partner, position) {
-  return { ...emptyForm, ...partner, skills: (partner.skills || []).join(", "), position };
+  return { ...emptyForm, ...partner, whatsapp: extractWhatsappNumber(partner.whatsapp), skills: (partner.skills || []).join(", "), position };
 }
 
 function toPayload(form) {
@@ -42,7 +57,7 @@ function toPayload(form) {
     role: form.role.trim(),
     referralCode: form.referralCode.trim().toUpperCase(),
     location: form.location.trim(),
-    whatsapp: form.whatsapp.trim(),
+    whatsapp: toWhatsappLink(form.whatsapp),
     facebook: form.facebook.trim(),
     skills: form.skills.split(",").map((s) => s.trim()).filter(Boolean),
     photoUrl: form.photoUrl.trim(),
@@ -87,7 +102,7 @@ export default function PartnersManager() {
   }, []);
 
   const openFounderEdit = () => {
-    setFounderForm({ ...emptyFounder, ...founder, skills: (founder.skills || []).join(", ") });
+    setFounderForm({ ...emptyFounder, ...founder, whatsapp: extractWhatsappNumber(founder.whatsapp), skills: (founder.skills || []).join(", ") });
     setFounderError("");
     setEditingFounder(true);
   };
@@ -138,6 +153,7 @@ export default function PartnersManager() {
       const payload = {
         founder: {
           ...founderForm,
+          whatsapp: toWhatsappLink(founderForm.whatsapp),
           skills: founderForm.skills.split(",").map((s) => s.trim()).filter(Boolean),
         },
       };
@@ -398,8 +414,8 @@ export default function PartnersManager() {
                 <input className={inputClass} name="location" value={form.location} onChange={handleChange} />
               </label>
               <label className={labelClass}>
-                WhatsApp Link
-                <input className={inputClass} name="whatsapp" value={form.whatsapp} onChange={handleChange} placeholder="https://wa.me/8801..." />
+                WhatsApp Number
+                <input className={inputClass} name="whatsapp" value={form.whatsapp} onChange={handleChange} placeholder="01XXXXXXXXX" inputMode="tel" />
               </label>
               <label className={labelClass}>
                 Facebook Link
@@ -490,8 +506,8 @@ export default function PartnersManager() {
                 <input className={inputClass} name="facebook" value={founderForm.facebook} onChange={handleFounderChange} />
               </label>
               <label className={labelClass}>
-                WhatsApp Link
-                <input className={inputClass} name="whatsapp" value={founderForm.whatsapp} onChange={handleFounderChange} placeholder="https://wa.me/8801..." />
+                WhatsApp Number
+                <input className={inputClass} name="whatsapp" value={founderForm.whatsapp} onChange={handleFounderChange} placeholder="01XXXXXXXXX" inputMode="tel" />
               </label>
             </div>
             <label className={labelClass}>

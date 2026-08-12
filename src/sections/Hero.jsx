@@ -8,7 +8,7 @@ export default function Hero() {
       <div className="absolute inset-0 opacity-70 bg-grid-overlay" />
       <div className="relative mx-auto grid w-[min(1180px,calc(100%-40px))] items-center gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12">
         <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 shadow-sm shadow-blue-900/5">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3.5 py-2 text-sm font-semibold text-brand-700 shadow-sm shadow-brand-900/5">
             <CheckCircle2 size={18} />
             প্রফেশনাল ওয়েবসাইট ও সফটওয়্যার এজেন্সি
           </span>
@@ -16,7 +16,7 @@ export default function Hero() {
             <span className="sm:block">মাদরাসা ম্যানেজমেন্ট সিস্টেম, </span>
             <span className="sm:block">ই-কমার্স ওয়েবসাইট, </span>
             <span className="sm:block">পোর্টফোলিও ও বিজনেস ওয়েবসাইট, </span>
-            <span className="sm:block bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">ডোমেইন ও হোস্টিং সার্ভিস।</span>
+            <span className="sm:block bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-transparent">ডোমেইন ও হোস্টিং সার্ভিস।</span>
           </h1>
           <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
             {brand.name} ব্যবসা ও প্রতিষ্ঠানকে আধুনিক ওয়েবসাইট, ই-কমার্স প্ল্যাটফর্ম, অ্যাডমিন ড্যাশবোর্ড, পোর্টফোলিও/ল্যান্ডিং পেজ, হোস্টিং-ডোমেইন সাপোর্ট এবং প্রিমিয়াম ইউআই সহ ডিজিটাল ম্যানেজমেন্ট সিস্টেম তৈরিতে সাহায্য করে।
@@ -40,12 +40,12 @@ export default function Hero() {
             ))}
           </div>
         </div>
-        <div className="hidden rounded-[2rem] border border-blue-100 bg-white/80 p-5 shadow-[0_30px_60px_-15px_rgba(29,78,216,0.25)] backdrop-blur-xl lg:block">
-          <div className="relative overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-6">
-            <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-cyan-300/20 blur-3xl" />
+        <div className="hidden rounded-[2rem] border border-brand-100 bg-white/80 p-5 shadow-[0_30px_60px_-15px_rgba(247,86,5,0.25)] backdrop-blur-xl lg:block">
+          <div className="relative overflow-hidden rounded-3xl border border-brand-100 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 p-6">
+            <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-amber-300/20 blur-3xl" />
             <div className="relative mb-6 flex items-center justify-between gap-3">
               <span className="rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold text-white ring-1 ring-white/20">লাইভ প্রজেক্ট প্রিভিউ</span>
-              <span className="text-sm text-blue-100">প্রিমিয়াম ইউআই</span>
+              <span className="text-sm text-brand-100">প্রিমিয়াম ইউআই</span>
             </div>
             <h3 className="relative max-w-sm text-lg font-medium leading-snug tracking-[-0.01em] text-white">
               গ্রোথের জন্য তৈরি আধুনিক ওয়েবসাইট, ই-কমার্স স্টোর ও ম্যানেজমেন্ট সিস্টেম।
@@ -54,15 +54,15 @@ export default function Hero() {
               {["মাদরাসা ম্যানেজমেন্ট", "ই-কমার্স স্টোর", "পোর্টফোলিও ও বিজনেস ওয়েবসাইট", "ল্যান্ডিং পেজ", "হোস্টিং ও ডোমেইন"].map((item) => (
                 <div key={item} className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 transition hover:bg-white/15">
                   <span className="text-sm font-medium text-white">{item}</span>
-                  <CheckCircle2 size={18} className="text-cyan-200" />
+                  <CheckCircle2 size={18} className="text-amber-200" />
                 </div>
               ))}
             </div>
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3">
             {["দ্রুত ডেলিভারি", "রেসপনসিভ ডিজাইন", "SEO ফ্রেন্ডলি", "সিকিউর সেটআপ"].map((item) => (
-              <div key={item} className="rounded-2xl border border-blue-100 bg-blue-50 p-4 transition hover:border-blue-200 hover:bg-blue-100/60">
-                <span className="text-sm font-medium text-blue-700">{item}</span>
+              <div key={item} className="rounded-2xl border border-brand-100 bg-brand-50 p-4 transition hover:border-brand-200 hover:bg-brand-100/60">
+                <span className="text-sm font-medium text-brand-700">{item}</span>
               </div>
             ))}
           </div>

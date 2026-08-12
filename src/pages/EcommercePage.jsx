@@ -19,7 +19,7 @@ export default function EcommercePage() {
   }, [])
 
   return (
-    <div className="bg-[#edf4ff] min-h-screen">
+    <div className="bg-brand-50 min-h-screen">
       <Seo
         title="অ্যাডমিন প্যানেল সহ ই-কমার্স ওয়েবসাইট"
         description="প্রোডাক্ট, অর্ডার, পেমেন্ট এবং ডেলিভারি ম্যানেজমেন্ট সহ সম্পূর্ণ ফিচারযুক্ত ই-কমার্স ওয়েবসাইট, ক্লিন ও শক্তিশালী অ্যাডমিন প্যানেলের মাধ্যমে।"
@@ -29,7 +29,7 @@ export default function EcommercePage() {
         <div className="absolute inset-0 opacity-70 bg-grid-overlay" />
         <div className="relative mx-auto grid w-[min(1180px,calc(100%-40px))] items-center gap-10 lg:grid-cols-[1.1fr_.9fr]">
           <div>
-            <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700">
+            <span className="inline-flex items-center rounded-full border border-brand-200 bg-brand-50 px-3.5 py-2 text-sm font-semibold text-brand-700">
               প্রধান সার্ভিস
             </span>
             <h1 className="mt-4 text-2xl font-medium leading-tight tracking-tight text-slate-950 sm:text-3xl lg:text-4xl">
@@ -43,11 +43,11 @@ export default function EcommercePage() {
               <Button href="/pricing" variant="ghost-dark">প্যাকেজ দেখুন</Button>
             </div>
           </div>
-          <div className="hidden rounded-[2rem] border border-blue-100 bg-white/80 p-5 shadow-2xl backdrop-blur-xl lg:block">
+          <div className="hidden rounded-[2rem] border border-brand-100 bg-white/80 p-5 shadow-2xl backdrop-blur-xl lg:block">
             <div className="grid gap-3">
               {["প্রোডাক্ট, ক্যাটাগরি ও স্টক ম্যানেজমেন্ট", "অর্ডার, পেমেন্ট ও ডেলিভারি স্ট্যাটাস", "কাস্টমার অ্যাকাউন্ট ও অর্ডার ট্র্যাকিং", "SEO-রেডি প্রোডাক্ট পেজ", "মোবাইল-ফ্রেন্ডলি শপিং এক্সপেরিয়েন্স"].map((item) => (
-                <div key={item} className="flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-medium text-slate-700">
-                  <span className="text-blue-600">✓</span> {item}
+                <div key={item} className="flex items-center gap-3 rounded-2xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm font-medium text-slate-700">
+                  <span className="text-brand-600">✓</span> {item}
                 </div>
               ))}
             </div>

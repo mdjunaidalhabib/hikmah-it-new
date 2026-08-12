@@ -20,6 +20,7 @@ import {
 import { useAdminAuth } from "../context/AdminAuthContext";
 import { ConfirmProvider } from "../context/ConfirmContext";
 import Logo from "../../components/Logo";
+import useSiteSettings from "../../lib/useSiteSettings";
 
 const navItems = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -38,6 +39,7 @@ const navItems = [
 
 export default function AdminLayout() {
   const { admin, logout } = useAdminAuth();
+  const { settings, loading: settingsLoading } = useSiteSettings();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -50,7 +52,10 @@ export default function AdminLayout() {
     <ConfirmProvider>
     <div className="min-h-screen bg-slate-50 text-slate-900 lg:flex">
       <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
-        <Logo />
+        <Logo
+          src={settings?.logoUrl}
+          className={`h-10 w-[129px] shrink-0 object-contain object-left sm:h-11 sm:w-[142px] lg:h-12 lg:w-[155px] ${settingsLoading ? "invisible" : ""}`}
+        />
         <button
           onClick={() => setOpen((v) => !v)}
           className="rounded-lg border border-slate-200 p-2 text-slate-600"
@@ -64,7 +69,10 @@ export default function AdminLayout() {
         className={`${open ? "block" : "hidden"} w-full border-b border-slate-200 bg-white lg:block lg:min-h-screen lg:w-64 lg:shrink-0 lg:border-b-0 lg:border-r`}
       >
         <div className="hidden items-center gap-2 border-b border-slate-100 px-5 py-5 lg:flex">
-          <Logo />
+          <Logo
+            src={settings?.logoUrl}
+            className={`h-10 w-[129px] shrink-0 object-contain object-left sm:h-11 sm:w-[142px] lg:h-12 lg:w-[155px] ${settingsLoading ? "invisible" : ""}`}
+          />
         </div>
 
         <nav className="space-y-1 p-3">

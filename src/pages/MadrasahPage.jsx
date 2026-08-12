@@ -20,7 +20,7 @@ export default function MadrasahPage() {
   }, [])
 
   return (
-    <div className="bg-[#edf4ff] min-h-screen">
+    <div className="bg-brand-50 min-h-screen">
       <Seo
         title="মাদরাসা ম্যানেজমেন্ট সিস্টেম"
         description="মাদরাসা, স্কুল বা একাডেমির জন্য সম্পূর্ণ ইনস্টিটিউশন ম্যানেজমেন্ট সফটওয়্যার — স্টুডেন্ট, টিচার, অ্যাকাউন্টিং, পরীক্ষা এবং পাবলিক ওয়েবসাইট মডিউল।"
@@ -39,13 +39,13 @@ export default function MadrasahPage() {
       {/* Dashboard Preview */}
       <section className="py-12 lg:py-16">
         <div className="mx-auto grid w-[min(1180px,calc(100%-40px))] gap-6 lg:grid-cols-2">
-          <div className="rounded-[2rem] border border-blue-100 bg-gradient-to-br from-white to-blue-50 p-6 shadow-2xl">
-            <div className="mb-5 rounded-3xl bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 p-5 text-center text-xl font-semibold text-white">
+          <div className="rounded-[2rem] border border-brand-100 bg-gradient-to-br from-white to-brand-50 p-6 shadow-2xl">
+            <div className="mb-5 rounded-3xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-600 p-5 text-center text-xl font-semibold text-white">
               মাদরাসা ম্যানেজমেন্ট ড্যাশবোর্ড
             </div>
             <div className="grid gap-3">
               {["স্টুডেন্ট", "টিচার", "অ্যাকাউন্টিং", "ফি", "রেজাল্ট", "ভর্তি", "পাবলিক ওয়েবসাইট"].map((item) => (
-                <div key={item} className="flex items-center justify-between rounded-2xl border border-blue-100 bg-white px-4 py-4">
+                <div key={item} className="flex items-center justify-between rounded-2xl border border-brand-100 bg-white px-4 py-4">
                   <span className="font-medium text-slate-700">{item}</span>
                   <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-600">সক্রিয়</span>
                 </div>
@@ -53,9 +53,9 @@ export default function MadrasahPage() {
             </div>
           </div>
 
-          <div className="flex flex-col justify-between rounded-[2rem] border border-blue-100 bg-white p-8 shadow-xl">
+          <div className="flex flex-col justify-between rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
             <div className="space-y-4">
-              <div className="rounded-2xl bg-gradient-to-r from-blue-50 to-emerald-50 p-5">
+              <div className="rounded-2xl bg-gradient-to-r from-brand-50 to-emerald-50 p-5">
                 <h3 className="text-lg font-bold text-slate-800">অল-ইন-ওয়ান কন্ট্রোল প্যানেল</h3>
                 <p className="mt-1 text-sm text-slate-600">সিস্টেম পরিবর্তন ছাড়াই আপনার সম্পূর্ণ প্রতিষ্ঠান পরিচালনা করুন</p>
               </div>

@@ -6,7 +6,7 @@ import Seo from '../components/Seo'
 import { brand } from '../data/siteData'
 import useSiteSettings from '../lib/useSiteSettings'
 
-const contactItem = "flex items-center gap-3 rounded-xl border border-blue-100 bg-white px-4 py-3 font-medium text-slate-700 shadow-md transition hover:border-blue-300 hover:text-blue-700"
+const contactItem = "flex items-center gap-3 rounded-xl border border-brand-100 bg-white px-4 py-3 font-medium text-slate-700 shadow-md transition hover:border-brand-300 hover:text-brand-700"
 
 export default function ContactPage() {
   const { settings } = useSiteSettings()
@@ -19,7 +19,7 @@ export default function ContactPage() {
   const whatsapp = settings?.whatsapp || brand.whatsapp
 
   return (
-    <div className="bg-[#edf4ff] min-h-screen">
+    <div className="bg-brand-50 min-h-screen">
       <Seo
         title="যোগাযোগ করুন"
         description="আপনার ওয়েবসাইট, ই-কমার্স বা মাদরাসা ম্যানেজমেন্ট প্রজেক্টের জন্য Hikmah IT-এর সাথে যোগাযোগ করুন। ফোন, ইমেইল বা WhatsApp-এর মাধ্যমে আমাদের কাছে পৌঁছান।"
@@ -41,7 +41,7 @@ export default function ContactPage() {
               <div className={contactItem}><MapPin size={18} /><span>{location}</span></div>
             </div>
 
-            <div className="mt-8 rounded-2xl border border-blue-100 bg-white p-6 shadow-lg">
+            <div className="mt-8 rounded-2xl border border-brand-100 bg-white p-6 shadow-lg">
               <h3 className="font-bold text-slate-900">রেসপন্স টাইম</h3>
               <p className="mt-2 text-slate-600">সাধারণত আমরা WhatsApp-এ কয়েক ঘণ্টার মধ্যে রিপ্লাই দিই। বিস্তারিত প্রজেক্ট আলোচনার জন্য ফোন বা ইমেইলে যোগাযোগ করুন।</p>
               <div className="mt-4">

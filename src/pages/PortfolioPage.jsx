@@ -4,6 +4,7 @@ import PageHero from "../components/PageHero";
 import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { Skeleton } from "../components/Skeleton";
+import FadeImage from "../components/FadeImage";
 import { apiGet } from "../lib/api";
 
 export default function PortfolioPage() {
@@ -17,7 +18,7 @@ export default function PortfolioPage() {
   }, []);
 
   return (
-    <div className="bg-[#edf4ff] min-h-screen">
+    <div className="bg-brand-50 min-h-screen">
       <Seo
         title="পোর্টফোলিও ও লাইভ প্রজেক্ট"
         description="Hikmah IT ক্লায়েন্টদের জন্য যেসব লাইভ ওয়েবসাইট তৈরি করেছে তা দেখুন — ই-কমার্স স্টোর, বিজনেস ওয়েবসাইট এবং ল্যান্ডিং পেজ।"
@@ -52,16 +53,14 @@ export default function PortfolioPage() {
                   href={item.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl"
+                  className="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl"
                 >
                   <div className="relative aspect-video overflow-hidden border-b border-slate-200 bg-slate-100">
                     {item.imageUrl && (
-                      <img
+                      <FadeImage
                         src={item.imageUrl}
                         alt={item.title}
-                        loading="lazy"
-                        decoding="async"
-                        className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                        className="absolute inset-0 h-full w-full object-cover group-hover:scale-105"
                       />
                     )}
                     <div className="absolute inset-0 grid place-items-center bg-slate-950/0 opacity-0 transition duration-300 group-hover:bg-slate-950/40 group-hover:opacity-100">
@@ -69,7 +68,7 @@ export default function PortfolioPage() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-blue-600">{item.category}</span>
+                    <span className="text-xs font-semibold uppercase tracking-wide text-brand-600">{item.category}</span>
                     <h3 className="mt-1 line-clamp-1 text-lg font-semibold text-slate-900">{item.title}</h3>
                   </div>
                 </a>

@@ -3,7 +3,7 @@ import { trustItems } from "../data/siteData";
 
 export default function Trust() {
   return (
-    <section className="bg-[#edf4ff] py-8 lg:py-12">
+    <section className="bg-brand-50 py-8 lg:py-12">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
           eyebrow="কেন আমাদের বেছে নেবেন"
@@ -15,9 +15,9 @@ export default function Trust() {
           {trustItems.map(({ icon: Icon, title }) => (
             <div
               key={title}
-              className="group flex items-center gap-4 rounded-3xl border border-slate-200 bg-white p-5 font-semibold text-slate-800 shadow-lg shadow-slate-950/5 transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"
+              className="group flex items-center gap-4 rounded-3xl border border-slate-200 bg-white p-5 font-semibold text-slate-800 shadow-lg shadow-slate-950/5 transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl"
             >
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-blue-50 text-blue-600 ring-4 ring-blue-50/50 transition duration-300 group-hover:bg-blue-600 group-hover:text-white">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-50 text-brand-600 ring-4 ring-brand-50/50 transition duration-300 group-hover:bg-brand-600 group-hover:text-white">
                 <Icon size={22} />
               </span>
               <span>{title}</span>

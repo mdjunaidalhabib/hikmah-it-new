@@ -7,7 +7,7 @@ export default function RequireUserAuth({ children }) {
 
   if (loading) {
     return (
-      <div className="grid min-h-screen place-items-center bg-[#edf4ff] text-sm font-medium text-slate-400">
+      <div className="grid min-h-screen place-items-center bg-brand-50 text-sm font-medium text-slate-400">
         লোড হচ্ছে…
       </div>
     );

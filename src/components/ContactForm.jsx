@@ -6,7 +6,7 @@ import { brand } from "../data/siteData";
 import { apiPost } from "../lib/api";
 
 const inputClass =
-  "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-3 focus:ring-blue-100 focus-visible:ring-3";
+  "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100 focus-visible:ring-3";
 const invalidInputClass =
   "mt-1 w-full rounded-xl border border-red-400 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-500 focus:ring-3 focus:ring-red-100";
 
@@ -83,7 +83,7 @@ export default function ContactForm({ className = "" }) {
 
   return (
     <form
-      className={`grid gap-3 rounded-2xl border border-blue-100 bg-white p-6 shadow-xl ${className}`}
+      className={`grid gap-3 rounded-2xl border border-brand-100 bg-white p-6 shadow-xl ${className}`}
       onSubmit={handleSubmit}
       noValidate
     >

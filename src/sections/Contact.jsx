@@ -4,11 +4,11 @@ import ContactForm from "../components/ContactForm";
 import { brand } from "../data/siteData";
 
 const contactItem =
-  "group flex items-center gap-3 rounded-xl border border-blue-100 bg-white px-4 py-3 font-medium text-slate-700 shadow-md transition duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-700 hover:shadow-lg";
+  "group flex items-center gap-3 rounded-xl border border-brand-100 bg-white px-4 py-3 font-medium text-slate-700 shadow-md transition duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 hover:shadow-lg";
 
 export default function Contact() {
   return (
-    <section className="bg-[#edf4ff] py-8 text-slate-950 lg:py-12" id="contact">
+    <section className="bg-brand-50 py-8 text-slate-950 lg:py-12" id="contact">
       <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
         <SectionHeader
           align="center"
@@ -47,8 +47,8 @@ export default function Contact() {
             </div>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <div className="flex items-center gap-3 rounded-xl bg-blue-50/70 px-4 py-3 text-sm font-medium text-blue-800">
-                <Clock3 size={18} className="shrink-0 text-blue-600" />
+              <div className="flex items-center gap-3 rounded-xl bg-brand-50/70 px-4 py-3 text-sm font-medium text-brand-800">
+                <Clock3 size={18} className="shrink-0 text-brand-600" />
                 <span>সাধারণত ২৪ ঘণ্টার মধ্যে রিপ্লাই</span>
               </div>
               <div className="flex items-center gap-3 rounded-xl bg-emerald-50/70 px-4 py-3 text-sm font-medium text-emerald-800">

@@ -37,7 +37,7 @@ const perks = [
 
 export default function EarnPage() {
   return (
-    <div className="min-h-screen bg-[#edf4ff]">
+    <div className="min-h-screen bg-brand-50">
       <Seo
         title="Hikmah IT-এর সাথে আয় করুন"
         description="Hikmah IT-এর রেফারেল ও মার্কেটিং পার্টনার প্রোগ্রামে যোগ দিন — ক্লায়েন্ট রেফার করুন এবং প্রতিটি সফল প্রজেক্টে কমিশন আয় করুন।"
@@ -48,17 +48,17 @@ export default function EarnPage() {
         <div className="absolute inset-0 opacity-70 bg-grid-overlay" />
 
         {/* floating glow blobs */}
-        <div className="pointer-events-none absolute left-1/4 top-0 h-72 w-72 rounded-full bg-blue-400/15 blur-3xl" />
+        <div className="pointer-events-none absolute left-1/4 top-0 h-72 w-72 rounded-full bg-brand-400/15 blur-3xl" />
         <div className="pointer-events-none absolute right-10 top-10 h-48 w-48 rounded-full bg-emerald-300/15 blur-2xl" />
 
         <div className="relative mx-auto w-[min(820px,calc(100%-40px))] text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-semibold text-blue-700 backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700 backdrop-blur">
             💰 রেফারেল পার্টনার প্রোগ্রাম
           </span>
 
           <h1 className="mt-6 text-3xl font-medium leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
             রেফার করুন,{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-600 to-emerald-500 bg-clip-text text-transparent">
               আয় করুন
             </span>
           </h1>
@@ -98,7 +98,7 @@ export default function EarnPage() {
       <section className="py-14 lg:py-20">
         <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
           <div className="mb-10 text-center">
-            <span className="inline-block rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-600">
+            <span className="inline-block rounded-full border border-brand-200 bg-brand-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-brand-600">
               কেন আমাদের সাথে?
             </span>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
@@ -110,9 +110,9 @@ export default function EarnPage() {
             {perks.map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex flex-col items-center gap-3 rounded-2xl border border-blue-100 bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg"
+                className="flex flex-col items-center gap-3 rounded-2xl border border-brand-100 bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg"
               >
-                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-md shadow-blue-900/20">
+                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-700 text-white shadow-md shadow-brand-900/20">
                   <Icon size={20} />
                 </div>
                 <p className="text-sm font-semibold leading-tight text-slate-700">{label}</p>
@@ -126,7 +126,7 @@ export default function EarnPage() {
       <section className="bg-white py-14 lg:py-20">
         <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
           <div className="mb-10 text-center">
-            <span className="inline-block rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-600">
+            <span className="inline-block rounded-full border border-brand-200 bg-brand-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-brand-600">
               পার্টনার ক্যাটাগরি
             </span>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
@@ -143,7 +143,7 @@ export default function EarnPage() {
                 key={role.role}
                 className={`relative overflow-hidden rounded-[2rem] border p-8 transition hover:-translate-y-1 hover:shadow-2xl ${
                   i === 1
-                    ? "border-blue-500 bg-gradient-to-b from-blue-600 to-indigo-700 text-white shadow-xl shadow-blue-900/20"
+                    ? "border-brand-500 bg-gradient-to-b from-brand-600 to-brand-700 text-white shadow-xl shadow-brand-900/20"
                     : "border-slate-200 bg-white shadow-lg"
                 }`}
               >
@@ -165,10 +165,10 @@ export default function EarnPage() {
 
                 <div
                   className={`mt-6 rounded-xl border px-4 py-3 ${
-                    i === 1 ? "border-blue-400/40 bg-blue-500/25" : "border-blue-100 bg-blue-50"
+                    i === 1 ? "border-brand-400/40 bg-brand-500/25" : "border-brand-100 bg-brand-50"
                   }`}
                 >
-                  <p className={`text-sm font-bold ${i === 1 ? "text-blue-200" : "text-blue-700"}`}>
+                  <p className={`text-sm font-bold ${i === 1 ? "text-brand-200" : "text-brand-700"}`}>
                     💰 {role.earn}
                   </p>
                 </div>
@@ -192,7 +192,7 @@ export default function EarnPage() {
       <section className="py-14 lg:py-20">
         <div className="mx-auto w-[min(900px,calc(100%-40px))]">
           <div className="mb-10 text-center">
-            <span className="inline-block rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-600">
+            <span className="inline-block rounded-full border border-brand-200 bg-brand-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-brand-600">
               প্রক্রিয়া
             </span>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
@@ -202,16 +202,16 @@ export default function EarnPage() {
 
           <div className="relative space-y-4">
             {/* vertical line */}
-            <div className="absolute left-[28px] top-10 h-[calc(100%-80px)] w-px bg-blue-200 lg:left-1/2 lg:-translate-x-px hidden sm:block" />
+            <div className="absolute left-[28px] top-10 h-[calc(100%-80px)] w-px bg-brand-200 lg:left-1/2 lg:-translate-x-px hidden sm:block" />
 
             {steps.map((step, i) => (
               <div
                 key={step.number}
-                className={`relative flex gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-blue-200 hover:shadow-md lg:w-[calc(50%-28px)] ${
+                className={`relative flex gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-brand-200 hover:shadow-md lg:w-[calc(50%-28px)] ${
                   i % 2 === 0 ? "lg:mr-auto" : "lg:ml-auto"
                 }`}
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-sm font-bold text-white shadow-md shadow-blue-900/20">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-600 to-brand-700 text-sm font-bold text-white shadow-md shadow-brand-900/20">
                   {step.number}
                 </div>
                 <div>
@@ -227,7 +227,7 @@ export default function EarnPage() {
       {/* ── CTA ── */}
       <section className="bg-white py-16 text-center lg:py-20">
         <div className="mx-auto w-[min(700px,calc(100%-40px))]">
-          <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-semibold text-blue-700">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700">
             🚀 শুরু করুন আজই
           </span>
 

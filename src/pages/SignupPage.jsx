@@ -7,7 +7,7 @@ import Button from "../components/Button";
 import PasswordInput from "../components/PasswordInput";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import { useUserAuth } from "../context/UserAuthContext";
-import { inputClass, labelClass } from "../admin/components/ui";
+import { inputClass, labelClass } from "../components/formStyles";
 
 const emptyForm = { name: "", mobile: "", email: "", password: "", confirmPassword: "" };
 
@@ -54,9 +54,9 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="grid min-h-screen place-items-center bg-[#edf4ff] px-4 py-12">
+    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
       <Seo title="সাইন আপ" description="Hikmah IT-তে নতুন অ্যাকাউন্ট তৈরি করুন।" />
-      <div className="w-full max-w-sm rounded-[2rem] border border-blue-100 bg-white p-8 shadow-xl">
+      <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
         <h1 className="text-center text-xl font-bold text-slate-900">অ্যাকাউন্ট তৈরি করুন</h1>
         <p className="mt-1 text-center text-sm text-slate-500">অর্ডার ও রেফারেল ইনকাম ট্র্যাক করতে সাইন আপ করুন</p>
 
@@ -101,7 +101,7 @@ export default function SignupPage() {
 
         <p className="mt-4 text-center text-sm text-slate-500">
           আগে থেকেই অ্যাকাউন্ট আছে?{" "}
-          <Link to="/login" className="font-medium text-blue-600 hover:text-blue-700">
+          <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700">
             লগইন করুন
           </Link>
         </p>

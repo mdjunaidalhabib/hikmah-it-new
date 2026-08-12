@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Upload, Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { Upload, Plus, Pencil, Trash2, Eye, EyeOff, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { apiGet, apiPut, apiUpload } from "../../lib/api";
+import { apiGet, apiPut, apiUpload, apiDeleteUpload } from "../../lib/api";
 import { AdminCard, EmptyState, Modal, inputClass, labelClass } from "../components/ui";
 import { Skeleton } from "../../components/Skeleton";
 import Button from "../../components/Button";
@@ -250,6 +250,23 @@ export default function SiteSettingsPage() {
     }
   };
 
+  const handleLogoRemove = async () => {
+    if (!form.logoUrl) return;
+    const ok = await confirm({ title: "লোগো ডিলিট করবেন?", message: "Cloudinary থেকেও লোগোটি স্থায়ীভাবে মুছে যাবে।", confirmLabel: "ডিলিট করুন" });
+    if (!ok) return;
+    setUploading(true);
+    try {
+      await apiDeleteUpload(form.logoUrl);
+      const data = await apiPut("/admin/settings", { logoUrl: "" });
+      applySettings(data);
+      toast.success("Logo removed");
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   // ── Section visibility (saves immediately per toggle) ──
   const handleVisibilityToggle = async (key, checked) => {
     setSavingVisibility(key);
@@ -342,13 +359,28 @@ export default function SiteSettingsPage() {
 
       <AdminCard title="Logo">
         <div className="flex items-center gap-4">
-          {form.logoUrl && <img src={form.logoUrl} alt="Logo" className="h-12 w-auto rounded-lg border border-slate-200 bg-slate-50 object-contain px-2" />}
-          <div>
-            <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600">
+          {form.logoUrl ? (
+            <>
+              <div className="relative">
+                <img src={form.logoUrl} alt="Logo" className="h-12 w-auto rounded-lg border border-slate-200 bg-slate-50 object-contain px-2" />
+                <button
+                  type="button"
+                  onClick={handleLogoRemove}
+                  disabled={uploading}
+                  className="absolute -right-2 -top-2 rounded-full bg-red-600 p-1 text-white shadow hover:bg-red-700 disabled:opacity-50"
+                  aria-label="Remove logo"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+              {uploading && <span className="text-sm text-slate-400">Uploading…</span>}
+            </>
+          ) : (
+            <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 disabled:opacity-50">
               <Upload size={14} /> {uploading ? "Uploading…" : "Upload Logo"}
             </button>
-            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
-          </div>
+          )}
+          <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
         </div>
       </AdminCard>
 

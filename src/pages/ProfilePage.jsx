@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { Skeleton, SkeletonRow } from "../components/Skeleton";
+import Avatar from "../components/Avatar";
 import { StatusBadge } from "../admin/components/ui";
 import { useUserAuth } from "../context/UserAuthContext";
 import { apiGet } from "../lib/api";
@@ -43,15 +44,13 @@ export default function ProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[#edf4ff] py-12 lg:py-16">
+    <div className="min-h-screen bg-brand-50 py-12 lg:py-16">
       <Seo title="আমার প্রোফাইল" description="আপনার অর্ডার ও রেফারেল ইনকাম দেখুন।" />
       <div className="mx-auto grid w-[min(1000px,calc(100%-40px))] gap-8 lg:grid-cols-[1fr_1.4fr]">
         {/* Profile summary */}
         <div className="grid gap-6">
-          <div className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-lg">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-2xl font-bold text-white">
-              {user.name?.[0]?.toUpperCase()}
-            </div>
+          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg">
+            <Avatar name={user.name} photo={user.photoUrl} size="h-16 w-16" iconSize={26} />
             <h1 className="mt-4 text-xl font-bold text-slate-900">{user.name}</h1>
 
             <div className="mt-4 grid gap-2 text-sm">
@@ -128,7 +127,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Orders */}
-        <div className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-xl lg:p-8">
+        <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8">
           <div className="flex items-center gap-2 text-slate-900">
             <Wallet size={18} />
             <h2 className="text-lg font-bold">আমার অর্ডার</h2>

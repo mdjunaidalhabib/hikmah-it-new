@@ -4,42 +4,16 @@ import SectionHeader from "../components/SectionHeader";
 import PageHero from "../components/PageHero";
 import Seo from "../components/Seo";
 import Button from "../components/Button";
-import { SkeletonCard } from "../components/Skeleton";
+import { Skeleton, SkeletonCard } from "../components/Skeleton";
+import Avatar from "../components/Avatar";
 import { joinRoles, brand } from "../data/siteData";
 import { apiGet } from "../lib/api";
 import useSiteSettings from "../lib/useSiteSettings";
 
-function Avatar({ name, photo, size = "h-24 w-24", textSize = "text-2xl" }) {
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-
-  if (photo) {
-    return (
-      <img
-        src={photo}
-        alt={name}
-        className={`mx-auto ${size} rounded-full object-cover border-4 border-white shadow-lg shadow-blue-900/10`}
-      />
-    );
-  }
-
-  return (
-    <div
-      className={`mx-auto flex ${size} items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 ${textSize} font-bold text-white shadow-lg shadow-blue-900/20`}
-    >
-      {initials}
-    </div>
-  );
-}
-
 export default function TeamPage() {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { settings } = useSiteSettings();
+  const { settings, loading: settingsLoading } = useSiteSettings();
   const founder = settings?.founder;
 
   useEffect(() => {
@@ -49,7 +23,7 @@ export default function TeamPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#edf4ff]">
+    <div className="min-h-screen bg-brand-50">
       <Seo
         title="আমাদের টিম ও রেফারেল পার্টনার"
         description="Hikmah IT-এর টিম এবং মার্কেটিং/রেফারেল পার্টনারদের সাথে পরিচিত হন যারা ব্যবসাকে আমাদের ওয়েব ডেভেলপমেন্ট ও সফটওয়্যার সার্ভিস সম্পর্কে জানাতে সাহায্য করেন।"
@@ -61,12 +35,35 @@ export default function TeamPage() {
       />
 
       {/* Owner */}
-      {founder?.name && (
+      {settingsLoading ? (
         <section className="py-12 lg:py-16">
           <div className="mx-auto w-[min(900px,calc(100%-40px))]">
-            <div className="rounded-[2rem] border border-blue-200 bg-white p-8 shadow-2xl shadow-blue-950/10">
+            <div className="rounded-[2rem] border border-brand-200 bg-white p-8 shadow-2xl shadow-brand-950/10">
               <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-                <Avatar name={founder.name} photo={founder.photoUrl} size="h-28 w-28" textSize="text-3xl" />
+                <Skeleton className="h-28 w-28 shrink-0 rounded-full" />
+                <div className="w-full text-center sm:text-left">
+                  <Skeleton className="mx-auto h-6 w-24 rounded-full sm:mx-0" />
+                  <Skeleton className="mx-auto mt-3 h-7 w-48 sm:mx-0" />
+                  <Skeleton className="mx-auto mt-2 h-4 w-32 sm:mx-0" />
+                  <Skeleton className="mt-4 h-4 w-full" />
+                  <Skeleton className="mt-2 h-4 w-5/6" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : founder?.name ? (
+        <section className="py-12 lg:py-16">
+          <div className="mx-auto w-[min(900px,calc(100%-40px))]">
+            <div className="rounded-[2rem] border border-brand-200 bg-white p-8 shadow-2xl shadow-brand-950/10">
+              <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+                <Avatar
+                  name={founder.name}
+                  photo={founder.photoUrl}
+                  size="h-28 w-28"
+                  iconSize={32}
+                  className="border-4 border-white shadow-lg shadow-brand-900/10"
+                />
 
                 <div className="text-center sm:text-left">
                   <span className="inline-block rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-slate-900">
@@ -84,7 +81,7 @@ export default function TeamPage() {
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {(founder.skills || []).map((skill) => (
-                      <span key={skill} className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                      <span key={skill} className="rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
                         {skill}
                       </span>
                     ))}
@@ -106,7 +103,7 @@ export default function TeamPage() {
             </div>
           </div>
         </section>
-      )}
+      ) : null}
 
       {/* Marketing Partners */}
       <section className="pb-12 lg:pb-16">
@@ -132,11 +129,15 @@ export default function TeamPage() {
                   key={member._id}
                   className="rounded-[2rem] border border-slate-200 bg-white p-6 text-center shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
                 >
-                  <Avatar name={member.name} photo={member.photoUrl} />
+                  <Avatar
+                    name={member.name}
+                    photo={member.photoUrl}
+                    className="mx-auto border-4 border-white shadow-lg shadow-brand-900/10"
+                  />
 
                   <h3 className="mt-4 text-xl font-bold text-slate-900">{member.name}</h3>
 
-                  <p className="mt-1 text-sm font-semibold text-blue-600">{member.role}</p>
+                  <p className="mt-1 text-sm font-semibold text-brand-600">{member.role}</p>
 
                   {member.location && (
                     <p className="mt-1 flex items-center justify-center gap-1 text-xs text-slate-500">
@@ -148,7 +149,7 @@ export default function TeamPage() {
                   {member.skills?.length > 0 && (
                     <div className="mt-3 flex flex-wrap justify-center gap-2">
                       {member.skills.map((skill) => (
-                        <span key={skill} className="rounded-full border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
+                        <span key={skill} className="rounded-full border border-brand-100 bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700">
                           {skill}
                         </span>
                       ))}
@@ -168,7 +169,7 @@ export default function TeamPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${member.name}-এর ফেসবুক প্রোফাইল`}
-                        className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-blue-300 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50"
+                        className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-brand-300 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50"
                       >
                         <ExternalLink size={16} />
                       </a>
@@ -197,7 +198,7 @@ export default function TeamPage() {
       <section className="bg-white py-12 lg:py-16">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <div className="mb-10 text-center">
-            <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700">
+            <span className="inline-flex items-center rounded-full border border-brand-200 bg-brand-50 px-3.5 py-2 text-sm font-semibold text-brand-700">
               পার্টনার প্রোগ্রাম
             </span>
 
@@ -210,14 +211,14 @@ export default function TeamPage() {
 
           <div className="grid gap-5 md:grid-cols-3">
             {joinRoles.map((role) => (
-              <article key={role.role} className="rounded-[2rem] border border-blue-100 bg-blue-50/50 p-7 transition hover:bg-blue-50">
+              <article key={role.role} className="rounded-[2rem] border border-brand-100 bg-brand-50/50 p-7 transition hover:bg-brand-50">
                 <div className="text-4xl">{role.icon}</div>
 
                 <h3 className="mt-4 text-xl font-bold text-slate-900">{role.role}</h3>
 
                 <p className="mt-3 text-slate-600">{role.desc}</p>
 
-                <div className="mt-5 rounded-xl border border-blue-200 bg-white px-4 py-3 text-blue-700">
+                <div className="mt-5 rounded-xl border border-brand-200 bg-white px-4 py-3 text-brand-700">
                   💰 কমিশন সুযোগ: {role.earn}
                 </div>
               </article>

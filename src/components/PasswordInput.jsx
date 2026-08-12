@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { inputClass } from "../admin/components/ui";
+import { inputClass } from "./formStyles";
 
 export default function PasswordInput({ className = "", ...props }) {
   const [visible, setVisible] = useState(false);

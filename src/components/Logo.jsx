@@ -1,8 +1,10 @@
-export default function Logo({ src }) {
+export default function Logo({ src, className }) {
   return (
     <img
-      className="h-10 w-[160px] shrink-0 object-contain object-left sm:h-11 sm:w-[175px] lg:h-12 lg:w-[185px]"
+      className={className || "h-10 w-auto shrink-0 object-contain object-left sm:h-11 lg:h-12"}
       src={src || "/hikmah-it-navbar-logo.svg"}
+      width={155}
+      height={48}
       alt="Hikmah IT"
     />
   )

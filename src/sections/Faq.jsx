@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 
 export default function Faq() {
   return (
-    <section className="bg-[#edf4ff] py-8 lg:py-12" id="faq">
+    <section className="bg-brand-50 py-8 lg:py-12" id="faq">
       <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
         <SectionHeader
           eyebrow="FAQ"
@@ -17,12 +17,12 @@ export default function Faq() {
           {faq.map((item) => (
             <details
               key={item.q}
-              className="group mb-4 break-inside-avoid rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-950/5 transition duration-300 hover:border-blue-200 hover:shadow-xl group-open:border-blue-200"
+              className="group mb-4 break-inside-avoid rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-950/5 transition duration-300 hover:border-brand-200 hover:shadow-xl group-open:border-brand-200"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold tracking-tight text-slate-950 marker:content-none">
                 <span className="pr-3">{item.q}</span>
 
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-500 transition duration-300 group-open:rotate-180 group-open:bg-blue-100 group-open:text-blue-600">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-500 transition duration-300 group-open:rotate-180 group-open:bg-brand-100 group-open:text-brand-600">
                   <ChevronDown size={17} />
                 </span>
               </summary>

@@ -23,7 +23,7 @@ export default function PricingPage() {
   }, {});
 
   return (
-    <div className="bg-[#edf4ff] min-h-screen">
+    <div className="bg-brand-50 min-h-screen">
       <Seo
         title="প্যাকেজ ও মূল্য"
         description="বাংলাদেশে ওয়েবসাইট, ই-কমার্স স্টোর, মাদরাসা ম্যানেজমেন্ট সিস্টেম এবং ডোমেইন/হোস্টিং সাপোর্টের জন্য সাশ্রয়ী মূল্য।"

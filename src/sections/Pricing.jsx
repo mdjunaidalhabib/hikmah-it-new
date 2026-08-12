@@ -22,8 +22,8 @@ export default function Pricing() {
   if (!loading && packages.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden bg-[#edf4ff] py-8 lg:py-12" id="pricing">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-80 w-[36rem] -translate-x-1/2 rounded-full bg-blue-400/10 blur-3xl" />
+    <section className="relative overflow-hidden bg-brand-50 py-8 lg:py-12" id="pricing">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-80 w-[36rem] -translate-x-1/2 rounded-full bg-brand-400/10 blur-3xl" />
       <div className="relative mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
           eyebrow="প্যাকেজ"

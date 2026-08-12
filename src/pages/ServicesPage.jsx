@@ -21,7 +21,7 @@ export default function ServicesPage() {
   }, []);
 
   return (
-    <div className="bg-[#edf4ff] min-h-screen">
+    <div className="bg-brand-50 min-h-screen">
       <Seo
         title="আমাদের সার্ভিস"
         description="Hikmah IT-এর সার্ভিস দেখুন: ই-কমার্স ওয়েবসাইট, মাদরাসা ম্যানেজমেন্ট সিস্টেম, বিজনেস ওয়েবসাইট, পোর্টফোলিও সাইট, ল্যান্ডিং পেজ এবং হোস্টিং/ডোমেইন সাপোর্ট।"
@@ -70,8 +70,8 @@ export default function ServicesPage() {
           <SectionHeader eyebrow="কাজের প্রক্রিয়া" title="সহজ, স্পষ্ট ও প্রজেক্ট-ফোকাসড ওয়ার্কফ্লো" />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {workProcess.map((item) => (
-              <article key={item.step} className="rounded-3xl border border-slate-200 bg-[#edf4ff] p-6 shadow-lg shadow-slate-950/5 transition hover:shadow-xl">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-600 font-bold text-white">{item.step}</span>
+              <article key={item.step} className="rounded-3xl border border-slate-200 bg-brand-50 p-6 shadow-lg shadow-slate-950/5 transition hover:shadow-xl">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-600 font-bold text-white">{item.step}</span>
                 <h3 className="mt-5 text-xl font-semibold text-slate-900">{item.title}</h3>
                 <p className="mt-2 leading-7 text-slate-600">{item.text}</p>
               </article>
