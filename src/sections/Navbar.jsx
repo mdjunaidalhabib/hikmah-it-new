@@ -174,7 +174,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Nav links */}
+        {/* Nav links*/}
         <nav className="flex-1 overflow-y-auto px-3 py-5">
           <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">
             নেভিগেশন
