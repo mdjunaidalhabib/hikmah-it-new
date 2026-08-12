@@ -27,9 +27,9 @@ function toWhatsappLink(value) {
 
 function FounderViewField({ label, value }) {
   return (
-    <div>
+    <div className="min-w-0">
       <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
-      <p className="mt-0.5 text-sm text-slate-800">{value || "—"}</p>
+      <p className="mt-0.5 break-words text-sm text-slate-800">{value || "—"}</p>
     </div>
   );
 }
@@ -272,7 +272,7 @@ export default function PartnersManager() {
   };
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Team & Referral Partners</h1>
@@ -296,14 +296,14 @@ export default function PartnersManager() {
       >
         <div className="flex items-center gap-4">
           {founder.photoUrl && (
-            <img src={founder.photoUrl} alt={founder.name} className="h-16 w-16 rounded-full border border-slate-200 object-cover" />
+            <img src={founder.photoUrl} alt={founder.name} className="h-16 w-16 shrink-0 rounded-full border border-slate-200 object-cover" />
           )}
-          <div className="grid gap-1">
+          <div className="grid min-w-0 gap-1">
             <FounderViewField label="Name" value={founder.name} />
             <FounderViewField label="Role" value={founder.role} />
           </div>
         </div>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FounderViewField label="Location" value={founder.location} />
           <FounderViewField label="Skills" value={(founder.skills || []).join(", ")} />
           <FounderViewField label="Facebook" value={founder.facebook} />
@@ -314,7 +314,7 @@ export default function PartnersManager() {
 
       <AdminCard>
         {loading ? (
-          <table className="w-full min-w-[720px] text-left text-sm">
+          <table className="hidden w-full min-w-[720px] text-left text-sm md:table">
             <tbody>
               {Array.from({ length: 4 }).map((_, i) => (
                 <SkeletonRow key={i} cols={5} />
@@ -324,49 +324,94 @@ export default function PartnersManager() {
         ) : partners.length === 0 ? (
           <EmptyState text="No partners yet. Click 'Add Partner' to create one." />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px] text-left text-sm">
-              <thead>
-                <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
-                  <th className="pb-2 pr-3">Name</th>
-                  <th className="pb-2 pr-3">Role</th>
-                  <th className="pb-2 pr-3">Referral Code</th>
-                  <th className="pb-2 pr-3">Earning</th>
-                  <th className="pb-2 pr-3">Status</th>
-                  <th className="pb-2 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {partners.map((p) => {
-                  const active = p.active !== false;
-                  return (
-                  <tr key={p._id} className={`border-b border-slate-50 last:border-0 ${active ? "" : "opacity-50"}`}>
-                    <td className="py-3 pr-3 font-semibold text-slate-800">{p.name}</td>
-                    <td className="py-3 pr-3 text-slate-600">{p.role}</td>
-                    <td className="py-3 pr-3 text-slate-600">{p.referralCode}</td>
-                    <td className="py-3 pr-3 text-slate-600">{p.earningText}</td>
-                    <td className="py-3 pr-3">
-                      <span className={`text-xs font-semibold ${active ? "text-emerald-600" : "text-slate-400"}`}>
+          <>
+            {/* Mobile card list */}
+            <div className="grid grid-cols-1 gap-3 md:hidden">
+              {partners.map((p) => {
+                const active = p.active !== false;
+                return (
+                  <div key={p._id} className={`rounded-xl border border-slate-200 p-3.5 ${active ? "" : "opacity-50"}`}>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex min-w-0 items-center gap-3">
+                        {p.photoUrl ? (
+                          <img src={p.photoUrl} alt="" className="h-10 w-10 shrink-0 rounded-full border border-slate-200 object-cover" />
+                        ) : (
+                          <div className="h-10 w-10 shrink-0 rounded-full bg-slate-100" />
+                        )}
+                        <div className="min-w-0">
+                          <p className="truncate font-semibold text-slate-800">{p.name}</p>
+                          <p className="truncate text-xs text-slate-500">{p.role}</p>
+                        </div>
+                      </div>
+                      <span className={`shrink-0 text-xs font-semibold ${active ? "text-emerald-600" : "text-slate-400"}`}>
                         {active ? "সক্রিয়" : "নিষ্ক্রিয়"}
                       </span>
-                    </td>
-                    <td className="py-3 text-right">
-                      <button onClick={() => handleToggleActive(p)} className="mr-2 rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-blue-600" aria-label={active ? "Deactivate" : "Activate"}>
-                        {active ? <Eye size={15} /> : <EyeOff size={15} />}
+                    </div>
+                    <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
+                      <span className="font-mono text-slate-600">{p.referralCode}</span>
+                      {p.earningText && <span>💰 {p.earningText}</span>}
+                    </div>
+                    <div className="mt-3 flex justify-end gap-1 border-t border-slate-100 pt-2.5">
+                      <button onClick={() => handleToggleActive(p)} className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600" aria-label={active ? "Deactivate" : "Activate"}>
+                        {active ? <Eye size={14} /> : <EyeOff size={14} />}
                       </button>
-                      <button onClick={() => openEdit(p)} className="mr-2 rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-blue-600" aria-label="Edit">
-                        <Pencil size={15} />
+                      <button onClick={() => openEdit(p)} className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600" aria-label="Edit">
+                        <Pencil size={14} />
                       </button>
-                      <button onClick={() => handleDelete(p)} className="rounded-lg p-2 text-slate-500 hover:bg-red-50 hover:text-red-600" aria-label="Delete">
-                        <Trash2 size={15} />
+                      <button onClick={() => handleDelete(p)} className="rounded-lg p-1.5 text-slate-500 hover:bg-red-50 hover:text-red-600" aria-label="Delete">
+                        <Trash2 size={14} />
                       </button>
-                    </td>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop table */}
+            <div className="hidden overflow-x-auto md:block">
+              <table className="w-full min-w-[720px] text-left text-sm">
+                <thead>
+                  <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
+                    <th className="pb-2 pr-3">Name</th>
+                    <th className="pb-2 pr-3">Role</th>
+                    <th className="pb-2 pr-3">Referral Code</th>
+                    <th className="pb-2 pr-3">Earning</th>
+                    <th className="pb-2 pr-3">Status</th>
+                    <th className="pb-2 text-right">Actions</th>
                   </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {partners.map((p) => {
+                    const active = p.active !== false;
+                    return (
+                    <tr key={p._id} className={`border-b border-slate-50 last:border-0 ${active ? "" : "opacity-50"}`}>
+                      <td className="py-3 pr-3 font-semibold text-slate-800">{p.name}</td>
+                      <td className="py-3 pr-3 text-slate-600">{p.role}</td>
+                      <td className="py-3 pr-3 text-slate-600">{p.referralCode}</td>
+                      <td className="py-3 pr-3 text-slate-600">{p.earningText}</td>
+                      <td className="py-3 pr-3">
+                        <span className={`text-xs font-semibold ${active ? "text-emerald-600" : "text-slate-400"}`}>
+                          {active ? "সক্রিয়" : "নিষ্ক্রিয়"}
+                        </span>
+                      </td>
+                      <td className="py-3 text-right">
+                        <button onClick={() => handleToggleActive(p)} className="mr-2 rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-blue-600" aria-label={active ? "Deactivate" : "Activate"}>
+                          {active ? <Eye size={15} /> : <EyeOff size={15} />}
+                        </button>
+                        <button onClick={() => openEdit(p)} className="mr-2 rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-blue-600" aria-label="Edit">
+                          <Pencil size={15} />
+                        </button>
+                        <button onClick={() => handleDelete(p)} className="rounded-lg p-2 text-slate-500 hover:bg-red-50 hover:text-red-600" aria-label="Delete">
+                          <Trash2 size={15} />
+                        </button>
+                      </td>
+                    </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </AdminCard>
 

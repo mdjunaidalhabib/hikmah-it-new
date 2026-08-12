@@ -41,7 +41,7 @@ export default function ContactMessages() {
   };
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Contact Messages</h1>
         <p className="mt-1 text-sm text-slate-500">Messages submitted through the public contact form.</p>

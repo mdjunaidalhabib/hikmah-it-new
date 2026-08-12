@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pencil, Search, ShieldCheck, ShieldAlert, Ban, UserCheck, Trash2 } from "lucide-react";
+import { Pencil, Search, ShieldCheck, ShieldAlert, Ban, UserCheck, Trash2, Copy, Check } from "lucide-react";
 import toast from "react-hot-toast";
 import { apiGet, apiPatch, apiDelete } from "../../lib/api";
 import { AdminCard, EmptyState, Modal, inputClass, labelClass } from "../components/ui";
@@ -41,6 +41,7 @@ export default function UsersManager() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [copiedId, setCopiedId] = useState(null);
 
   const load = async (q) => {
     setLoading(true);
@@ -93,6 +94,18 @@ export default function UsersManager() {
     }
   };
 
+  const handleCopyReferral = async (user) => {
+    if (!user.referralCode) return;
+    try {
+      await navigator.clipboard.writeText(user.referralCode);
+      setCopiedId(user._id);
+      toast.success("Referral code copied");
+      setTimeout(() => setCopiedId((id) => (id === user._id ? null : id)), 1500);
+    } catch {
+      toast.error("Copy failed");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -113,15 +126,15 @@ export default function UsersManager() {
   };
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Users</h1>
         <p className="mt-1 text-sm text-slate-500">Customer accounts, verification status and login credentials.</p>
       </div>
 
-      <form onSubmit={handleSearch} className="flex gap-2">
+      <form onSubmit={handleSearch} className="flex flex-wrap gap-2">
         <input
-          className={`${inputClass} !mt-0 max-w-xs`}
+          className={`${inputClass} !mt-0 w-full sm:max-w-xs`}
           placeholder="Search name, email, mobile or referral code"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -133,7 +146,7 @@ export default function UsersManager() {
 
       <AdminCard>
         {loading ? (
-          <table className="w-full min-w-[760px] text-left text-sm">
+          <table className="hidden w-full min-w-[760px] text-left text-sm md:table">
             <tbody>
               {Array.from({ length: 5 }).map((_, i) => (
                 <SkeletonRow key={i} cols={5} />
@@ -143,68 +156,136 @@ export default function UsersManager() {
         ) : users.length === 0 ? (
           <EmptyState text="No users yet." />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px] text-left text-sm">
-              <thead>
-                <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
-                  <th className="pb-2 pr-3">Name</th>
-                  <th className="pb-2 pr-3">Contact</th>
-                  <th className="pb-2 pr-3">Verification</th>
-                  <th className="pb-2 pr-3">Status</th>
-                  <th className="pb-2 pr-3">Referral Code</th>
-                  <th className="pb-2 pr-3">Joined</th>
-                  <th className="pb-2 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((u) => (
-                  <tr key={u._id} className="border-b border-slate-50 align-top last:border-0">
-                    <td className="py-3 pr-3 font-medium text-slate-800">{u.name}</td>
-                    <td className="py-3 pr-3">
-                      <p className="text-slate-700">{u.mobile}</p>
-                      <p className="text-slate-500">{u.email}</p>
-                    </td>
-                    <td className="py-3 pr-3">
-                      <div className="grid gap-1">
-                        <VerifiedBadge verified={u.mobileVerified} label="Mobile" />
-                        <VerifiedBadge verified={u.emailVerified} label="Email" />
-                      </div>
-                    </td>
-                    <td className="py-3 pr-3">
-                      <StatusBadge suspended={u.suspended} />
-                    </td>
-                    <td className="py-3 pr-3 font-mono text-slate-600">{u.referralCode}</td>
-                    <td className="py-3 pr-3 text-slate-500">{new Date(u.createdAt).toLocaleDateString()}</td>
-                    <td className="py-3 text-right">
-                      <div className="flex justify-end gap-1">
-                        <button
-                          onClick={() => openEdit(u)}
-                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600"
-                          aria-label="Edit"
-                        >
-                          <Pencil size={14} />
-                        </button>
-                        <button
-                          onClick={() => handleToggleSuspend(u)}
-                          className={`rounded-lg p-1.5 text-slate-500 ${u.suspended ? "hover:bg-emerald-50 hover:text-emerald-600" : "hover:bg-red-50 hover:text-red-600"}`}
-                          aria-label={u.suspended ? "Reactivate" : "Suspend"}
-                        >
-                          {u.suspended ? <UserCheck size={14} /> : <Ban size={14} />}
-                        </button>
-                        <button
-                          onClick={() => handleDelete(u)}
-                          className="rounded-lg p-1.5 text-slate-500 hover:bg-red-50 hover:text-red-600"
-                          aria-label="Delete"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </td>
+          <>
+            {/* Mobile card list */}
+            <div className="grid grid-cols-1 gap-3 md:hidden">
+              {users.map((u) => (
+                <div key={u._id} className="rounded-xl border border-slate-200 p-3.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold text-slate-800">{u.name}</p>
+                      <p className="mt-0.5 truncate text-xs text-slate-500">{u.mobile}</p>
+                      <p className="truncate text-xs text-slate-500">{u.email}</p>
+                    </div>
+                    <StatusBadge suspended={u.suspended} />
+                  </div>
+                  <div className="mt-2.5 flex flex-wrap gap-1.5">
+                    <VerifiedBadge verified={u.mobileVerified} label="Mobile" />
+                    <VerifiedBadge verified={u.emailVerified} label="Email" />
+                  </div>
+                  <div className="mt-2.5 flex items-center justify-between text-xs text-slate-500">
+                    <button
+                      type="button"
+                      onClick={() => handleCopyReferral(u)}
+                      className="inline-flex items-center gap-1 rounded-md font-mono text-slate-600 hover:text-blue-600"
+                      aria-label="Copy referral code"
+                    >
+                      {u.referralCode}
+                      {copiedId === u._id ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+                    </button>
+                    <span>{new Date(u.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <div className="mt-3 flex justify-end gap-1 border-t border-slate-100 pt-2.5">
+                    <button
+                      onClick={() => openEdit(u)}
+                      className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600"
+                      aria-label="Edit"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      onClick={() => handleToggleSuspend(u)}
+                      className={`rounded-lg p-1.5 text-slate-500 ${u.suspended ? "hover:bg-emerald-50 hover:text-emerald-600" : "hover:bg-red-50 hover:text-red-600"}`}
+                      aria-label={u.suspended ? "Reactivate" : "Suspend"}
+                    >
+                      {u.suspended ? <UserCheck size={14} /> : <Ban size={14} />}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(u)}
+                      className="rounded-lg p-1.5 text-slate-500 hover:bg-red-50 hover:text-red-600"
+                      aria-label="Delete"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop table */}
+            <div className="hidden overflow-x-auto md:block">
+              <table className="w-full min-w-[760px] text-left text-sm">
+                <thead>
+                  <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
+                    <th className="pb-2 pr-3">Name</th>
+                    <th className="pb-2 pr-3">Contact</th>
+                    <th className="pb-2 pr-3">Verification</th>
+                    <th className="pb-2 pr-3">Status</th>
+                    <th className="pb-2 pr-3">Referral Code</th>
+                    <th className="pb-2 pr-3">Joined</th>
+                    <th className="pb-2 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {users.map((u) => (
+                    <tr key={u._id} className="border-b border-slate-50 align-top last:border-0">
+                      <td className="py-3 pr-3 font-medium text-slate-800">{u.name}</td>
+                      <td className="py-3 pr-3">
+                        <p className="text-slate-700">{u.mobile}</p>
+                        <p className="text-slate-500">{u.email}</p>
+                      </td>
+                      <td className="py-3 pr-3">
+                        <div className="grid gap-1">
+                          <VerifiedBadge verified={u.mobileVerified} label="Mobile" />
+                          <VerifiedBadge verified={u.emailVerified} label="Email" />
+                        </div>
+                      </td>
+                      <td className="py-3 pr-3">
+                        <StatusBadge suspended={u.suspended} />
+                      </td>
+                      <td className="py-3 pr-3">
+                        <button
+                          type="button"
+                          onClick={() => handleCopyReferral(u)}
+                          className="inline-flex items-center gap-1 rounded-md font-mono text-slate-600 hover:text-blue-600"
+                          aria-label="Copy referral code"
+                        >
+                          {u.referralCode}
+                          {copiedId === u._id ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                        </button>
+                      </td>
+                      <td className="py-3 pr-3 text-slate-500">{new Date(u.createdAt).toLocaleDateString()}</td>
+                      <td className="py-3 text-right">
+                        <div className="flex justify-end gap-1">
+                          <button
+                            onClick={() => openEdit(u)}
+                            className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600"
+                            aria-label="Edit"
+                          >
+                            <Pencil size={14} />
+                          </button>
+                          <button
+                            onClick={() => handleToggleSuspend(u)}
+                            className={`rounded-lg p-1.5 text-slate-500 ${u.suspended ? "hover:bg-emerald-50 hover:text-emerald-600" : "hover:bg-red-50 hover:text-red-600"}`}
+                            aria-label={u.suspended ? "Reactivate" : "Suspend"}
+                          >
+                            {u.suspended ? <UserCheck size={14} /> : <Ban size={14} />}
+                          </button>
+                          <button
+                            onClick={() => handleDelete(u)}
+                            className="rounded-lg p-1.5 text-slate-500 hover:bg-red-50 hover:text-red-600"
+                            aria-label="Delete"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </AdminCard>
 

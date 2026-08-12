@@ -99,7 +99,7 @@ export default function NotificationsDashboard() {
   };
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Mail &amp; SMS</h1>
         <p className="mt-1 text-sm text-slate-500">Delivery activity for verification codes, password resets and order notifications.</p>
@@ -147,7 +147,7 @@ export default function NotificationsDashboard() {
         }
       >
         {loading ? (
-          <table className="w-full min-w-[600px] text-left text-sm">
+          <table className="hidden w-full min-w-[600px] text-left text-sm md:table">
             <tbody>
               {Array.from({ length: 5 }).map((_, i) => (
                 <SkeletonRow key={i} cols={5} />
@@ -158,7 +158,24 @@ export default function NotificationsDashboard() {
           <EmptyState text="No notifications sent yet." />
         ) : (
           <>
-            <div className="overflow-x-auto">
+            {/* Mobile card list */}
+            <div className="grid grid-cols-1 gap-3 md:hidden">
+              {logs.map((log) => (
+                <div key={log._id} className="rounded-xl border border-slate-200 p-3.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold capitalize text-slate-800">{log.channel} · {log.to}</p>
+                      <p className="mt-0.5 text-xs text-slate-500">{log.purpose}</p>
+                    </div>
+                    <DeliveryStatusBadge status={log.status} />
+                  </div>
+                  <p className="mt-2 text-xs text-slate-500">{new Date(log.createdAt).toLocaleString()}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop table */}
+            <div className="hidden overflow-x-auto md:block">
               <table className="w-full min-w-[600px] text-left text-sm">
                 <thead>
                   <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">

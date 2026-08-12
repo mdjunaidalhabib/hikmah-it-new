@@ -50,32 +50,51 @@ export default function AdminLayout() {
 
   return (
     <ConfirmProvider>
-    <div className="min-h-screen bg-slate-50 text-slate-900 lg:flex">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
+    <div className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-900 lg:flex">
+      {/* Mobile top bar */}
+      <div className="flex items-center justify-between bg-brand-600 px-4 py-3 shadow-md shadow-brand-950/20 lg:hidden">
         <Logo
           src={settings?.logoUrl}
-          className={`h-10 w-[129px] shrink-0 object-contain object-left sm:h-11 sm:w-[142px] lg:h-12 lg:w-[155px] ${settingsLoading ? "invisible" : ""}`}
+          className={`h-10 w-[129px] shrink-0 object-contain object-left sm:h-11 sm:w-[142px] ${settingsLoading ? "invisible" : ""}`}
         />
         <button
-          onClick={() => setOpen((v) => !v)}
-          className="rounded-lg border border-slate-200 p-2 text-slate-600"
-          aria-label="Toggle menu"
+          onClick={() => setOpen(true)}
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white text-brand-700 shadow-md shadow-black/10 transition hover:bg-brand-50"
+          aria-label="Open menu"
         >
-          {open ? <X size={18} /> : <Menu size={18} />}
+          <Menu size={18} />
         </button>
       </div>
 
+      {/* Mobile backdrop */}
+      <div
+        onClick={() => setOpen(false)}
+        className={`fixed inset-0 z-[60] bg-slate-950/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      />
+
+      {/* Sidebar (fixed sliding drawer on mobile, static column on desktop) */}
       <aside
-        className={`${open ? "block" : "hidden"} w-full border-b border-slate-200 bg-white lg:block lg:min-h-screen lg:w-64 lg:shrink-0 lg:border-b-0 lg:border-r`}
+        className={`fixed left-0 top-0 z-[70] flex h-full w-[82vw] max-w-[300px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] lg:static lg:z-auto lg:h-auto lg:min-h-screen lg:w-64 lg:max-w-none lg:shrink-0 lg:translate-x-0 lg:border-r lg:border-slate-200 lg:shadow-none ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <div className="hidden items-center gap-2 border-b border-slate-100 px-5 py-5 lg:flex">
+        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-100 px-5 py-4">
           <Logo
             src={settings?.logoUrl}
-            className={`h-10 w-[129px] shrink-0 object-contain object-left sm:h-11 sm:w-[142px] lg:h-12 lg:w-[155px] ${settingsLoading ? "invisible" : ""}`}
+            className={`h-10 w-[129px] shrink-0 object-contain object-left sm:h-11 sm:w-[142px] ${settingsLoading ? "invisible" : ""}`}
           />
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-red-200 bg-red-50 text-red-600 transition hover:border-red-300 hover:bg-red-100 hover:text-red-700 lg:hidden"
+          >
+            <X size={16} />
+          </button>
         </div>
 
-        <nav className="space-y-1 p-3">
+        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
           {navItems.map(({ to, label, icon: Icon, end }) => (
             <NavLink
               key={to}
@@ -85,7 +104,7 @@ export default function AdminLayout() {
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
                   isActive
-                    ? "bg-blue-50 text-blue-700"
+                    ? "bg-brand-50 text-brand-700"
                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 }`
               }
@@ -96,7 +115,7 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        <div className="border-t border-slate-100 p-3">
+        <div className="shrink-0 border-t border-slate-100 p-3">
           <div className="mb-2 truncate px-3 text-xs text-slate-400">{admin?.email}</div>
           <button
             onClick={handleLogout}
@@ -108,7 +127,7 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
         <Outlet />
       </main>
     </div>

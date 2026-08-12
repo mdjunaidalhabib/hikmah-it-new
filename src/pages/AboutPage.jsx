@@ -3,6 +3,7 @@ import SectionHeader from '../components/SectionHeader'
 import PageHero from '../components/PageHero'
 import Seo from '../components/Seo'
 import Button from '../components/Button'
+import Avatar from '../components/Avatar'
 import { aboutStats, whyUs, brand, trustItems } from '../data/siteData'
 import useSiteSettings from '../lib/useSiteSettings'
 
@@ -106,9 +107,13 @@ export default function AboutPage() {
         <section className="py-8 pb-16 bg-white">
           <div className="mx-auto w-[min(900px,calc(100%-40px))]">
             <div className="rounded-[2rem] border border-brand-200 bg-brand-50 p-8 text-center shadow-xl">
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-brand-600 to-brand-700 text-2xl font-bold text-white shadow-lg">
-                {founder.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
-              </div>
+              <Avatar
+                name={founder.name}
+                photo={founder.photoUrl}
+                size="h-20 w-20"
+                iconSize={24}
+                className="mx-auto border-4 border-white shadow-lg shadow-brand-900/10"
+              />
               <h3 className="mt-4 text-2xl font-medium text-slate-900">{founder.name}</h3>
               <p className="mt-1 text-sm font-semibold text-brand-600">{founder.role}, Hikmah IT</p>
               <p className="mt-4 mx-auto max-w-lg leading-7 text-slate-600">"{founder.bio}"</p>

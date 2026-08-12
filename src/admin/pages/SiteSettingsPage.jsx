@@ -333,7 +333,7 @@ export default function SiteSettingsPage() {
 
   if (loading) {
     return (
-      <div className="grid gap-6">
+      <div className="grid grid-cols-1 gap-6">
         <Skeleton className="h-8 w-48" />
         {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="rounded-2xl border border-slate-200 bg-white p-5">
@@ -349,7 +349,7 @@ export default function SiteSettingsPage() {
   const visiblePaymentEntries = form.paymentNumbers.entries.filter((entry) => !entry.deletedAt);
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Site Settings</h1>

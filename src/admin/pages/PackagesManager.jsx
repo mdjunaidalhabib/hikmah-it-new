@@ -54,6 +54,7 @@ function toPayload(form) {
 export default function PackagesManager() {
   const confirm = useConfirm();
   const [packages, setPackages] = useState([]);
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null); // null | "new" | package object
   const [form, setForm] = useState(emptyForm);
@@ -67,8 +68,14 @@ export default function PackagesManager() {
     setLoading(false);
   };
 
+  const loadServices = async () => {
+    const data = await apiGet("/admin/services");
+    setServices(data.filter((s) => s.active !== false));
+  };
+
   useEffect(() => {
     load();
+    loadServices();
   }, []);
 
   const openNew = () => {
@@ -150,26 +157,28 @@ export default function PackagesManager() {
   }, {});
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Packages</h1>
           <p className="mt-1 text-sm text-slate-500">Manage the pricing packages shown on the public site.</p>
         </div>
-        <Button type="button" variant="small" onClick={openNew}>
+        <Button type="button" variant="small" onClick={openNew} className="w-full justify-center sm:w-auto">
           <Plus size={15} /> Add Package
         </Button>
       </div>
 
       {loading ? (
         <AdminCard>
-          <table className="w-full min-w-[640px] text-left text-sm">
-            <tbody>
-              {Array.from({ length: 4 }).map((_, i) => (
-                <SkeletonRow key={i} cols={5} />
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] text-left text-sm">
+              <tbody>
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <SkeletonRow key={i} cols={5} />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </AdminCard>
       ) : packages.length === 0 ? (
         <AdminCard>
@@ -178,7 +187,58 @@ export default function PackagesManager() {
       ) : (
         Object.entries(grouped).map(([category, items]) => (
           <AdminCard key={category} title={category}>
-            <div className="overflow-x-auto">
+            {/* Mobile card list */}
+            <div className="grid grid-cols-1 gap-3 md:hidden">
+              {items.map((pkg) => {
+                const active = pkg.active !== false;
+                return (
+                  <div key={pkg._id} className={`rounded-xl border border-slate-200 p-3.5 ${active ? "" : "opacity-50"}`}>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold text-slate-800">{pkg.name}</p>
+                        <p className="mt-0.5 text-slate-600">
+                          {pkg.priceLabel || `৳${pkg.priceAmount}`}
+                          {pkg.periodLabel}
+                        </p>
+                      </div>
+                      <span className={`shrink-0 text-xs font-semibold ${active ? "text-emerald-600" : "text-slate-400"}`}>
+                        {active ? "সক্রিয়" : "নিষ্ক্রিয়"}
+                      </span>
+                    </div>
+                    <div className="mt-2 flex gap-3 text-xs text-slate-500">
+                      <span>Highlighted: {pkg.highlighted ? "Yes" : "—"}</span>
+                      <span>Order: {pkg.sortOrder}</span>
+                    </div>
+                    <div className="mt-3 flex justify-end gap-1 border-t border-slate-100 pt-2.5">
+                      <button
+                        onClick={() => handleToggleActive(pkg)}
+                        className="grid h-9 w-9 place-items-center rounded-lg text-slate-500 active:bg-slate-100 active:text-blue-600"
+                        aria-label={active ? "Deactivate" : "Activate"}
+                      >
+                        {active ? <Eye size={16} /> : <EyeOff size={16} />}
+                      </button>
+                      <button
+                        onClick={() => openEdit(pkg)}
+                        className="grid h-9 w-9 place-items-center rounded-lg text-slate-500 active:bg-slate-100 active:text-blue-600"
+                        aria-label="Edit"
+                      >
+                        <Pencil size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(pkg)}
+                        className="grid h-9 w-9 place-items-center rounded-lg text-slate-500 active:bg-red-50 active:text-red-600"
+                        aria-label="Delete"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop table */}
+            <div className="hidden overflow-x-auto md:block">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead>
                   <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
@@ -245,8 +305,20 @@ export default function PackagesManager() {
           <form className="grid gap-4" onSubmit={handleSubmit} noValidate>
             <div className="grid gap-4 sm:grid-cols-2">
               <label className={labelClass}>
-                Category
-                <input className={inputClass} name="category" value={form.category} onChange={handleChange} required placeholder="e.g. Website Packages" />
+                Category (active service)
+                <select className={inputClass} name="category" value={form.category} onChange={handleChange} required>
+                  <option value="" disabled>
+                    সার্ভিস নির্বাচন করুন
+                  </option>
+                  {services.map((s) => (
+                    <option key={s._id} value={s.title}>
+                      {s.title}
+                    </option>
+                  ))}
+                  {form.category && !services.some((s) => s.title === form.category) && (
+                    <option value={form.category}>{form.category}</option>
+                  )}
+                </select>
               </label>
               <label className={labelClass}>
                 Name
@@ -290,7 +362,7 @@ export default function PackagesManager() {
               <textarea className={inputClass} name="notIncluded" value={form.notIncluded} onChange={handleChange} rows={3} placeholder="e.g. Custom Domain, Priority Support" />
             </label>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <input type="checkbox" name="highlighted" checked={form.highlighted} onChange={handleChange} />
                 Highlighted / Recommended
@@ -316,9 +388,9 @@ export default function PackagesManager() {
 
             {error && <p className="text-sm font-medium text-red-600">{error}</p>}
 
-            <div className="flex justify-end gap-3 pt-2">
-              <Button type="button" variant="ghost-dark" onClick={closeModal}>Cancel</Button>
-              <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save"}</Button>
+            <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
+              <Button type="button" variant="ghost-dark" onClick={closeModal} className="w-full justify-center sm:w-auto">Cancel</Button>
+              <Button type="submit" disabled={saving} className="w-full justify-center sm:w-auto">{saving ? "Saving…" : "Save"}</Button>
             </div>
           </form>
         </Modal>

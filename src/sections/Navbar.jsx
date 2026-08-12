@@ -12,6 +12,7 @@ import {
   UserRound,
   LogIn,
   UserPlus,
+  Sparkles,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
@@ -190,13 +191,13 @@ export default function Navbar() {
                     to={href}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `group relative flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 ${
-                        isActive
-                          ? isEarn
-                            ? "bg-amber-500 text-white shadow-sm shadow-amber-950/20"
-                            : "bg-brand-600 text-white shadow-sm shadow-brand-950/20"
-                          : isEarn
-                            ? "text-amber-700 hover:bg-white/70 hover:text-amber-700"
+                      `group relative flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-bold tracking-wide transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 ${
+                        isEarn
+                          ? isActive
+                            ? "bg-brand-600 text-white shadow-sm shadow-brand-950/20"
+                            : "text-amber-600 hover:bg-white/70 hover:text-amber-700 [text-shadow:0_0_10px_rgba(217,119,6,0.25)]"
+                          : isActive
+                            ? "bg-brand-600 text-white shadow-sm shadow-brand-950/20"
                             : "text-slate-900 hover:bg-white/70 hover:text-brand-700"
                       }`
                     }
@@ -209,14 +210,17 @@ export default function Navbar() {
                             isActive
                               ? "bg-white/20 text-white"
                               : isEarn
-                                ? "bg-white text-amber-500 group-hover:bg-amber-100"
+                                ? "bg-gradient-to-br from-amber-400 to-yellow-500 text-white shadow-sm shadow-amber-500/30"
                                 : "bg-white text-slate-600 group-hover:bg-brand-100 group-hover:text-brand-700"
                           }`}
                         >
                           <Icon size={14} />
                         </span>
 
-                        <span className="flex-1">{label}</span>
+                        <span className="flex flex-1 items-center gap-1.5">
+                          {label}
+                          {isEarn && <Sparkles size={13} className={isActive ? "text-white" : "text-amber-500"} />}
+                        </span>
 
                         {isEarn && !isActive && (
                           <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold tracking-wide text-amber-700">
