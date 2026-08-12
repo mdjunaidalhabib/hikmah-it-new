@@ -154,7 +154,7 @@ export default function Navbar() {
         }`}
       >
         {/* Drawer header */}
-        <div className="flex items-center justify-between border-b border-brand-100 px-5 py-4">
+        <div className="flex items-center justify-between border-b border-brand-100 px-4 py-2">
           <Link
             to="/"
             onClick={() => setOpen(false)}
@@ -162,15 +162,15 @@ export default function Navbar() {
           >
             <Logo
               src={settings?.logoUrl}
-              className={`h-14 w-[180px] shrink-0 object-contain object-left ${settingsLoading ? "invisible" : ""}`}
+              className={`h-8 w-[103px] shrink-0 object-contain object-left ${settingsLoading ? "invisible" : ""}`}
             />
           </Link>
           <button
             onClick={() => setOpen(false)}
             aria-label="মেনু বন্ধ করুন"
-            className="grid h-8 w-8 place-items-center rounded-lg border border-brand-200 bg-white text-slate-500 transition hover:border-brand-300 hover:bg-brand-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50"
+            className="grid h-7 w-7 place-items-center rounded-lg border border-brand-200 bg-white text-slate-500 transition hover:border-brand-300 hover:bg-brand-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50"
           >
-            <X size={16} />
+            <X size={14} />
           </button>
         </div>
 

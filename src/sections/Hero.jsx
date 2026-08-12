@@ -8,15 +8,16 @@ export default function Hero() {
       <div className="absolute inset-0 opacity-70 bg-grid-overlay" />
       <div className="relative mx-auto grid w-[min(1180px,calc(100%-40px))] items-center gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12">
         <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3.5 py-2 text-sm font-semibold text-brand-700 shadow-sm shadow-brand-900/5">
-            <CheckCircle2 size={18} />
+          <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-600 shadow-sm shadow-brand-900/5 sm:gap-2 sm:px-3.5 sm:py-2 sm:text-sm">
+            <CheckCircle2 size={16} className="shrink-0 sm:hidden" />
+            <CheckCircle2 size={18} className="hidden shrink-0 sm:block" />
             প্রফেশনাল ওয়েবসাইট ও সফটওয়্যার এজেন্সি
           </span>
-          <h1 className="mt-5 max-w-2xl text-2xl font-semibold leading-snug tracking-[-0.02em] text-slate-950 sm:text-3xl sm:leading-[1.3] lg:text-[2.65rem] lg:leading-[1.2]">
-            <span className="sm:block">মাদরাসা ম্যানেজমেন্ট সিস্টেম, </span>
-            <span className="sm:block">ই-কমার্স ওয়েবসাইট, </span>
-            <span className="sm:block">পোর্টফোলিও ও বিজনেস ওয়েবসাইট, </span>
-            <span className="sm:block bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-transparent">ডোমেইন ও হোস্টিং সার্ভিস।</span>
+          <h1 className="mt-5 max-w-2xl text-2xl font-semibold leading-snug tracking-[-0.02em] sm:text-3xl sm:leading-[1.3] lg:text-[2.65rem] lg:leading-[1.2]">
+            <span className="block text-brand-600">ই-কমার্স ওয়েবসাইট, </span>
+            <span className="block text-emerald-600">মাদরাসা ম্যানেজমেন্ট সিস্টেম, </span>
+            <span className="block text-blue-600">পোর্টফোলিও & বিজনেস সাইট, </span>
+            <span className="block text-violet-600">ডোমেইন ও হোস্টিং সার্ভিস।</span>
           </h1>
           <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
             {brand.name} ব্যবসা ও প্রতিষ্ঠানকে আধুনিক ওয়েবসাইট, ই-কমার্স প্ল্যাটফর্ম, অ্যাডমিন ড্যাশবোর্ড, পোর্টফোলিও/ল্যান্ডিং পেজ, হোস্টিং-ডোমেইন সাপোর্ট এবং প্রিমিয়াম ইউআই সহ ডিজিটাল ম্যানেজমেন্ট সিস্টেম তৈরিতে সাহায্য করে।
