@@ -54,12 +54,12 @@ export default function Navbar() {
     <>
       {/* ── Header bar ── */}
       <header className="sticky top-0 z-50 bg-brand-600 shadow-md shadow-brand-950/20">
-        <div className="mx-auto flex h-[84px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-3">
+        <div className="mx-auto flex h-[60px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-3">
           {/* Logo */}
           <Link to="/" className="shrink-0" aria-label="Hikmah IT হোম">
             <Logo
               src={settings?.logoUrl}
-              className={`h-16 w-[206px] shrink-0 object-contain object-left sm:h-[70px] sm:w-[226px] lg:h-20 lg:w-[258px] ${settingsLoading ? "invisible" : ""}`}
+              className={`h-16 w-[142px] shrink-0 object-contain object-left sm:h-48 sm:w-[155px] lg:h-[68px] lg:w-[167px] ${settingsLoading ? "invisible" : ""}`}
             />
           </Link>
 
@@ -70,7 +70,7 @@ export default function Navbar() {
                 key={href}
                 to={href}
                 className={({ isActive }) =>
-                  `relative rounded-xl px-3.5 py-2 text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40 ${
+                  `relative rounded-lg px-3 py-1.5 text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40 ${
                     isActive
                       ? label === "আয় করুন"
                         ? "bg-white text-amber-600 shadow-sm shadow-black/10"
@@ -92,16 +92,16 @@ export default function Navbar() {
               {user ? (
                 <Link
                   to="/profile"
-                  className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/25 bg-white/15 px-3.5 py-2 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25"
+                  className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/25 bg-white/15 px-3 py-1.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25"
                 >
-                  <UserRound size={15} />
+                  <UserRound size={14} />
                   {user.name?.split(" ")[0]}
                 </Link>
               ) : (
                 <>
                   <Link
                     to="/login"
-                    className="shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-white/90 transition hover:bg-white/15 hover:text-white"
+                    className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-semibold text-white/90 transition hover:bg-white/15 hover:text-white"
                   >
                     লগইন
                   </Link>
@@ -129,9 +129,9 @@ export default function Navbar() {
               type="button"
               onClick={() => setOpen(true)}
               aria-label="মেনু খুলুন"
-              className="relative grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-brand-700 shadow-md shadow-black/10 transition hover:bg-brand-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40 lg:hidden"
+              className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white text-brand-700 shadow-md shadow-black/10 transition hover:bg-brand-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40 lg:hidden"
             >
-              <Menu size={19} />
+              <Menu size={17} />
             </button>
           </div>
         </div>
@@ -190,7 +190,7 @@ export default function Navbar() {
                     to={href}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 ${
+                      `group relative flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 ${
                         isActive
                           ? isEarn
                             ? "bg-amber-500 text-white shadow-sm shadow-amber-950/20"
@@ -205,7 +205,7 @@ export default function Navbar() {
                       <>
                         {/* Icon box */}
                         <span
-                          className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg transition ${
+                          className={`grid h-7 w-7 shrink-0 place-items-center rounded-md transition ${
                             isActive
                               ? "bg-white/20 text-white"
                               : isEarn
@@ -213,7 +213,7 @@ export default function Navbar() {
                                 : "bg-white text-slate-600 group-hover:bg-brand-100 group-hover:text-brand-700"
                           }`}
                         >
-                          <Icon size={15} />
+                          <Icon size={14} />
                         </span>
 
                         <span className="flex-1">{label}</span>

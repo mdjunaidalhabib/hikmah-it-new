@@ -22,7 +22,7 @@ export default function Button({
     "ghost-dark":
       "border-slate-200 bg-white px-6 py-3 text-sm text-slate-900 shadow-sm hover:border-brand-300 hover:text-brand-700 hover:shadow-md",
     white:
-      "border-white bg-white px-3.5 py-2 text-xs text-brand-700 shadow-md shadow-black/10 hover:bg-brand-50",
+      "border-white bg-white px-3.5 py-1.5 text-xs text-brand-700 shadow-md shadow-black/10 hover:bg-brand-50",
   };
 
   const cls = `${base} ${styles[variant] || styles.primary} ${className}`;
