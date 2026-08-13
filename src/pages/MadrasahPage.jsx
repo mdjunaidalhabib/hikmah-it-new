@@ -96,10 +96,7 @@ export default function MadrasahPage() {
           ) : (
             <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
               {plans.map((plan) => (
-                <PricingCard
-                  key={plan._id}
-                  plan={{ ...plan, price: plan.priceLabel || `৳${plan.priceAmount.toLocaleString('bn-BD')}` }}
-                />
+                <PricingCard key={plan._id} plan={plan} />
               ))}
             </div>
           )}

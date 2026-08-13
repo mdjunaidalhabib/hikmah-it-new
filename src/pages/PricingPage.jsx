@@ -51,13 +51,7 @@ export default function PricingPage() {
                   <h3 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">{category}</h3>
                   <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
                     {plans.map((plan) => (
-                      <PricingCard
-                        key={plan._id}
-                        plan={{
-                          ...plan,
-                          price: plan.priceLabel || `৳${plan.priceAmount.toLocaleString("bn-BD")}`,
-                        }}
-                      />
+                      <PricingCard key={plan._id} plan={plan} />
                     ))}
                   </div>
                 </div>

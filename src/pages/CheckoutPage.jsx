@@ -8,6 +8,7 @@ import { Skeleton } from "../components/Skeleton";
 import { apiGet, apiPost } from "../lib/api";
 import useSiteSettings from "../lib/useSiteSettings";
 import { useUserAuth } from "../context/UserAuthContext";
+import { formatTaka, getDisplayPrice, getDiscountPercent } from "../lib/pricing";
 
 const inputClass =
   "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100";
@@ -18,7 +19,7 @@ const requiredFields = ["customerName", "customerPhone", "senderNumber", "transa
 
 function formatPrice(pkg) {
   if (!pkg) return "";
-  const base = pkg.priceLabel || `৳${pkg.priceAmount.toLocaleString("bn-BD")}`;
+  const base = getDisplayPrice(pkg);
   return pkg.periodLabel ? `${base}${pkg.periodLabel}` : base;
 }
 
@@ -186,7 +187,16 @@ export default function CheckoutPage() {
           <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg">
             <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700">{pkg.category}</span>
             <h2 className="mt-3 text-2xl font-medium text-slate-900">{pkg.name}</h2>
-            <p className="mt-1 text-3xl font-bold text-brand-600">{formatPrice(pkg)}</p>
+            <p className="mt-1 flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold text-brand-600">{getDisplayPrice(pkg)}</span>
+              {pkg.periodLabel && <span className="text-sm font-medium text-slate-500">{pkg.periodLabel}</span>}
+            </p>
+            {getDiscountPercent(pkg) > 0 && (
+              <p className="mt-1 text-sm text-slate-400">
+                <span className="line-through">{formatTaka(pkg.originalPriceAmount)}</span>{" "}
+                <span className="font-semibold text-emerald-600">{getDiscountPercent(pkg)}% ছাড়</span>
+              </p>
+            )}
             {pkg.text && <p className="mt-3 text-sm leading-6 text-slate-600">{pkg.text}</p>}
           </div>
 

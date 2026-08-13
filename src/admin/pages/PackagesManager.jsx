@@ -7,11 +7,13 @@ import { SkeletonRow } from "../../components/Skeleton";
 import Button from "../../components/Button";
 import { useConfirm } from "../context/ConfirmContext";
 import { computeReorderChanges } from "../lib/reorder";
+import { formatTaka, getDiscountPercent } from "../../lib/pricing";
 
 const emptyForm = {
   category: "",
   name: "",
   priceAmount: "",
+  originalPriceAmount: "",
   priceLabel: "",
   periodLabel: "",
   renewalText: "",
@@ -28,6 +30,7 @@ function toFormState(pkg, position) {
     ...emptyForm,
     ...pkg,
     priceAmount: pkg.priceAmount ?? "",
+    originalPriceAmount: pkg.originalPriceAmount || "",
     limits: (pkg.limits || []).join(", "),
     features: (pkg.features || []).join("\n"),
     notIncluded: (pkg.notIncluded || []).join("\n"),
@@ -40,6 +43,7 @@ function toPayload(form) {
     category: form.category.trim(),
     name: form.name.trim(),
     priceAmount: Number(form.priceAmount) || 0,
+    originalPriceAmount: Number(form.originalPriceAmount) || 0,
     priceLabel: form.priceLabel.trim(),
     periodLabel: form.periodLabel.trim(),
     renewalText: form.renewalText.trim(),
@@ -197,8 +201,11 @@ export default function PackagesManager() {
                       <div className="min-w-0">
                         <p className="truncate font-semibold text-slate-800">{pkg.name}</p>
                         <p className="mt-0.5 text-slate-600">
-                          {pkg.priceLabel || `৳${pkg.priceAmount}`}
+                          {pkg.priceLabel || formatTaka(pkg.priceAmount)}
                           {pkg.periodLabel}
+                          {getDiscountPercent(pkg) > 0 && (
+                            <span className="ml-1.5 font-semibold text-emerald-600">-{getDiscountPercent(pkg)}%</span>
+                          )}
                         </p>
                       </div>
                       <span className={`shrink-0 text-xs font-semibold ${active ? "text-emerald-600" : "text-slate-400"}`}>
@@ -257,8 +264,11 @@ export default function PackagesManager() {
                     <tr key={pkg._id} className={`border-b border-slate-50 last:border-0 ${active ? "" : "opacity-50"}`}>
                       <td className="py-3 pr-3 font-semibold text-slate-800">{pkg.name}</td>
                       <td className="py-3 pr-3 text-slate-600">
-                        {pkg.priceLabel || `৳${pkg.priceAmount}`}
+                        {pkg.priceLabel || formatTaka(pkg.priceAmount)}
                         {pkg.periodLabel}
+                        {getDiscountPercent(pkg) > 0 && (
+                          <span className="ml-1.5 font-semibold text-emerald-600">-{getDiscountPercent(pkg)}%</span>
+                        )}
                       </td>
                       <td className="py-3 pr-3">{pkg.highlighted ? "Yes" : "—"}</td>
                       <td className="py-3 pr-3">{pkg.sortOrder}</td>
@@ -327,6 +337,10 @@ export default function PackagesManager() {
               <label className={labelClass}>
                 Price Amount (৳)
                 <input className={inputClass} type="number" min="0" name="priceAmount" value={form.priceAmount} onChange={handleChange} />
+              </label>
+              <label className={labelClass}>
+                Original Price (৳) — for discount, optional
+                <input className={inputClass} type="number" min="0" name="originalPriceAmount" value={form.originalPriceAmount} onChange={handleChange} placeholder="e.g. 5000" />
               </label>
               <label className={labelClass}>
                 Price Label Override (e.g. "Custom")

@@ -1,10 +1,13 @@
 import { CheckCircle2, XCircle } from "lucide-react";
 import Button from "./Button";
+import { formatTaka, getDisplayPrice, getDiscountPercent } from "../lib/pricing";
 
 export default function PricingCard({ plan }) {
-  const { _id, name, price, period, text, features, notIncluded, limits, renewal, highlighted } = plan;
+  const { _id, name, originalPriceAmount, periodLabel, text, features, notIncluded, limits, renewalText, highlighted } = plan;
   const href = _id ? `/checkout/${_id}` : "/pricing";
   const label = _id ? "প্যাকেজ কিনুন" : "প্যাকেজ দেখুন";
+  const price = getDisplayPrice(plan);
+  const discountPercent = getDiscountPercent(plan);
 
   return (
     <article
@@ -24,10 +27,17 @@ export default function PricingCard({ plan }) {
 
       <div className="mt-3 flex items-baseline gap-1.5">
         <span className="bg-gradient-to-br from-brand-600 to-brand-800 bg-clip-text text-3xl font-extrabold text-transparent">{price}</span>
-        {period && <span className="text-sm font-medium text-slate-500">{period}</span>}
+        {periodLabel && <span className="text-sm font-medium text-slate-500">{periodLabel}</span>}
       </div>
 
-      {renewal && <p className="mt-1 text-xs font-semibold text-slate-500">{renewal}</p>}
+      {discountPercent > 0 && (
+        <p className="mt-1 text-sm text-slate-400">
+          <span className="line-through">{formatTaka(originalPriceAmount)}</span>{" "}
+          <span className="font-semibold text-emerald-600">{discountPercent}% ছাড়</span>
+        </p>
+      )}
+
+      {renewalText && <p className="mt-1 text-xs font-semibold text-slate-500">{renewalText}</p>}
 
       <p className="mt-3 text-sm leading-6 text-slate-600">{text}</p>
 
