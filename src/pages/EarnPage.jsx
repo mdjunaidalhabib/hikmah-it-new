@@ -122,7 +122,7 @@ export default function EarnPage() {
         </div>
       </section>
 
-      {/* ── Partner Tiers ── */}
+      {/* ── Partner Tiers ─ */}
       <section className="bg-white py-14 lg:py-20">
         <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
           <div className="mb-10 text-center">
