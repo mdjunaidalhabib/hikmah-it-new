@@ -111,7 +111,7 @@ export default function CheckoutPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-brand-50 py-12 lg:py-16">
+      <div className="min-h-screen animate-page-in bg-brand-50 py-12 lg:py-16">
         <div className="mx-auto grid w-[min(1000px,calc(100%-40px))] gap-8 lg:grid-cols-[1fr_1.2fr]">
           <div className="grid gap-6">
             <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg">
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
 
   if (notFound) {
     return (
-      <div className="grid min-h-[60vh] place-items-center bg-brand-50 px-6 text-center">
+      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">প্যাকেজটি খুঁজে পাওয়া যায়নি</h1>
           <p className="mt-2 text-slate-600">এই প্যাকেজটি হয়তো সরিয়ে নেওয়া হয়েছে।</p>
@@ -150,7 +150,7 @@ export default function CheckoutPage() {
 
   if (user && !(user.emailVerified && user.mobileVerified)) {
     return (
-      <div className="grid min-h-[60vh] place-items-center bg-brand-50 px-6 text-center">
+      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center">
         <div className="max-w-md rounded-[2rem] border border-amber-200 bg-white p-8 shadow-xl">
           <ShieldCheck className="mx-auto text-amber-500" size={48} />
           <h1 className="mt-4 text-2xl font-bold text-slate-900">অ্যাকাউন্ট ভেরিফিকেশন প্রয়োজন</h1>
@@ -165,7 +165,7 @@ export default function CheckoutPage() {
 
   if (submitted) {
     return (
-      <div className="grid min-h-[60vh] place-items-center bg-brand-50 px-6 text-center">
+      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center">
         <div className="max-w-md rounded-[2rem] border border-emerald-200 bg-white p-8 shadow-xl">
           <CheckCircle2 className="mx-auto text-emerald-500" size={48} />
           <h1 className="mt-4 text-2xl font-bold text-slate-900">অর্ডার সাবমিট হয়েছে!</h1>
@@ -179,7 +179,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-50 py-12 lg:py-16">
+    <div className="min-h-screen animate-page-in bg-brand-50 py-12 lg:py-16">
       <Seo title="চেকআউট" description="আপনার প্যাকেজের জন্য পেমেন্ট সম্পন্ন করুন।" />
       <div className="mx-auto grid w-[min(1000px,calc(100%-40px))] gap-8 lg:grid-cols-[1fr_1.2fr]">
         {/* Package summary + payment instructions */}
