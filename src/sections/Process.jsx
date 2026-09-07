@@ -1,13 +1,16 @@
 import SectionHeader from "../components/SectionHeader";
-import { workProcess } from "../data/siteData";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function Process() {
+  const { t, tList } = useLanguage();
+  const workProcess = tList("data.workProcess");
+
   return (
     <section className="bg-brand-50 py-8 lg:py-12">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
-          eyebrow="কাজের প্রক্রিয়া"
-          title="সহজ, স্পষ্ট ও প্রজেক্ট-ফোকাসড ওয়ার্কফ্লো"
+          eyebrow={t("home.process.eyebrow")}
+          title={t("home.process.title")}
         />
 
         <div className="relative grid gap-5 md:grid-cols-2 lg:grid-cols-4">

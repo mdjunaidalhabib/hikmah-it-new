@@ -7,8 +7,10 @@ import Button from "../components/Button";
 import PasswordInput from "../components/PasswordInput";
 import { useUserAuth } from "../context/UserAuthContext";
 import { inputClass, labelClass } from "../components/formStyles";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function LoginPage() {
+  const { t } = useLanguage();
   const { login } = useUserAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,7 +29,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(form.identifier, form.password);
-      toast.success("লগইন সফল হয়েছে");
+      toast.success(t("loginPage.successToast"));
       navigate(location.state?.from?.pathname || "/profile", { replace: true });
     } catch (err) {
       setError(err.message);
@@ -39,27 +41,27 @@ export default function LoginPage() {
 
   return (
     <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
-      <Seo title="লগইন" description="আপনার Hikmah IT অ্যাকাউন্টে লগইন করুন।" />
+      <Seo title={t("loginPage.seo.title")} description={t("loginPage.seo.description")} />
       <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
-        <h1 className="text-center text-xl font-bold text-slate-900">লগইন করুন</h1>
-        <p className="mt-1 text-center text-sm text-slate-500">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+        <h1 className="text-center text-xl font-bold text-slate-900">{t("loginPage.heading")}</h1>
+        <p className="mt-1 text-center text-sm text-slate-500">{t("loginPage.subheading")}</p>
 
         <form className="mt-6 grid gap-4" onSubmit={handleSubmit} noValidate>
           <label className={labelClass}>
-            মোবাইল নাম্বার অথবা ইমেইল
+            {t("loginPage.identifierLabel")}
             <input
               className={inputClass}
               name="identifier"
               value={form.identifier}
               onChange={handleChange}
-              placeholder="01XXXXXXXXX অথবা email@example.com"
+              placeholder={t("loginPage.identifierPlaceholder")}
               required
               autoFocus
             />
           </label>
 
           <label className={labelClass}>
-            পাসওয়ার্ড
+            {t("loginPage.passwordLabel")}
             <PasswordInput name="password" value={form.password} onChange={handleChange} required />
           </label>
 
@@ -71,17 +73,17 @@ export default function LoginPage() {
 
           <Button type="submit" className="w-full" disabled={loading}>
             <LogIn size={16} />
-            {loading ? "লগইন হচ্ছে…" : "লগইন করুন"}
+            {loading ? t("loginPage.submitting") : t("loginPage.submit")}
           </Button>
         </form>
 
         <Link to="/forgot-password" className="mt-4 block text-center text-sm font-medium text-brand-600 hover:text-brand-700">
-          পাসওয়ার্ড ভুলে গেছেন?
+          {t("loginPage.forgotPassword")}
         </Link>
         <p className="mt-2 text-center text-sm text-slate-500">
-          অ্যাকাউন্ট নেই?{" "}
+          {t("loginPage.noAccount")}{" "}
           <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-700">
-            সাইন আপ করুন
+            {t("loginPage.signupLink")}
           </Link>
         </p>
       </div>

@@ -8,8 +8,10 @@ import PasswordInput from "../components/PasswordInput";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import { apiPost } from "../lib/api";
 import { inputClass, labelClass } from "../components/formStyles";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function ResetPasswordPage() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
   const [form, setForm] = useState({
@@ -31,11 +33,11 @@ export default function ResetPasswordPage() {
     setError("");
 
     if (form.newPassword !== form.confirmPassword) {
-      setError("পাসওয়ার্ড দুটি মিলছে না");
+      setError(t("resetPasswordPage.errors.passwordMismatch"));
       return;
     }
     if (form.newPassword.length < 8) {
-      setError("পাসওয়ার্ড কমপক্ষে ৮ ক্যারেক্টার হতে হবে");
+      setError(t("resetPasswordPage.errors.passwordTooShort"));
       return;
     }
 
@@ -46,7 +48,7 @@ export default function ResetPasswordPage() {
         otp: form.otp.trim(),
         newPassword: form.newPassword,
       });
-      toast.success("পাসওয়ার্ড রিসেট হয়েছে। এখন লগইন করুন।");
+      toast.success(t("resetPasswordPage.successToast"));
       navigate("/login", { replace: true });
     } catch (err) {
       setError(err.message);
@@ -58,38 +60,38 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
-      <Seo title="পাসওয়ার্ড রিসেট করুন" description="কোড দিয়ে নতুন পাসওয়ার্ড সেট করুন।" />
+      <Seo title={t("resetPasswordPage.seo.title")} description={t("resetPasswordPage.seo.description")} />
       <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
-        <h1 className="text-center text-xl font-bold text-slate-900">পাসওয়ার্ড রিসেট করুন</h1>
-        <p className="mt-1 text-center text-sm text-slate-500">ইমেইলে পাওয়া কোড ও নতুন পাসওয়ার্ড দিন</p>
+        <h1 className="text-center text-xl font-bold text-slate-900">{t("resetPasswordPage.heading")}</h1>
+        <p className="mt-1 text-center text-sm text-slate-500">{t("resetPasswordPage.subheading")}</p>
 
         <form className="mt-6 grid gap-4" onSubmit={handleSubmit} noValidate>
           <label className={labelClass}>
-            ইমেইল
+            {t("resetPasswordPage.emailLabel")}
             <input className={inputClass} type="email" name="email" value={form.email} onChange={handleChange} required autoFocus />
           </label>
 
           <label className={labelClass}>
-            ভেরিফিকেশন কোড
+            {t("resetPasswordPage.otpLabel")}
             <input
               className={inputClass}
               name="otp"
               value={form.otp}
               onChange={(e) => setForm((prev) => ({ ...prev, otp: e.target.value.replace(/\D/g, "").slice(0, 6) }))}
               inputMode="numeric"
-              placeholder="৬ ডিজিটের কোড"
+              placeholder={t("resetPasswordPage.otpPlaceholder")}
               required
             />
           </label>
 
           <label className={labelClass}>
-            নতুন পাসওয়ার্ড
+            {t("resetPasswordPage.newPasswordLabel")}
             <PasswordInput name="newPassword" value={form.newPassword} onChange={handleChange} required />
             <PasswordStrengthMeter password={form.newPassword} />
           </label>
 
           <label className={labelClass}>
-            পাসওয়ার্ড নিশ্চিত করুন
+            {t("resetPasswordPage.confirmPasswordLabel")}
             <PasswordInput name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
           </label>
 
@@ -101,12 +103,12 @@ export default function ResetPasswordPage() {
 
           <Button type="submit" className="w-full" disabled={loading}>
             <KeyRound size={16} />
-            {loading ? "সেভ হচ্ছে…" : "পাসওয়ার্ড রিসেট করুন"}
+            {loading ? t("resetPasswordPage.submitting") : t("resetPasswordPage.submit")}
           </Button>
         </form>
 
         <Link to="/login" className="mt-4 block text-center text-sm font-medium text-brand-600 hover:text-brand-700">
-          লগইনে ফিরে যান
+          {t("resetPasswordPage.backToLogin")}
         </Link>
       </div>
     </div>

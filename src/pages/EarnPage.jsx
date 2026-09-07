@@ -1,46 +1,24 @@
 import { ArrowRight, MessageCircle, TrendingUp, CheckCircle, Zap, Users, DollarSign, Star } from "lucide-react";
 import Button from "../components/Button";
 import Seo from "../components/Seo";
-import { joinRoles, brand } from "../data/siteData";
+import { brand, joinRoleIcons } from "../data/siteData";
+import { useLanguage } from "../i18n/LanguageContext";
 
-const steps = [
-  {
-    number: "01",
-    title: "যোগাযোগ করুন",
-    desc: "WhatsApp বা Contact ফর্মের মাধ্যমে আমাদের সাথে যুক্ত হন এবং পার্টনার হিসেবে রেজিস্ট্রেশন করুন।",
-  },
-  {
-    number: "02",
-    title: "ক্লায়েন্ট রেফার করুন",
-    desc: "আপনার পরিচিত ব্যবসা, শিক্ষা প্রতিষ্ঠান বা যেকোনো অর্গানাইজেশনকে Hikmah IT-এর সার্ভিস সম্পর্কে জানান।",
-  },
-  {
-    number: "03",
-    title: "প্রজেক্ট কনফার্ম হলে",
-    desc: "ক্লায়েন্টের প্রজেক্ট কনফার্ম ও পেমেন্ট হওয়ার পর আপনি নির্ধারিত কমিশন পাবেন।",
-  },
-  {
-    number: "04",
-    title: "কমিশন নিন",
-    desc: "bKash / নগদ / ব্যাংকের মাধ্যমে সরাসরি আপনার কমিশন ট্রান্সফার করা হবে।",
-  },
-];
-
-const perks = [
-  { icon: DollarSign, label: "প্রতি রেফারেলে আয়" },
-  { icon: Users, label: "নেটওয়ার্ক বাড়ান" },
-  { icon: Zap, label: "কোনো টেকনিক্যাল স্কিল লাগবে না" },
-  { icon: Star, label: "দ্রুত পেমেন্ট" },
-  { icon: TrendingUp, label: "আনলিমিটেড আর্নিং" },
-  { icon: CheckCircle, label: "বিশ্বস্ত পার্টনারশিপ" },
-];
+const perkIcons = [DollarSign, Users, Zap, Star, TrendingUp, CheckCircle];
 
 export default function EarnPage() {
+  const { t, tList } = useLanguage();
+
+  const steps = tList("earnPage.steps");
+  const perks = tList("earnPage.perks");
+  const heroStats = tList("earnPage.hero.stats");
+  const joinRoles = tList("data.joinRoles");
+
   return (
     <div className="min-h-screen bg-brand-50">
       <Seo
-        title="Hikmah IT-এর সাথে আয় করুন"
-        description="Hikmah IT-এর রেফারেল ও মার্কেটিং পার্টনার প্রোগ্রামে যোগ দিন — ক্লায়েন্ট রেফার করুন এবং প্রতিটি সফল প্রজেক্টে কমিশন আয় করুন।"
+        title={t("earnPage.seoTitle")}
+        description={t("earnPage.seoDescription")}
       />
 
       {/* ── Hero ── */}
@@ -53,38 +31,34 @@ export default function EarnPage() {
 
         <div className="relative mx-auto w-[min(820px,calc(100%-40px))] text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700 backdrop-blur">
-            💰 রেফারেল পার্টনার প্রোগ্রাম
+            💰 {t("earnPage.hero.badge")}
           </span>
 
           <h1 className="mt-6 text-3xl font-medium leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
-            রেফার করুন,{" "}
+            {t("earnPage.hero.titlePart1")}{" "}
             <span className="bg-gradient-to-r from-brand-600 to-emerald-500 bg-clip-text text-transparent">
-              আয় করুন
+              {t("earnPage.hero.titlePart2")}
             </span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            Hikmah IT-এর পার্টনার হয়ে প্রতিটি সফল ক্লায়েন্ট রেফারেলের জন্য আকর্ষণীয় কমিশন উপার্জন করুন — কোনো টেকনিক্যাল স্কিল ছাড়াই।
+            {t("earnPage.hero.subtitle")}
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button href={brand.whatsapp}>
               <MessageCircle size={16} />
-              এখনই যোগ দিন
+              {t("earnPage.hero.joinNowBtn")}
             </Button>
             <Button href="/contact" variant="ghost-dark">
-              আরও জানুন
+              {t("earnPage.hero.learnMoreBtn")}
               <ArrowRight size={16} />
             </Button>
           </div>
 
           {/* Quick stat strip */}
           <div className="mt-12 flex flex-wrap justify-center gap-6 sm:gap-10">
-            {[
-              { value: "৳৫০০+", label: "প্রতি রেফারেলে" },
-              { value: "৳২০k+", label: "সর্বোচ্চ আয়" },
-              { value: "২৪ ঘণ্টা", label: "পেমেন্ট টাইম" },
-            ].map((s) => (
+            {heroStats.map((s) => (
               <div key={s.label} className="text-center">
                 <p className="text-2xl font-bold text-slate-900">{s.value}</p>
                 <p className="mt-0.5 text-xs font-medium text-slate-500 uppercase tracking-widest">{s.label}</p>
@@ -99,25 +73,28 @@ export default function EarnPage() {
         <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
           <div className="mb-10 text-center">
             <span className="inline-block rounded-full border border-brand-200 bg-brand-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-brand-600">
-              কেন আমাদের সাথে?
+              {t("earnPage.why.eyebrow")}
             </span>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
-              পার্টনারদের সুবিধাসমূহ
+              {t("earnPage.why.heading")}
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {perks.map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex flex-col items-center gap-3 rounded-2xl border border-brand-100 bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg"
-              >
-                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-700 text-white shadow-md shadow-brand-900/20">
-                  <Icon size={20} />
+            {perks.map((label, i) => {
+              const Icon = perkIcons[i];
+              return (
+                <div
+                  key={label}
+                  className="flex flex-col items-center gap-3 rounded-2xl border border-brand-100 bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg"
+                >
+                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-700 text-white shadow-md shadow-brand-900/20">
+                    <Icon size={20} />
+                  </div>
+                  <p className="text-sm font-semibold leading-tight text-slate-700">{label}</p>
                 </div>
-                <p className="text-sm font-semibold leading-tight text-slate-700">{label}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -127,13 +104,13 @@ export default function EarnPage() {
         <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
           <div className="mb-10 text-center">
             <span className="inline-block rounded-full border border-brand-200 bg-brand-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-brand-600">
-              পার্টনার ক্যাটাগরি
+              {t("earnPage.tiers.eyebrow")}
             </span>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
-              আপনার পার্টনার ক্যাটাগরি বেছে নিন
+              {t("earnPage.tiers.heading")}
             </h2>
             <p className="mx-auto mt-3 max-w-lg text-slate-500">
-              আপনার নেটওয়ার্ক ও স্কিল অনুযায়ী তিনটি ক্যাটাগরিতে যোগ দিতে পারবেন।
+              {t("earnPage.tiers.subtitle")}
             </p>
           </div>
 
@@ -149,11 +126,11 @@ export default function EarnPage() {
               >
                 {i === 1 && (
                   <span className="absolute right-5 top-5 rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-slate-900">
-                    সবচেয়ে জনপ্রিয়
+                    {t("earnPage.tiers.mostPopular")}
                   </span>
                 )}
 
-                <div className="text-4xl">{role.icon}</div>
+                <div className="text-4xl">{joinRoleIcons[i]}</div>
 
                 <h3 className={`mt-4 text-xl font-medium ${i === 1 ? "text-white" : "text-slate-900"}`}>
                   {role.role}
@@ -178,7 +155,7 @@ export default function EarnPage() {
                     href={brand.whatsapp}
                     variant={i === 1 ? "ghost" : "ghost-dark"}
                   >
-                    যোগ দিন
+                    {t("earnPage.tiers.joinBtn")}
                     <ArrowRight size={14} />
                   </Button>
                 </div>
@@ -193,10 +170,10 @@ export default function EarnPage() {
         <div className="mx-auto w-[min(900px,calc(100%-40px))]">
           <div className="mb-10 text-center">
             <span className="inline-block rounded-full border border-brand-200 bg-brand-50 px-4 py-1 text-xs font-bold uppercase tracking-widest text-brand-600">
-              প্রক্রিয়া
+              {t("earnPage.how.eyebrow")}
             </span>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
-              কিভাবে আয় করবেন?
+              {t("earnPage.how.heading")}
             </h2>
           </div>
 
@@ -228,24 +205,24 @@ export default function EarnPage() {
       <section className="bg-white py-16 text-center lg:py-20">
         <div className="mx-auto w-[min(700px,calc(100%-40px))]">
           <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700">
-            🚀 শুরু করুন আজই
+            🚀 {t("earnPage.cta.badge")}
           </span>
 
           <h2 className="mt-5 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
-            পার্টনার হিসেবে যোগ দিন
+            {t("earnPage.cta.heading")}
           </h2>
 
           <p className="mt-4 text-base text-slate-600">
-            আজই আমাদের সাথে যোগ দিন এবং আপনার নেটওয়ার্ককে আয়ের সুযোগে পরিণত করুন।
+            {t("earnPage.cta.text")}
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button href={brand.whatsapp}>
               <MessageCircle size={16} />
-              WhatsApp-এ যোগ দিন
+              {t("earnPage.cta.whatsappJoinBtn")}
             </Button>
             <Button href="/contact" variant="ghost-dark">
-              যোগাযোগ করুন
+              {t("earnPage.cta.contactBtn")}
               <ArrowRight size={16} />
             </Button>
           </div>

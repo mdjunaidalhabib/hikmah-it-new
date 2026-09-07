@@ -13,6 +13,7 @@ import {
   LogIn,
   UserPlus,
   Sparkles,
+  Languages,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
@@ -21,6 +22,7 @@ import Button from "../components/Button";
 import { navItems } from "../data/siteData";
 import useSiteSettings from "../lib/useSiteSettings";
 import { useUserAuth } from "../context/UserAuthContext";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const iconMap = {
   "/": Home,
@@ -37,6 +39,7 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const { settings, loading: settingsLoading } = useSiteSettings();
   const { user, loading: userLoading } = useUserAuth();
+  const { t, lang, toggleLang } = useLanguage();
 
   useEffect(() => {
     setOpen(false);
@@ -49,7 +52,22 @@ export default function Navbar() {
     };
   }, [open]);
 
-  const allNavItems = [...navItems, { label: "আয় করুন", href: "/earn" }];
+  const allNavItems = [
+    ...navItems.map((item) => ({ ...item, label: t(`nav.${item.key}`) })),
+    { key: "earn", href: "/earn", label: t("nav.earn") },
+  ];
+
+  const LangSwitch = ({ className = "" }) => (
+    <button
+      type="button"
+      onClick={toggleLang}
+      aria-label="Switch language"
+      className={`inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full border font-semibold transition ${className}`}
+    >
+      <Languages size={14} />
+      {lang === "en" ? "বাং" : "EN"}
+    </button>
+  );
 
   return (
     <>
@@ -57,7 +75,7 @@ export default function Navbar() {
       <header className="sticky top-0 z-50 bg-brand-500 shadow-md shadow-brand-950/20">
         <div className="mx-auto flex h-[60px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-3">
           {/* Logo */}
-          <Link to="/" className="shrink-0" aria-label="Hikmah IT হোম">
+          <Link to="/" className="shrink-0" aria-label={t("common.homeAriaLabel")}>
             <Logo
               src={settings?.logoUrl}
               className={`h-16 w-[142px] shrink-0 object-contain object-left sm:h-48 sm:w-[155px] lg:h-[68px] lg:w-[167px] ${settingsLoading ? "invisible" : ""}`}
@@ -66,17 +84,17 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 lg:flex">
-            {allNavItems.map(({ href, label }) => (
+            {allNavItems.map(({ href, label, key }) => (
               <NavLink
                 key={href}
                 to={href}
                 className={({ isActive }) =>
                   `relative rounded-lg px-3 py-1.5 text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40 ${
                     isActive
-                      ? label === "আয় করুন"
+                      ? key === "earn"
                         ? "bg-white text-amber-600 shadow-sm shadow-black/10"
                         : "bg-white text-brand-700 shadow-sm shadow-black/10"
-                      : label === "আয় করুন"
+                      : key === "earn"
                         ? "text-amber-100 hover:bg-white/15 hover:text-white"
                         : "text-white/90 hover:bg-white/15 hover:text-white"
                   }`
@@ -89,6 +107,8 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+            <LangSwitch className="hidden border-white/25 bg-white/15 px-3 py-1.5 text-xs text-white backdrop-blur-sm hover:bg-white/25 lg:inline-flex" />
+
             <div className={`hidden min-w-[190px] items-center justify-end gap-1.5 lg:flex ${userLoading ? "invisible" : ""}`}>
               {user ? (
                 <Link
@@ -104,14 +124,14 @@ export default function Navbar() {
                     to="/login"
                     className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-semibold text-white/90 transition hover:bg-white/15 hover:text-white"
                   >
-                    লগইন
+                    {t("common.login")}
                   </Link>
                   <Button
                     href="/signup"
                     variant="white"
                     className="shrink-0 whitespace-nowrap"
                   >
-                    সাইন আপ
+                    {t("common.signup")}
                   </Button>
                 </>
               )}
@@ -122,14 +142,14 @@ export default function Navbar() {
               variant="white"
               className="shrink-0 whitespace-nowrap"
             >
-              ফ্রি জানুন
+              {t("common.freeConsult")}
             </Button>
 
             {/* Hamburger — mobile only */}
             <button
               type="button"
               onClick={() => setOpen(true)}
-              aria-label="মেনু খুলুন"
+              aria-label={t("common.openMenu")}
               className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white text-brand-700 shadow-md shadow-black/10 transition hover:bg-brand-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40 lg:hidden"
             >
               <Menu size={17} />
@@ -159,32 +179,35 @@ export default function Navbar() {
           <Link
             to="/"
             onClick={() => setOpen(false)}
-            aria-label="Hikmah IT হোম"
+            aria-label={t("common.homeAriaLabel")}
           >
             <Logo
               src={settings?.logoUrl}
               className={`h-8 w-[103px] shrink-0 object-contain object-left ${settingsLoading ? "invisible" : ""}`}
             />
           </Link>
-          <button
-            onClick={() => setOpen(false)}
-            aria-label="মেনু বন্ধ করুন"
-            className="grid h-7 w-7 place-items-center rounded-lg border border-brand-200 bg-white text-slate-500 transition hover:border-brand-300 hover:bg-brand-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50"
-          >
-            <X size={14} />
-          </button>
+          <div className="flex items-center gap-2">
+            <LangSwitch className="border-brand-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:bg-brand-100" />
+            <button
+              onClick={() => setOpen(false)}
+              aria-label={t("common.closeMenu")}
+              className="grid h-7 w-7 place-items-center rounded-lg border border-brand-200 bg-white text-slate-500 transition hover:border-brand-300 hover:bg-brand-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50"
+            >
+              <X size={14} />
+            </button>
+          </div>
         </div>
 
         {/* Nav links*/}
         <nav className="flex-1 overflow-y-auto px-3 py-5">
           <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">
-            নেভিগেশন
+            {t("common.navigation")}
           </p>
 
           <ul className="space-y-0.5">
-            {allNavItems.map(({ href, label }) => {
+            {allNavItems.map(({ href, label, key }) => {
               const Icon = iconMap[href] || ArrowRight;
-              const isEarn = label === "আয় করুন";
+              const isEarn = key === "earn";
               return (
                 <li key={href}>
                   <NavLink
@@ -224,12 +247,12 @@ export default function Navbar() {
 
                         {isEarn && !isActive && (
                           <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold tracking-wide text-amber-700">
-                            NEW
+                            {t("common.new")}
                           </span>
                         )}
                         {isEarn && isActive && (
                           <span className="rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-bold tracking-wide text-white">
-                            NEW
+                            {t("common.new")}
                           </span>
                         )}
                       </>
@@ -252,7 +275,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
               >
                 <UserRound size={14} />
-                আমার প্রোফাইল
+                {t("common.myProfile")}
               </Button>
             ) : (
               <div className="grid grid-cols-2 gap-2">
@@ -263,7 +286,7 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                 >
                   <LogIn size={14} />
-                  লগইন
+                  {t("common.login")}
                 </Button>
                 <Button
                   href="/signup"
@@ -272,7 +295,7 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                 >
                   <UserPlus size={14} />
-                  সাইন আপ
+                  {t("common.signup")}
                 </Button>
               </div>
             )}

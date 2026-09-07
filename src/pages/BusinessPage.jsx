@@ -5,12 +5,15 @@ import PageHero from '../components/PageHero'
 import PricingCard from '../components/PricingCard'
 import Seo from '../components/Seo'
 import Button from '../components/Button'
-import { businessWebsiteTypes } from '../data/siteData'
 import { apiGet } from '../lib/api'
+import { useLanguage } from '../i18n/LanguageContext'
 
 const icons = [Rocket, MonitorSmartphone, Globe2]
 
 export default function BusinessPage() {
+  const { t, tList } = useLanguage()
+  const businessWebsiteTypes = tList('data.businessWebsiteTypes')
+  const previewTags = tList('businessPage.preview.tags')
   const [plans, setPlans] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -23,17 +26,17 @@ export default function BusinessPage() {
   return (
     <div className="bg-brand-50 min-h-screen">
       <Seo
-        title="ল্যান্ডিং পেজ, পোর্টফোলিও ও বিজনেস ওয়েবসাইট"
-        description="পার্সোনাল ব্র্যান্ড, সার্ভিস বিজনেস, কোম্পানি প্রোফাইল এবং ক্যাম্পেইন-ফোকাসড অনলাইন উপস্থিতির জন্য প্রফেশনাল ওয়েবসাইট সলিউশন।"
+        title={t('businessPage.seo.title')}
+        description={t('businessPage.seo.description')}
       />
       <PageHero
-        eyebrow="বিজনেস ওয়েবসাইট"
-        title="ল্যান্ডিং পেজ, পোর্টফোলিও ও বিজনেস ওয়েবসাইট"
-        text="পার্সোনাল ব্র্যান্ড, সার্ভিস বিজনেস, কোম্পানি প্রোফাইল এবং ক্যাম্পেইন-ফোকাসড অনলাইন উপস্থিতির জন্য প্রফেশনাল ওয়েবসাইট সলিউশন।"
+        eyebrow={t('businessPage.hero.eyebrow')}
+        title={t('businessPage.hero.title')}
+        text={t('businessPage.hero.text')}
       >
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Button href="/contact">ওয়েবসাইট শুরু করুন <ArrowRight size={16} /></Button>
-          <Button href="/portfolio" variant="ghost-dark">লাইভ প্রজেক্ট দেখুন</Button>
+          <Button href="/contact">{t('businessPage.hero.ctaPrimary')} <ArrowRight size={16} /></Button>
+          <Button href="/portfolio" variant="ghost-dark">{t('businessPage.hero.ctaSecondary')}</Button>
         </div>
       </PageHero>
 
@@ -64,23 +67,23 @@ export default function BusinessPage() {
               <span className="h-3 w-3 rounded-full bg-amber-500" />
               <span className="h-3 w-3 rounded-full bg-brand-500" />
               <span className="h-3 w-3 rounded-full bg-emerald-500" />
-              <strong className="ml-2 text-sm font-semibold tracking-wide text-slate-700">ওয়েবসাইট প্রিভিউ</strong>
+              <strong className="ml-2 text-sm font-semibold tracking-wide text-slate-700">{t('businessPage.preview.badge')}</strong>
             </div>
             <div className="rounded-3xl border border-brand-100 bg-white p-7">
-              <small className="text-sm font-semibold uppercase tracking-wide text-brand-700">প্রফেশনাল ওয়েবসাইট</small>
-              <h3 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.03em] text-slate-950">বিশ্বাস তৈরি করুন, কাজ প্রদর্শন করুন এবং লিড সংগ্রহ করুন</h3>
-              <p className="mt-4 text-[15px] leading-7 text-slate-600">আধুনিক লেআউট, সার্ভিস হাইলাইট, পোর্টফোলিও এরিয়া, টেস্টিমোনিয়াল এবং WhatsApp/Facebook কন্টাক্ট ফ্লো।</p>
+              <small className="text-sm font-semibold uppercase tracking-wide text-brand-700">{t('businessPage.preview.tag')}</small>
+              <h3 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.03em] text-slate-950">{t('businessPage.preview.title')}</h3>
+              <p className="mt-4 text-[15px] leading-7 text-slate-600">{t('businessPage.preview.text')}</p>
             </div>
             <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-slate-700">
-              {["ক্লিন রেসপনসিভ ডিজাইন", "লিড-ফোকাসড স্ট্রাকচার", "ডোমেইন আলাদা"].map((item) => (
+              {previewTags.map((item) => (
                 <span key={item} className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-white px-4 py-2 shadow-sm">
                   <CheckCircle2 size={16} strokeWidth={2.2} /> {item}
                 </span>
               ))}
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Button href="/pricing">ওয়েবসাইট প্যাকেজ দেখুন</Button>
-              <Button href="/portfolio" variant="ghost-dark">শোকেস দেখুন</Button>
+              <Button href="/pricing">{t('businessPage.preview.primaryBtn')}</Button>
+              <Button href="/portfolio" variant="ghost-dark">{t('businessPage.preview.secondaryBtn')}</Button>
             </div>
           </div>
         </div>
@@ -89,11 +92,11 @@ export default function BusinessPage() {
       {/* Pricing */}
       <section className="py-8 lg:py-12 bg-white">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
-          <SectionHeader eyebrow="প্যাকেজ" title="ওয়েবসাইট প্রাইসিং প্যাকেজ" />
+          <SectionHeader eyebrow={t('businessPage.pricing.eyebrow')} title={t('businessPage.pricing.title')} />
           {loading ? (
-            <p className="py-10 text-center text-sm text-slate-400">লোড হচ্ছে…</p>
+            <p className="py-10 text-center text-sm text-slate-400">{t('common.loading')}</p>
           ) : plans.length === 0 ? (
-            <p className="py-10 text-center text-sm text-slate-400">এখনো কোনো প্যাকেজ যোগ করা হয়নি।</p>
+            <p className="py-10 text-center text-sm text-slate-400">{t('businessPage.pricing.empty')}</p>
           ) : (
             <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
               {plans.map((plan) => (

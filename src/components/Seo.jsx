@@ -1,7 +1,9 @@
 import { Helmet } from "react-helmet-async";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function Seo({ title, description }) {
-  const fullTitle = title ? `${title} | Hikmah IT` : "Hikmah IT | ই-কমার্স ও মাদরাসা ম্যানেজমেন্ট সফটওয়্যার";
+  const { t } = useLanguage();
+  const fullTitle = title ? `${title} | Hikmah IT` : t("seo.defaultTitle");
 
   return (
     <Helmet>

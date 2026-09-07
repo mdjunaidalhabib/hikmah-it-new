@@ -1,8 +1,14 @@
 import { ArrowRight, CheckCircle2, PlayCircle } from "lucide-react";
 import Button from "../components/Button";
-import { brand, aboutStats } from "../data/siteData";
+import { brand } from "../data/siteData";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function Hero() {
+  const { t, tList } = useLanguage();
+  const aboutStats = tList("data.aboutStats");
+  const previewItems = tList("home.hero.previewItems");
+  const highlightItems = tList("home.hero.highlightItems");
+
   return (
     <section className="relative overflow-hidden bg-hero-light pt-10 pb-16 sm:pt-14 sm:pb-20 lg:py-24" id="home">
       <div className="absolute inset-0 opacity-70 bg-grid-overlay" />
@@ -11,23 +17,23 @@ export default function Hero() {
           <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-600 shadow-sm shadow-brand-900/5 sm:gap-2 sm:px-3.5 sm:py-2 sm:text-sm">
             <CheckCircle2 size={16} className="shrink-0 sm:hidden" />
             <CheckCircle2 size={18} className="hidden shrink-0 sm:block" />
-            প্রফেশনাল ওয়েবসাইট ও সফটওয়্যার এজেন্সি
+            {t("home.hero.badge")}
           </span>
           <h1 className="mt-5 max-w-2xl text-2xl font-semibold leading-snug tracking-[-0.02em] sm:text-3xl sm:leading-[1.3] lg:text-[2.65rem] lg:leading-[1.2]">
-            <span className="block text-brand-600">ই-কমার্স ওয়েবসাইট, </span>
-            <span className="block text-emerald-600">মাদরাসা ম্যানেজমেন্ট সিস্টেম, </span>
-            <span className="block text-blue-600">পোর্টফোলিও & বিজনেস সাইট, </span>
-            <span className="block text-violet-600">ডোমেইন ও হোস্টিং সার্ভিস।</span>
+            <span className="block text-brand-600">{t("home.hero.titleLine1")} </span>
+            <span className="block text-emerald-600">{t("home.hero.titleLine2")} </span>
+            <span className="block text-blue-600">{t("home.hero.titleLine3")} </span>
+            <span className="block text-violet-600">{t("home.hero.titleLine4")}</span>
           </h1>
           <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-            {brand.name} ব্যবসা ও প্রতিষ্ঠানকে আধুনিক ওয়েবসাইট, ই-কমার্স প্ল্যাটফর্ম, অ্যাডমিন ড্যাশবোর্ড, পোর্টফোলিও/ল্যান্ডিং পেজ, হোস্টিং-ডোমেইন সাপোর্ট এবং প্রিমিয়াম ইউআই সহ ডিজিটাল ম্যানেজমেন্ট সিস্টেম তৈরিতে সাহায্য করে।
+            {t("home.hero.description").replace("{brand}", brand.name)}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button href="/contact">
-              প্রজেক্ট শুরু করুন <ArrowRight size={18} />
+              {t("home.hero.ctaPrimary")} <ArrowRight size={18} />
             </Button>
             <Button href="/services" variant="ghost-dark">
-              <PlayCircle size={18} /> সার্ভিস দেখুন
+              <PlayCircle size={18} /> {t("home.hero.ctaSecondary")}
             </Button>
           </div>
 
@@ -45,14 +51,14 @@ export default function Hero() {
           <div className="relative overflow-hidden rounded-3xl border border-brand-100 bg-gradient-to-br from-brand-400/90 via-brand-500/90 to-brand-600/90 p-6">
             <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-amber-200/20 blur-3xl" />
             <div className="relative mb-6 flex items-center justify-between gap-3">
-              <span className="rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold text-white ring-1 ring-white/20">লাইভ প্রজেক্ট প্রিভিউ</span>
-              <span className="text-sm text-brand-100">প্রিমিয়াম ইউআই</span>
+              <span className="rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold text-white ring-1 ring-white/20">{t("home.hero.previewBadge")}</span>
+              <span className="text-sm text-brand-100">{t("home.hero.previewTag")}</span>
             </div>
             <h3 className="relative max-w-sm text-lg font-medium leading-snug tracking-[-0.01em] text-white">
-              গ্রোথের জন্য তৈরি আধুনিক ওয়েবসাইট, ই-কমার্স স্টোর ও ম্যানেজমেন্ট সিস্টেম।
+              {t("home.hero.previewTitle")}
             </h3>
             <div className="relative mt-6 grid gap-3">
-              {["মাদরাসা ম্যানেজমেন্ট", "ই-কমার্স স্টোর", "পোর্টফোলিও ও বিজনেস ওয়েবসাইট", "ল্যান্ডিং পেজ", "হোস্টিং ও ডোমেইন"].map((item) => (
+              {previewItems.map((item) => (
                 <div key={item} className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 transition hover:bg-white/15">
                   <span className="text-sm font-medium text-white">{item}</span>
                   <CheckCircle2 size={18} className="text-amber-200" />
@@ -61,7 +67,7 @@ export default function Hero() {
             </div>
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3">
-            {["দ্রুত ডেলিভারি", "রেসপনসিভ ডিজাইন", "SEO ফ্রেন্ডলি", "সিকিউর সেটআপ"].map((item) => (
+            {highlightItems.map((item) => (
               <div key={item} className="rounded-2xl border border-brand-100 bg-brand-50 p-4 transition hover:border-brand-200 hover:bg-brand-100/60">
                 <span className="text-sm font-medium text-brand-700">{item}</span>
               </div>

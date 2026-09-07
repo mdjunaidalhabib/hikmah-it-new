@@ -5,10 +5,12 @@ import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { SkeletonCard } from "../components/Skeleton";
 import { apiGet } from "../lib/api";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function PricingPage() {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     apiGet("/public/packages")
@@ -25,13 +27,13 @@ export default function PricingPage() {
   return (
     <div className="bg-brand-50 min-h-screen">
       <Seo
-        title="প্যাকেজ ও মূল্য"
-        description="বাংলাদেশে ওয়েবসাইট, ই-কমার্স স্টোর, মাদরাসা ম্যানেজমেন্ট সিস্টেম এবং ডোমেইন/হোস্টিং সাপোর্টের জন্য সাশ্রয়ী মূল্য।"
+        title={t("pricingPage.seo.title")}
+        description={t("pricingPage.seo.description")}
       />
       <PageHero
-        eyebrow="প্যাকেজ"
-        title="প্রফেশনাল সার্ভিস প্যাকেজ"
-        text="ওয়েবসাইট, ই-কমার্স স্টোর, মাদরাসা ম্যানেজমেন্ট সিস্টেম এবং ডোমেইন/হোস্টিং সাপোর্টের জন্য সাশ্রয়ী মূল্য।"
+        eyebrow={t("pricingPage.hero.eyebrow")}
+        title={t("pricingPage.hero.title")}
+        text={t("pricingPage.hero.text")}
       />
 
       <section className="py-12 lg:py-16">
@@ -43,7 +45,7 @@ export default function PricingPage() {
               ))}
             </div>
           ) : packages.length === 0 ? (
-            <p className="py-10 text-center text-sm text-slate-400">এখনো কোনো প্যাকেজ যোগ করা হয়নি। শীঘ্রই আসছে।</p>
+            <p className="py-10 text-center text-sm text-slate-400">{t("pricingPage.empty")}</p>
           ) : (
             <div className="grid gap-14">
               {Object.entries(grouped).map(([category, plans]) => (
@@ -64,11 +66,11 @@ export default function PricingPage() {
       {/* Bottom CTA */}
       <section className="py-12 bg-white text-center">
         <div className="mx-auto w-[min(600px,calc(100%-40px))]">
-          <h2 className="text-2xl font-bold text-slate-900">কোন প্যাকেজ নিবেন বুঝতে পারছেন না?</h2>
-          <p className="mt-3 text-slate-600">WhatsApp-এ যোগাযোগ করুন, আমরা আপনার প্রয়োজন অনুযায়ী সেরা অপশন সাজেস্ট করব।</p>
+          <h2 className="text-2xl font-bold text-slate-900">{t("pricingPage.cta.title")}</h2>
+          <p className="mt-3 text-slate-600">{t("pricingPage.cta.text")}</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button href="/contact">এখনই যোগাযোগ করুন</Button>
-            <Button href="/services" variant="ghost-dark">সব সার্ভিস দেখুন</Button>
+            <Button href="/contact">{t("pricingPage.cta.contact")}</Button>
+            <Button href="/services" variant="ghost-dark">{t("pricingPage.cta.services")}</Button>
           </div>
         </div>
       </section>

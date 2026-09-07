@@ -2,136 +2,109 @@ import PageHero from '../components/PageHero'
 import Seo from '../components/Seo'
 import { brand } from '../data/siteData'
 import useSiteSettings from '../lib/useSiteSettings'
-
-const lastUpdated = '৭ সেপ্টেম্বর, ২০২৬'
-
-const sections = [
-  {
-    title: '১. শর্তাবলী গ্রহণ',
-    body: (
-      <p>
-        Hikmah IT-এর ওয়েবসাইট, অ্যাকাউন্ট (Google Sign-In সহ) বা যেকোনো সার্ভিস ব্যবহার করার মাধ্যমে আপনি এই ব্যবহারের শর্তাবলীতে সম্মত হচ্ছেন। আপনি যদি এই শর্তাবলীর সাথে একমত না হন, তাহলে আমাদের ওয়েবসাইট বা সার্ভিস ব্যবহার করা থেকে বিরত থাকুন।
-      </p>
-    ),
-  },
-  {
-    title: '২. সার্ভিসের বিবরণ',
-    body: (
-      <p>
-        Hikmah IT ওয়েব ডেভেলপমেন্ট, ই-কমার্স প্ল্যাটফর্ম, মাদরাসা/প্রতিষ্ঠান ম্যানেজমেন্ট সিস্টেম, ডোমেইন-হোস্টিং সহায়তা এবং সংশ্লিষ্ট ডিজিটাল সার্ভিস প্রদান করে। প্যাকেজের বিস্তারিত, মূল্য ও ফিচার সময়ে সময়ে পরিবর্তিত হতে পারে এবং তা আমাদের ওয়েবসাইটে উল্লেখ থাকবে।
-      </p>
-    ),
-  },
-  {
-    title: '৩. অ্যাকাউন্ট ও Google Sign-In',
-    body: (
-      <>
-        <ul className="list-disc space-y-1 pl-5">
-          <li>অ্যাকাউন্ট তৈরির সময় প্রদত্ত তথ্য অবশ্যই সত্য ও হালনাগাদ হতে হবে</li>
-          <li>Google Sign-In ব্যবহার করলে আপনি নিশ্চিত করছেন যে আপনি সেই Google অ্যাকাউন্টের বৈধ মালিক</li>
-          <li>আপনার অ্যাকাউন্ট পাসওয়ার্ড ও লগইন তথ্যের গোপনীয়তা রক্ষার দায়িত্ব সম্পূর্ণভাবে আপনার</li>
-          <li>আপনার অ্যাকাউন্টের মাধ্যমে সংঘটিত যেকোনো কার্যক্রমের জন্য আপনি দায়ী থাকবেন</li>
-          <li>অস্বাভাবিক বা অননুমোদিত ব্যবহারের সন্দেহ হলে অবিলম্বে আমাদের জানাতে হবে</li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    title: '৪. পেমেন্ট ও মূল্য পরিশোধ',
-    body: (
-      <ul className="list-disc space-y-1 pl-5">
-        <li>প্যাকেজ বা সার্ভিসের মূল্য অর্ডার নিশ্চিতকরণের সময় নির্ধারিত হারে প্রযোজ্য</li>
-        <li>পেমেন্ট বিকাশ, নগদ, রকেট, SSLCommerz বা অন্যান্য অনুমোদিত মাধ্যমে গ্রহণ করা হয়</li>
-        <li>ডোমেইন ও হোস্টিং প্রোভাইডারের (Hostinger, Namecheap ইত্যাদি) নিজস্ব বিলিং প্রযোজ্য হতে পারে, যা আমাদের সার্ভিস চার্জ থেকে আলাদা</li>
-        <li>অসম্পূর্ণ বা বিলম্বিত পেমেন্টের ক্ষেত্রে সার্ভিস স্থগিত রাখার অধিকার আমরা সংরক্ষণ করি</li>
-      </ul>
-    ),
-  },
-  {
-    title: '৫. রিফান্ড নীতি',
-    body: (
-      <p>
-        প্রজেক্টের কাজ শুরু হওয়ার পর প্রদত্ত অগ্রিম সাধারণত ফেরতযোগ্য নয়, কারণ তা কাজে ব্যয়িত রিসোর্স ও সময়ের বিপরীতে নেওয়া হয়। তবে আমাদের ব্যর্থতার কারণে সার্ভিস প্রদান সম্ভব না হলে, কেস-বাই-কেস ভিত্তিতে যৌক্তিক সমাধানের চেষ্টা করা হবে। নির্দিষ্ট রিফান্ড সংক্রান্ত বিষয়ে সরাসরি আমাদের সাথে যোগাযোগ করুন।
-      </p>
-    ),
-  },
-  {
-    title: '৬. ব্যবহারকারীর দায়িত্ব',
-    body: (
-      <ul className="list-disc space-y-1 pl-5">
-        <li>ওয়েবসাইট বা সার্ভিস কোনো বেআইনি, প্রতারণামূলক বা ক্ষতিকর উদ্দেশ্যে ব্যবহার করা যাবে না</li>
-        <li>অন্য কোনো ব্যবহারকারী বা তৃতীয় পক্ষের অধিকার লঙ্ঘন করা যাবে না</li>
-        <li>সিস্টেমে অননুমোদিতভাবে প্রবেশের চেষ্টা, ম্যালওয়্যার ছড়ানো বা সিকিউরিটি লঙ্ঘনের চেষ্টা কঠোরভাবে নিষিদ্ধ</li>
-        <li>প্রদত্ত কন্টেন্ট, ছবি বা তথ্যের স্বত্ব ও বৈধতার দায়িত্ব ব্যবহারকারীর নিজের</li>
-      </ul>
-    ),
-  },
-  {
-    title: '৭. বুদ্ধিবৃত্তিক সম্পত্তি',
-    body: (
-      <p>
-        প্রজেক্ট সম্পূর্ণ ও পূর্ণ পেমেন্ট গ্রহণের পর, নির্মিত ওয়েবসাইট/সিস্টেমের সোর্স কোডের মালিকানা গ্রাহকের কাছে হস্তান্তরিত হয়, যদি না আলাদাভাবে চুক্তিতে ভিন্ন কিছু উল্লেখ থাকে। তবে Hikmah IT-এর নিজস্ব টেমপ্লেট, টুলস, ব্র্যান্ডিং ও পূর্ব-বিদ্যমান কোড লাইব্রেরির মালিকানা আমাদের কাছেই থাকবে এবং তা পোর্টফোলিও/প্রদর্শনের উদ্দেশ্যে ব্যবহার করার অধিকার আমরা সংরক্ষণ করি।
-      </p>
-    ),
-  },
-  {
-    title: '৮. তৃতীয় পক্ষের সার্ভিস',
-    body: (
-      <p>
-        আমাদের ওয়েবসাইট ও সার্ভিসে Google Sign-In, পেমেন্ট গেটওয়ে এবং হোস্টিং প্রোভাইডারের মতো তৃতীয় পক্ষের সার্ভিস ব্যবহৃত হতে পারে। এসব সার্ভিসের নিজস্ব শর্তাবলী ও প্রাইভেসি পলিসি প্রযোজ্য, এবং তাদের কার্যক্রমের জন্য Hikmah IT দায়ী থাকবে না।
-      </p>
-    ),
-  },
-  {
-    title: '৯. দায়বদ্ধতার সীমাবদ্ধতা',
-    body: (
-      <p>
-        আমরা সর্বোচ্চ মান বজায় রাখার চেষ্টা করি, তবে সার্ভিস "যেমন আছে" ভিত্তিতে প্রদান করা হয়। প্রযুক্তিগত ত্রুটি, তৃতীয় পক্ষের সার্ভিস বিভ্রাট বা ব্যবহারকারীর ভুল ব্যবহারের কারণে সৃষ্ট পরোক্ষ ক্ষতির জন্য আইন দ্বারা অনুমোদিত সর্বোচ্চ সীমা পর্যন্ত Hikmah IT দায়ী থাকবে না।
-      </p>
-    ),
-  },
-  {
-    title: '১০. সার্ভিস বাতিল ও স্থগিতকরণ',
-    body: (
-      <p>
-        শর্তাবলী লঙ্ঘন, প্রতারণামূলক কার্যক্রম বা অপব্যবহারের ক্ষেত্রে আমরা পূর্ব নোটিশ ছাড়াই কোনো অ্যাকাউন্ট বা সার্ভিস স্থগিত বা বাতিল করার অধিকার সংরক্ষণ করি। ব্যবহারকারীও যেকোনো সময় লিখিতভাবে জানিয়ে তাদের অ্যাকাউন্ট বন্ধের অনুরোধ করতে পারেন।
-      </p>
-    ),
-  },
-  {
-    title: '১১. শর্তাবলীর পরিবর্তন',
-    body: (
-      <p>
-        আমরা প্রয়োজন অনুযায়ী এই শর্তাবলী হালনাগাদ করতে পারি। উল্লেখযোগ্য পরিবর্তনের ক্ষেত্রে ওয়েবসাইটে নোটিশ দেওয়া হবে। পরিবর্তনের পর সার্ভিস ব্যবহার চালিয়ে গেলে তা নতুন শর্তাবলীতে সম্মতি হিসেবে গণ্য হবে।
-      </p>
-    ),
-  },
-  {
-    title: '১২. প্রযোজ্য আইন',
-    body: (
-      <p>
-        এই শর্তাবলী বাংলাদেশের প্রচলিত আইন অনুযায়ী পরিচালিত ও ব্যাখ্যা করা হবে। এই শর্তাবলী সংক্রান্ত যেকোনো বিরোধ বাংলাদেশের প্রাসঙ্গিক আদালতের এখতিয়ারাধীন হবে।
-      </p>
-    ),
-  },
-]
+import { useLanguage } from '../i18n/LanguageContext'
 
 export default function TermsOfServicePage() {
   const { settings } = useSiteSettings()
+  const { t, tList } = useLanguage()
   const email = settings?.email || brand.email
   const emailHref = settings?.email ? `mailto:${settings.email}` : brand.emailHref
   const phone = settings?.phone || brand.phone
 
+  const s = (key, fallback) => t(`termsOfServicePage.sections.${key}`, fallback)
+  const sl = (key) => tList(`termsOfServicePage.sections.${key}`)
+
+  const sections = [
+    {
+      key: 's1',
+      title: s('s1.title'),
+      body: <p>{s('s1.text')}</p>,
+    },
+    {
+      key: 's2',
+      title: s('s2.title'),
+      body: <p>{s('s2.text')}</p>,
+    },
+    {
+      key: 's3',
+      title: s('s3.title'),
+      body: (
+        <ul className="list-disc space-y-1 pl-5">
+          {sl('s3.items').map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      ),
+    },
+    {
+      key: 's4',
+      title: s('s4.title'),
+      body: (
+        <ul className="list-disc space-y-1 pl-5">
+          {sl('s4.items').map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      ),
+    },
+    {
+      key: 's5',
+      title: s('s5.title'),
+      body: <p>{s('s5.text')}</p>,
+    },
+    {
+      key: 's6',
+      title: s('s6.title'),
+      body: (
+        <ul className="list-disc space-y-1 pl-5">
+          {sl('s6.items').map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      ),
+    },
+    {
+      key: 's7',
+      title: s('s7.title'),
+      body: <p>{s('s7.text')}</p>,
+    },
+    {
+      key: 's8',
+      title: s('s8.title'),
+      body: <p>{s('s8.text')}</p>,
+    },
+    {
+      key: 's9',
+      title: s('s9.title'),
+      body: <p>{s('s9.text')}</p>,
+    },
+    {
+      key: 's10',
+      title: s('s10.title'),
+      body: <p>{s('s10.text')}</p>,
+    },
+    {
+      key: 's11',
+      title: s('s11.title'),
+      body: <p>{s('s11.text')}</p>,
+    },
+    {
+      key: 's12',
+      title: s('s12.title'),
+      body: <p>{s('s12.text')}</p>,
+    },
+  ]
+
   return (
     <div className="bg-brand-50 min-h-screen">
       <Seo
-        title="ব্যবহারের শর্তাবলী"
-        description="Hikmah IT-এর ওয়েবসাইট ও সার্ভিস (Google Sign-In সহ) ব্যবহারের শর্তাবলী পড়ুন — অ্যাকাউন্ট, পেমেন্ট, রিফান্ড ও দায়বদ্ধতা সংক্রান্ত বিস্তারিত।"
+        title={t('termsOfServicePage.seoTitle')}
+        description={t('termsOfServicePage.seoDescription')}
       />
       <PageHero
-        eyebrow="আইনি তথ্য"
-        title="ব্যবহারের শর্তাবলী"
-        text={`সর্বশেষ আপডেট: ${lastUpdated}`}
+        eyebrow={t('termsOfServicePage.eyebrow')}
+        title={t('termsOfServicePage.title')}
+        text={`${t('termsOfServicePage.lastUpdatedLabel')} ${t('termsOfServicePage.lastUpdated')}`}
       />
 
       <section className="py-10 lg:py-14">
@@ -139,20 +112,20 @@ export default function TermsOfServicePage() {
           <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl sm:p-10">
             <div className="space-y-9">
               {sections.map((section) => (
-                <div key={section.title}>
+                <div key={section.key}>
                   <h2 className="text-lg font-bold text-slate-900 sm:text-xl">{section.title}</h2>
                   <div className="mt-3 space-y-3 leading-8 text-slate-600">{section.body}</div>
                 </div>
               ))}
 
               <div>
-                <h2 className="text-lg font-bold text-slate-900 sm:text-xl">১৩. যোগাযোগ করুন</h2>
+                <h2 className="text-lg font-bold text-slate-900 sm:text-xl">{s('contact.title')}</h2>
                 <div className="mt-3 space-y-1 leading-8 text-slate-600">
-                  <p>এই শর্তাবলী সম্পর্কে কোনো প্রশ্ন থাকলে যোগাযোগ করুন:</p>
+                  <p>{s('contact.intro')}</p>
                   <p>
-                    ইমেইল: <a href={emailHref} className="font-semibold text-brand-700 hover:underline">{email}</a>
+                    {s('contact.emailLabel')} <a href={emailHref} className="font-semibold text-brand-700 hover:underline">{email}</a>
                   </p>
-                  <p>ফোন: <span className="font-semibold text-slate-800">{phone}</span></p>
+                  <p>{s('contact.phoneLabel')} <span className="font-semibold text-slate-800">{phone}</span></p>
                 </div>
               </div>
             </div>

@@ -3,10 +3,12 @@ import { Quote, Star } from "lucide-react";
 import SectionHeader from "../components/SectionHeader";
 import Avatar from "../components/Avatar";
 import { apiGet } from "../lib/api";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function Testimonials({ category }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     apiGet("/public/testimonials")
@@ -21,9 +23,9 @@ export default function Testimonials({ category }) {
     <section className="bg-brand-50 py-8 lg:py-12" id="testimonials">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
-          eyebrow="ক্লায়েন্ট রিভিউ"
-          title="আমাদের ক্লায়েন্টরা যা বলেন"
-          text="বাস্তব ক্লায়েন্টদের অভিজ্ঞতা।"
+          eyebrow={t("home.testimonials.eyebrow")}
+          title={t("home.testimonials.title")}
+          text={t("home.testimonials.text")}
         />
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">

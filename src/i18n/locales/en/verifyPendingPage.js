@@ -1,0 +1,27 @@
+export default {
+  verifyPendingPage: {
+    seo: {
+      title: "Account Verification",
+      description: "Verify your email and mobile number.",
+    },
+    heading: "Account Verification",
+    subheadingVerified: "Your account is fully verified.",
+    subheadingPending: "You'll need to verify both your email and mobile number before placing an order.",
+    emailLabel: "Email",
+    mobileLabel: "Mobile",
+    verified: "Verified",
+    verifyThis: "Verify {label}",
+    sendCodePrompt: "Tap below to send a verification code to {contact}",
+    sendCode: "Send Verification Code",
+    sending: "Sending…",
+    enterCodePrompt: "Enter the 6-digit code sent to {contact}",
+    otpPlaceholder: "——— ———",
+    verify: "Verify",
+    verifying: "Verifying…",
+    resend: "Resend Code",
+    resendWithCooldown: "Resend ({seconds}s)",
+    goToProfile: "Go to Profile",
+    otpLengthError: "Enter the 6-digit code",
+    verifiedToast: "{label} verified",
+  },
+};

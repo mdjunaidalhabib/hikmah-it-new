@@ -6,10 +6,12 @@ import Button from "../components/Button";
 import { Skeleton } from "../components/Skeleton";
 import FadeImage from "../components/FadeImage";
 import { apiGet } from "../lib/api";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function PortfolioPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     apiGet("/public/portfolio")
@@ -20,13 +22,13 @@ export default function PortfolioPage() {
   return (
     <div className="bg-brand-50 min-h-screen">
       <Seo
-        title="পোর্টফোলিও ও লাইভ প্রজেক্ট"
-        description="Hikmah IT ক্লায়েন্টদের জন্য যেসব লাইভ ওয়েবসাইট তৈরি করেছে তা দেখুন — ই-কমার্স স্টোর, বিজনেস ওয়েবসাইট এবং ল্যান্ডিং পেজ।"
+        title={t("portfolioPage.seo.title")}
+        description={t("portfolioPage.seo.description")}
       />
       <PageHero
-        eyebrow="প্রজেক্ট শোকেস"
-        title="আমাদের কাজ"
-        text="আমরা ক্লায়েন্টদের জন্য যেসব লাইভ ওয়েবসাইট তৈরি করেছি — লাইভ প্রজেক্ট দেখতে যেকোনো কার্ডে ক্লিক করুন।"
+        eyebrow={t("portfolioPage.hero.eyebrow")}
+        title={t("portfolioPage.hero.title")}
+        text={t("portfolioPage.hero.text")}
       />
 
       <section className="py-12 lg:py-16">
@@ -44,7 +46,7 @@ export default function PortfolioPage() {
               ))}
             </div>
           ) : items.length === 0 ? (
-            <p className="py-10 text-center text-sm text-slate-400">এখনো কোনো প্রজেক্ট যোগ করা হয়নি।</p>
+            <p className="py-10 text-center text-sm text-slate-400">{t("portfolioPage.empty")}</p>
           ) : (
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {items.map((item) => (
@@ -64,7 +66,7 @@ export default function PortfolioPage() {
                       />
                     )}
                     <div className="absolute inset-0 grid place-items-center bg-slate-950/0 opacity-0 transition duration-300 group-hover:bg-slate-950/40 group-hover:opacity-100">
-                      <span className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900">ওয়েবসাইট দেখুন</span>
+                      <span className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900">{t("portfolioPage.viewWebsite")}</span>
                     </div>
                   </div>
                   <div className="p-4">
@@ -77,10 +79,10 @@ export default function PortfolioPage() {
           )}
 
           <div className="mt-12 text-center">
-            <p className="text-slate-600">এমন কিছু চান? চলুন একসাথে দারুণ কিছু তৈরি করি।</p>
+            <p className="text-slate-600">{t("portfolioPage.bottom.text")}</p>
             <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <Button href="/contact">প্রজেক্ট শুরু করুন <ArrowRight size={16} /></Button>
-              <Button href="/pricing" variant="ghost-dark">প্যাকেজ দেখুন</Button>
+              <Button href="/contact">{t("portfolioPage.bottom.startProject")} <ArrowRight size={16} /></Button>
+              <Button href="/pricing" variant="ghost-dark">{t("portfolioPage.bottom.viewPackages")}</Button>
             </div>
           </div>
         </div>

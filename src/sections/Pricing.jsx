@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import SectionHeader from "../components/SectionHeader";
 import PricingCard from "../components/PricingCard";
 import { apiGet } from "../lib/api";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function Pricing() {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     apiGet("/public/packages")
@@ -26,12 +28,12 @@ export default function Pricing() {
       <div className="pointer-events-none absolute left-1/2 top-0 h-80 w-[36rem] -translate-x-1/2 rounded-full bg-brand-400/10 blur-3xl" />
       <div className="relative mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
-          eyebrow="প্যাকেজ"
-          title="প্রফেশনাল সার্ভিস প্যাকেজ"
+          eyebrow={t("home.pricing.eyebrow")}
+          title={t("home.pricing.title")}
         />
 
         {loading ? (
-          <p className="py-10 text-center text-sm text-slate-400">লোড হচ্ছে…</p>
+          <p className="py-10 text-center text-sm text-slate-400">{t("common.loading")}</p>
         ) : (
           <div className="grid gap-12">
             {Object.entries(grouped).map(([category, plans]) => (

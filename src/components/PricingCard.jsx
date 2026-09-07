@@ -1,11 +1,13 @@
 import { CheckCircle2, XCircle } from "lucide-react";
 import Button from "./Button";
 import { formatTaka, getDisplayPrice, getDiscountPercent } from "../lib/pricing";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function PricingCard({ plan }) {
+  const { t } = useLanguage();
   const { _id, name, originalPriceAmount, periodLabel, text, features, notIncluded, limits, renewalText, highlighted } = plan;
   const href = _id ? `/checkout/${_id}` : "/pricing";
-  const label = _id ? "প্যাকেজ কিনুন" : "প্যাকেজ দেখুন";
+  const label = _id ? t("pricingCard.buyPackage") : t("pricingCard.viewPackage");
   const price = getDisplayPrice(plan);
   const discountPercent = getDiscountPercent(plan);
 
@@ -19,7 +21,7 @@ export default function PricingCard({ plan }) {
     >
       {highlighted && (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-1 text-xs font-bold uppercase tracking-wide text-slate-900 shadow-md shadow-amber-500/30">
-          সুপারিশকৃত
+          {t("pricingCard.recommended")}
         </span>
       )}
 
@@ -33,7 +35,7 @@ export default function PricingCard({ plan }) {
       {discountPercent > 0 && (
         <p className="mt-1 text-sm text-slate-400">
           <span className="line-through">{formatTaka(originalPriceAmount)}</span>{" "}
-          <span className="font-semibold text-emerald-600">{discountPercent}% ছাড়</span>
+          <span className="font-semibold text-emerald-600">{discountPercent}{t("pricingCard.discount")}</span>
         </p>
       )}
 

@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import Button from "./Button";
 import { brand } from "../data/siteData";
 import { apiPost } from "../lib/api";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const inputClass =
   "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100 focus-visible:ring-3";
@@ -12,16 +13,9 @@ const invalidInputClass =
 
 const requiredFields = ["name", "phone"];
 
-const serviceOptions = [
-  "ই-কমার্স ওয়েবসাইট",
-  "মাদরাসা ম্যানেজমেন্ট সিস্টেম",
-  "বিজনেস ওয়েবসাইট",
-  "পোর্টফোলিও ওয়েবসাইট",
-  "ল্যান্ডিং পেজ",
-  "হোস্টিং ও ডোমেইন",
-];
-
 export default function ContactForm({ className = "" }) {
+  const { t, tList } = useLanguage();
+  const serviceOptions = tList("contactForm.serviceOptions");
   const [form, setForm] = useState({ name: "", phone: "", service: "", message: "" });
   const [error, setError] = useState("");
   const [invalidFields, setInvalidFields] = useState([]);
@@ -43,7 +37,7 @@ export default function ContactForm({ className = "" }) {
     const missing = requiredFields.filter((field) => !form[field].trim());
     if (missing.length > 0) {
       setInvalidFields(missing);
-      setError("অনুগ্রহ করে লাল চিহ্নিত সব প্রয়োজনীয় তথ্য পূরণ করুন।");
+      setError(t("contactForm.requiredError"));
       return;
     }
 
@@ -54,19 +48,19 @@ export default function ContactForm({ className = "" }) {
     try {
       await apiPost("/public/contact", form);
       setStatus("sent");
-      toast.success("মেসেজ পাঠানো হয়েছে");
+      toast.success(t("contactForm.sentToast"));
     } catch (err) {
       setStatus("idle");
       toast.error(err.message);
     }
 
     const message = [
-      "হ্যালো Hikmah IT, আমি আপনাদের সার্ভিসে আগ্রহী।",
+      t("contactForm.waGreeting"),
       "",
-      `নাম: ${form.name.trim()}`,
-      `ফোন: ${form.phone.trim()}`,
-      `সার্ভিস: ${form.service || "উল্লেখ করা হয়নি"}`,
-      `মেসেজ: ${form.message.trim() || "-"}`,
+      `${t("contactForm.waName")}: ${form.name.trim()}`,
+      `${t("contactForm.waPhone")}: ${form.phone.trim()}`,
+      `${t("contactForm.waService")}: ${form.service || t("contactForm.waNotSpecified")}`,
+      `${t("contactForm.waMessage")}: ${form.message.trim() || "-"}`,
     ].join("\n");
 
     const url = `${brand.whatsapp}?text=${encodeURIComponent(message)}`;
@@ -76,7 +70,7 @@ export default function ContactForm({ className = "" }) {
   if (status === "sent") {
     return (
       <div className={`rounded-2xl border border-emerald-100 bg-emerald-50 p-6 text-center shadow-xl ${className}`}>
-        <p className="font-semibold text-emerald-700">আপনার মেসেজ পাঠানো হয়েছে। আমরা শীঘ্রই যোগাযোগ করব।</p>
+        <p className="font-semibold text-emerald-700">{t("contactForm.sentTitle")}</p>
       </div>
     );
   }
@@ -88,35 +82,35 @@ export default function ContactForm({ className = "" }) {
       noValidate
     >
       <label className="text-sm font-medium text-slate-700">
-        নাম <span className="text-red-500">*</span>
+        {t("contactForm.name")} <span className="text-red-500">*</span>
         <input
           className={fieldClass("name")}
           type="text"
           name="name"
           value={form.name}
           onChange={handleChange}
-          placeholder="আপনার নাম"
+          placeholder={t("contactForm.namePlaceholder")}
           required
         />
       </label>
 
       <label className="text-sm font-medium text-slate-700">
-        ফোন <span className="text-red-500">*</span>
+        {t("contactForm.phone")} <span className="text-red-500">*</span>
         <input
           className={fieldClass("phone")}
           type="tel"
           name="phone"
           value={form.phone}
           onChange={handleChange}
-          placeholder="আপনার ফোন নাম্বার"
+          placeholder={t("contactForm.phonePlaceholder")}
           required
         />
       </label>
 
       <label className="text-sm font-medium text-slate-700">
-        সার্ভিস
+        {t("contactForm.service")}
         <select className={inputClass} name="service" value={form.service} onChange={handleChange}>
-          <option value="">সার্ভিস নির্বাচন করুন</option>
+          <option value="">{t("contactForm.selectService")}</option>
           {serviceOptions.map((option) => (
             <option key={option}>{option}</option>
           ))}
@@ -124,14 +118,14 @@ export default function ContactForm({ className = "" }) {
       </label>
 
       <label className="text-sm font-medium text-slate-700">
-        মেসেজ
+        {t("contactForm.message")}
         <textarea
           className={inputClass}
           name="message"
           value={form.message}
           onChange={handleChange}
           rows="3"
-          placeholder="আপনার প্রজেক্টের বিস্তারিত লিখুন"
+          placeholder={t("contactForm.messagePlaceholder")}
         />
       </label>
 
@@ -142,7 +136,7 @@ export default function ContactForm({ className = "" }) {
       )}
 
       <Button type="submit" disabled={status === "sending"}>
-        <Send size={16} /> {status === "sending" ? "পাঠানো হচ্ছে…" : "WhatsApp-এ পাঠান"}
+        <Send size={16} /> {status === "sending" ? t("contactForm.sending") : t("contactForm.sendViaWhatsapp")}
       </Button>
     </form>
   );

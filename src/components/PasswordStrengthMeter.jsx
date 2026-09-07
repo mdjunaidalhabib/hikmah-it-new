@@ -1,3 +1,5 @@
+import { useLanguage } from "../i18n/LanguageContext";
+
 function scorePassword(password) {
   if (!password) return 0;
   let score = 0;
@@ -10,12 +12,13 @@ function scorePassword(password) {
 }
 
 const LEVELS = [
-  { max: 1, label: "দুর্বল", color: "bg-red-500", text: "text-red-600" },
-  { max: 3, label: "মাঝারি", color: "bg-amber-500", text: "text-amber-600" },
-  { max: 5, label: "শক্তিশালী", color: "bg-emerald-500", text: "text-emerald-600" },
+  { max: 1, key: "weak", color: "bg-red-500", text: "text-red-600" },
+  { max: 3, key: "medium", color: "bg-amber-500", text: "text-amber-600" },
+  { max: 5, key: "strong", color: "bg-emerald-500", text: "text-emerald-600" },
 ];
 
 export default function PasswordStrengthMeter({ password }) {
+  const { t } = useLanguage();
   if (!password) return null;
 
   const score = scorePassword(password);
@@ -27,7 +30,9 @@ export default function PasswordStrengthMeter({ password }) {
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
         <div className={`h-full rounded-full transition-all duration-300 ${level.color}`} style={{ width: `${percent}%` }} />
       </div>
-      <p className={`mt-1 text-xs font-medium ${level.text}`}>পাসওয়ার্ড শক্তি: {level.label}</p>
+      <p className={`mt-1 text-xs font-medium ${level.text}`}>
+        {t("passwordStrength.label").replace("{level}", t(`passwordStrength.${level.key}`))}
+      </p>
     </div>
   );
 }

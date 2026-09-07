@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const cardClass =
   "group relative overflow-hidden rounded-3xl border border-slate-800/10 bg-white p-7 shadow-lg shadow-slate-950/5 transition duration-300 hover:-translate-y-1.5 hover:border-brand-200 hover:shadow-2xl hover:shadow-brand-950/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50";
@@ -25,6 +26,7 @@ export function FeatureCard({ icon: Icon, title, text }) {
 }
 
 export function ServiceCard({ icon: Icon, title, text, href }) {
+  const { t } = useLanguage();
   return (
     <Link className={cardClass} to={href}>
       <span className={glowClass} />
@@ -37,7 +39,7 @@ export function ServiceCard({ icon: Icon, title, text, href }) {
       <p className="relative leading-7 text-slate-600">{text}</p>
 
       <span className="relative mt-5 inline-flex items-center gap-1 font-semibold text-brand-700 transition group-hover:gap-2 group-hover:underline">
-        বিস্তারিত দেখুন →
+        {t("card.viewDetails")}
       </span>
     </Link>
   );

@@ -8,14 +8,26 @@ import Pricing from '../sections/Pricing'
 import Process from '../sections/Process'
 import Faq from '../sections/Faq'
 import Contact from '../sections/Contact'
+import { useLanguage } from '../i18n/LanguageContext'
 
 export default function HomePage() {
+  const { lang } = useLanguage()
+  const seo = {
+    en: {
+      title: 'E-commerce & Madrasah Management Software',
+      description:
+        'Hikmah IT provides e-commerce websites, madrasah management systems, business websites, hosting/domain support, and digital services with professional admin panels.',
+    },
+    bn: {
+      title: 'ই-কমার্স ও মাদরাসা ম্যানেজমেন্ট সফটওয়্যার',
+      description:
+        'Hikmah IT প্রফেশনাল অ্যাডমিন প্যানেল সহ ই-কমার্স ওয়েবসাইট, মাদরাসা ম্যানেজমেন্ট সিস্টেম, বিজনেস ওয়েবসাইট, হোস্টিং/ডোমেইন সাপোর্ট এবং ডিজিটাল সার্ভিস প্রদান করে।',
+    },
+  }[lang]
+
   return (
     <>
-      <Seo
-        title="ই-কমার্স ও মাদরাসা ম্যানেজমেন্ট সফটওয়্যার"
-        description="Hikmah IT প্রফেশনাল অ্যাডমিন প্যানেল সহ ই-কমার্স ওয়েবসাইট, মাদরাসা ম্যানেজমেন্ট সিস্টেম, বিজনেস ওয়েবসাইট, হোস্টিং/ডোমেইন সাপোর্ট এবং ডিজিটাল সার্ভিস প্রদান করে।"
-      />
+      <Seo title={seo.title} description={seo.description} />
       <Hero />
       <Services />
       <Trust />

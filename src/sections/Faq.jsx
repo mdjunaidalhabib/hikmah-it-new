@@ -1,15 +1,18 @@
 import SectionHeader from "../components/SectionHeader";
-import { faq } from "../data/siteData";
+import { useLanguage } from "../i18n/LanguageContext";
 import { ChevronDown } from "lucide-react";
 
 export default function Faq() {
+  const { t, tList } = useLanguage();
+  const faq = tList("data.faq");
+
   return (
     <section className="bg-brand-50 py-8 lg:py-12" id="faq">
       <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
         <SectionHeader
-          eyebrow="FAQ"
-          title="সাধারণ জিজ্ঞাসা"
-          text="যোগাযোগ করার আগে ক্লায়েন্টদের সংক্ষিপ্ত উত্তর।"
+          eyebrow={t("home.faq.eyebrow")}
+          title={t("home.faq.title")}
+          text={t("home.faq.text")}
         />
 
         {/* 1 column on mobile, 2 columns on desktop */}

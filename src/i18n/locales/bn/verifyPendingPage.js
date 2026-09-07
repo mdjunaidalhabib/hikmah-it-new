@@ -1,0 +1,27 @@
+export default {
+  verifyPendingPage: {
+    seo: {
+      title: "অ্যাকাউন্ট ভেরিফিকেশন",
+      description: "আপনার ইমেইল ও মোবাইল নাম্বার ভেরিফাই করুন।",
+    },
+    heading: "অ্যাকাউন্ট ভেরিফিকেশন",
+    subheadingVerified: "আপনার অ্যাকাউন্ট সম্পূর্ণভাবে ভেরিফাইড।",
+    subheadingPending: "অর্ডার করতে হলে ইমেইল ও মোবাইল দুটোই ভেরিফাই করতে হবে।",
+    emailLabel: "ইমেইল",
+    mobileLabel: "মোবাইল",
+    verified: "ভেরিফাইড",
+    verifyThis: "{label} ভেরিফাই করুন",
+    sendCodePrompt: "{contact}-এ ভেরিফিকেশন কোড পাঠাতে নিচে চাপুন",
+    sendCode: "ভেরিফিকেশন কোড পাঠান",
+    sending: "পাঠানো হচ্ছে…",
+    enterCodePrompt: "{contact}-এ পাঠানো ৬ ডিজিটের কোড দিন",
+    otpPlaceholder: "——— ———",
+    verify: "ভেরিফাই করুন",
+    verifying: "যাচাই হচ্ছে…",
+    resend: "কোড আবার পাঠান",
+    resendWithCooldown: "আবার পাঠান ({seconds}s)",
+    goToProfile: "প্রোফাইলে যান",
+    otpLengthError: "৬ ডিজিটের কোড দিন",
+    verifiedToast: "{label} ভেরিফাই হয়েছে",
+  },
+};

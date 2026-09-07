@@ -8,10 +8,12 @@ import PasswordInput from "../components/PasswordInput";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import { useUserAuth } from "../context/UserAuthContext";
 import { inputClass, labelClass } from "../components/formStyles";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const emptyForm = { name: "", mobile: "", email: "", password: "", confirmPassword: "" };
 
 export default function SignupPage() {
+  const { t } = useLanguage();
   const { signup } = useUserAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState(emptyForm);
@@ -28,22 +30,22 @@ export default function SignupPage() {
     setError("");
 
     if (!/^01[3-9]\d{8}$/.test(form.mobile.trim())) {
-      setError("সঠিক বাংলাদেশি মোবাইল নাম্বার দিন (যেমন: 017XXXXXXXX)");
+      setError(t("signupPage.errors.invalidMobile"));
       return;
     }
     if (form.password.length < 8) {
-      setError("পাসওয়ার্ড কমপক্ষে ৮ ক্যারেক্টার হতে হবে");
+      setError(t("signupPage.errors.passwordTooShort"));
       return;
     }
     if (form.password !== form.confirmPassword) {
-      setError("পাসওয়ার্ড দুটি মিলছে না");
+      setError(t("signupPage.errors.passwordMismatch"));
       return;
     }
 
     setLoading(true);
     try {
       await signup(form);
-      toast.success("অ্যাকাউন্ট তৈরি হয়েছে! এখন ভেরিফাই করুন।");
+      toast.success(t("signupPage.successToast"));
       navigate("/verify", { replace: true });
     } catch (err) {
       setError(err.message);
@@ -55,35 +57,35 @@ export default function SignupPage() {
 
   return (
     <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
-      <Seo title="সাইন আপ" description="Hikmah IT-তে নতুন অ্যাকাউন্ট তৈরি করুন।" />
+      <Seo title={t("signupPage.seo.title")} description={t("signupPage.seo.description")} />
       <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
-        <h1 className="text-center text-xl font-bold text-slate-900">অ্যাকাউন্ট তৈরি করুন</h1>
-        <p className="mt-1 text-center text-sm text-slate-500">অর্ডার ও রেফারেল ইনকাম ট্র্যাক করতে সাইন আপ করুন</p>
+        <h1 className="text-center text-xl font-bold text-slate-900">{t("signupPage.heading")}</h1>
+        <p className="mt-1 text-center text-sm text-slate-500">{t("signupPage.subheading")}</p>
 
         <form className="mt-6 grid gap-4" onSubmit={handleSubmit} noValidate>
           <label className={labelClass}>
-            নাম
+            {t("signupPage.nameLabel")}
             <input className={inputClass} name="name" value={form.name} onChange={handleChange} required autoFocus />
           </label>
 
           <label className={labelClass}>
-            মোবাইল নাম্বার
-            <input className={inputClass} name="mobile" value={form.mobile} onChange={handleChange} placeholder="01XXXXXXXXX" required />
+            {t("signupPage.mobileLabel")}
+            <input className={inputClass} name="mobile" value={form.mobile} onChange={handleChange} placeholder={t("signupPage.mobilePlaceholder")} required />
           </label>
 
           <label className={labelClass}>
-            ইমেইল
+            {t("signupPage.emailLabel")}
             <input className={inputClass} type="email" name="email" value={form.email} onChange={handleChange} required />
           </label>
 
           <label className={labelClass}>
-            পাসওয়ার্ড
+            {t("signupPage.passwordLabel")}
             <PasswordInput name="password" value={form.password} onChange={handleChange} required />
             <PasswordStrengthMeter password={form.password} />
           </label>
 
           <label className={labelClass}>
-            পাসওয়ার্ড নিশ্চিত করুন
+            {t("signupPage.confirmPasswordLabel")}
             <PasswordInput name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
           </label>
 
@@ -95,14 +97,14 @@ export default function SignupPage() {
 
           <Button type="submit" className="w-full" disabled={loading}>
             <UserPlus size={16} />
-            {loading ? "তৈরি হচ্ছে…" : "সাইন আপ করুন"}
+            {loading ? t("signupPage.submitting") : t("signupPage.submit")}
           </Button>
         </form>
 
         <p className="mt-4 text-center text-sm text-slate-500">
-          আগে থেকেই অ্যাকাউন্ট আছে?{" "}
+          {t("signupPage.haveAccount")}{" "}
           <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700">
-            লগইন করুন
+            {t("signupPage.loginLink")}
           </Link>
         </p>
       </div>

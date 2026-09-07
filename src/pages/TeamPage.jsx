@@ -6,15 +6,18 @@ import Seo from "../components/Seo";
 import Button from "../components/Button";
 import { Skeleton, SkeletonCard } from "../components/Skeleton";
 import Avatar from "../components/Avatar";
-import { joinRoles, brand } from "../data/siteData";
+import { joinRoleIcons, brand } from "../data/siteData";
 import { apiGet } from "../lib/api";
 import useSiteSettings from "../lib/useSiteSettings";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function TeamPage() {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const { settings, loading: settingsLoading } = useSiteSettings();
   const founder = settings?.founder;
+  const { t, tList } = useLanguage();
+  const joinRoles = tList("data.joinRoles");
 
   useEffect(() => {
     apiGet("/public/partners")
@@ -25,13 +28,13 @@ export default function TeamPage() {
   return (
     <div className="min-h-screen bg-brand-50">
       <Seo
-        title="আমাদের টিম ও রেফারেল পার্টনার"
-        description="Hikmah IT-এর টিম এবং মার্কেটিং/রেফারেল পার্টনারদের সাথে পরিচিত হন যারা ব্যবসাকে আমাদের ওয়েব ডেভেলপমেন্ট ও সফটওয়্যার সার্ভিস সম্পর্কে জানাতে সাহায্য করেন।"
+        title={t("team.seoTitle")}
+        description={t("team.seoDescription")}
       />
       <PageHero
-        eyebrow="মার্কেটিং পার্টনার"
-        title="আমাদের টিম ও রেফারেল পার্টনার"
-        text="আমাদের মার্কেটিং ও রেফারেল পার্টনারদের সাথে পরিচিত হন, যারা সফল ক্লায়েন্ট রেফারেলের মাধ্যমে কমিশন আয় করার পাশাপাশি ব্যবসা ও প্রতিষ্ঠানকে Hikmah IT সলিউশন সম্পর্কে জানাতে সাহায্য করেন।"
+        eyebrow={t("team.hero.eyebrow")}
+        title={t("team.hero.title")}
+        text={t("team.hero.text")}
       />
 
       {/* Owner */}
@@ -90,12 +93,12 @@ export default function TeamPage() {
                   <div className="mt-5 flex flex-wrap gap-3">
                     <Button href={founder.whatsapp}>
                       <MessageCircle size={16} />
-                      WhatsApp
+                      {t("team.owner.whatsappButton")}
                     </Button>
 
                     <Button href={founder.facebook} variant="ghost-dark">
                       <ExternalLink size={16} />
-                      ফেসবুক
+                      {t("team.owner.facebookButton")}
                     </Button>
                   </div>
                 </div>
@@ -109,9 +112,9 @@ export default function TeamPage() {
       <section className="pb-12 lg:pb-16">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <SectionHeader
-            eyebrow="মার্কেটিং পার্টনার"
-            title="আমাদের রেফারেল ও মার্কেটিং টিম"
-            text="আমাদের পার্টনাররা মার্কেটিং, রেফারেল এবং বিজনেস ডেভেলপমেন্ট কার্যক্রমের মাধ্যমে ব্যবসা ও প্রতিষ্ঠানকে Hikmah IT সার্ভিস সম্পর্কে জানাতে সাহায্য করেন এবং সফল প্রজেক্ট থেকে কমিশন আয় করেন।"
+            eyebrow={t("team.partners.eyebrow")}
+            title={t("team.partners.title")}
+            text={t("team.partners.text")}
           />
 
           {loading ? (
@@ -121,7 +124,7 @@ export default function TeamPage() {
               ))}
             </div>
           ) : partners.length === 0 ? (
-            <p className="py-10 text-center text-sm text-slate-400">এখনো কোনো পার্টনার যোগ করা হয়নি।</p>
+            <p className="py-10 text-center text-sm text-slate-400">{t("team.partners.empty")}</p>
           ) : (
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {partners.map((member) => (
@@ -158,7 +161,7 @@ export default function TeamPage() {
 
                   {member.earningText && (
                     <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-2">
-                      <span className="text-xs font-semibold text-emerald-700">💰 মোট আয়: {member.earningText}</span>
+                      <span className="text-xs font-semibold text-emerald-700">💰 {t("team.partners.totalEarnings")}: {member.earningText}</span>
                     </div>
                   )}
 
@@ -168,7 +171,7 @@ export default function TeamPage() {
                         href={member.facebook}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`${member.name}-এর ফেসবুক প্রোফাইল`}
+                        aria-label={t("team.partners.facebookAria").replace("{name}", member.name)}
                         className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-brand-300 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50"
                       >
                         <ExternalLink size={16} />
@@ -180,7 +183,7 @@ export default function TeamPage() {
                         href={member.whatsapp}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`${member.name}-কে WhatsApp-এ মেসেজ করুন`}
+                        aria-label={t("team.partners.whatsappAria").replace("{name}", member.name)}
                         className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300/50"
                       >
                         <MessageCircle size={16} />
@@ -199,27 +202,27 @@ export default function TeamPage() {
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <div className="mb-10 text-center">
             <span className="inline-flex items-center rounded-full border border-brand-200 bg-brand-50 px-3.5 py-2 text-sm font-semibold text-brand-700">
-              পার্টনার প্রোগ্রাম
+              {t("team.referral.badge")}
             </span>
 
             <h2 className="mt-4 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
-              রেফারেলের মাধ্যমে আয় করুন
+              {t("team.referral.title")}
             </h2>
 
-            <p className="mt-3 text-base text-slate-600">প্রতিটি সফল প্রজেক্টের জন্য Hikmah IT-তে ক্লায়েন্ট রেফার করুন এবং কমিশন আয় করুন।</p>
+            <p className="mt-3 text-base text-slate-600">{t("team.referral.text")}</p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
-            {joinRoles.map((role) => (
+            {joinRoles.map((role, i) => (
               <article key={role.role} className="rounded-[2rem] border border-brand-100 bg-brand-50/50 p-7 transition hover:bg-brand-50">
-                <div className="text-4xl">{role.icon}</div>
+                <div className="text-4xl">{joinRoleIcons[i]}</div>
 
                 <h3 className="mt-4 text-xl font-bold text-slate-900">{role.role}</h3>
 
                 <p className="mt-3 text-slate-600">{role.desc}</p>
 
                 <div className="mt-5 rounded-xl border border-brand-200 bg-white px-4 py-3 text-brand-700">
-                  💰 কমিশন সুযোগ: {role.earn}
+                  💰 {t("team.referral.commissionLabel")}: {role.earn}
                 </div>
               </article>
             ))}
@@ -229,11 +232,11 @@ export default function TeamPage() {
             <div className="flex flex-wrap justify-center gap-3">
               <Button href={brand.whatsapp}>
                 <MessageCircle size={16} />
-                WhatsApp-এ যোগ দিন
+                {t("team.referral.joinWhatsapp")}
               </Button>
 
               <Button href="/contact" variant="ghost-dark">
-                যোগাযোগ করুন
+                {t("team.referral.contactUs")}
                 <ArrowRight size={16} />
               </Button>
             </div>

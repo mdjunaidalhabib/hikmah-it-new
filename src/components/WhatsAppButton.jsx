@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { brand } from "../data/siteData";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function WhatsAppButton() {
   const [mounted, setMounted] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
@@ -42,7 +44,7 @@ export default function WhatsAppButton() {
           group-hover:opacity-100 group-hover:translate-x-0
         "
       >
-        আমাদের সাথে চ্যাট করুন
+        {t("whatsappButton.chatWithUs")}
         <span className="absolute left-full top-1/2 -translate-y-1/2 border-4 border-transparent border-l-hikmah-navy" />
       </span>
 

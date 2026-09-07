@@ -6,10 +6,12 @@ import Button from "../components/Button";
 import { useUserAuth } from "../context/UserAuthContext";
 import { apiPost } from "../lib/api";
 import { inputClass } from "../components/formStyles";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const RESEND_COOLDOWN = 60;
 
 function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendPath, onVerified }) {
+  const { t } = useLanguage();
   const [otp, setOtp] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [sending, setSending] = useState(false);
@@ -27,7 +29,7 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
       <div className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
         <CheckCircle2 className="text-emerald-600" size={20} />
         <div>
-          <p className="text-sm font-semibold text-emerald-800">{label} ভেরিফাইড</p>
+          <p className="text-sm font-semibold text-emerald-800">{label} {t("verifyPendingPage.verified")}</p>
           <p className="text-xs text-emerald-700">{contact}</p>
         </div>
       </div>
@@ -37,13 +39,13 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
   const handleVerify = async (e) => {
     e.preventDefault();
     if (otp.trim().length !== 6) {
-      toast.error("৬ ডিজিটের কোড দিন");
+      toast.error(t("verifyPendingPage.otpLengthError"));
       return;
     }
     setSubmitting(true);
     try {
       await apiPost(verifyPath, { otp: otp.trim() });
-      toast.success(`${label} ভেরিফাই হয়েছে`);
+      toast.success(t("verifyPendingPage.verifiedToast").replace("{label}", label));
       onVerified();
     } catch (err) {
       toast.error(err.message);
@@ -71,12 +73,12 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
       <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
         <div className="flex items-center gap-2 text-amber-800">
           <Icon size={18} />
-          <p className="text-sm font-semibold">{label} ভেরিফাই করুন</p>
+          <p className="text-sm font-semibold">{t("verifyPendingPage.verifyThis").replace("{label}", label)}</p>
         </div>
-        <p className="mt-1 text-xs text-amber-700">{contact}-এ ভেরিফিকেশন কোড পাঠাতে নিচে চাপুন</p>
+        <p className="mt-1 text-xs text-amber-700">{t("verifyPendingPage.sendCodePrompt").replace("{contact}", contact)}</p>
 
         <Button type="button" variant="small" onClick={handleSend} disabled={sending} className="mt-3">
-          {sending ? "পাঠানো হচ্ছে…" : "ভেরিফিকেশন কোড পাঠান"}
+          {sending ? t("verifyPendingPage.sending") : t("verifyPendingPage.sendCode")}
         </Button>
       </div>
     );
@@ -86,20 +88,20 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
     <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
       <div className="flex items-center gap-2 text-amber-800">
         <Icon size={18} />
-        <p className="text-sm font-semibold">{label} ভেরিফাই করুন</p>
+        <p className="text-sm font-semibold">{t("verifyPendingPage.verifyThis").replace("{label}", label)}</p>
       </div>
-      <p className="mt-1 text-xs text-amber-700">{contact}-এ পাঠানো ৬ ডিজিটের কোড দিন</p>
+      <p className="mt-1 text-xs text-amber-700">{t("verifyPendingPage.enterCodePrompt").replace("{contact}", contact)}</p>
 
       <form onSubmit={handleVerify} className="mt-3 flex flex-wrap gap-2">
         <input
           className={`${inputClass} !mt-0 max-w-[160px]`}
           value={otp}
           onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-          placeholder="——— ———"
+          placeholder={t("verifyPendingPage.otpPlaceholder")}
           inputMode="numeric"
         />
         <Button type="submit" variant="small" disabled={submitting}>
-          {submitting ? "যাচাই হচ্ছে…" : "ভেরিফাই করুন"}
+          {submitting ? t("verifyPendingPage.verifying") : t("verifyPendingPage.verify")}
         </Button>
       </form>
 
@@ -109,13 +111,18 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
         disabled={sending || cooldown > 0}
         className="mt-2 text-xs font-medium text-amber-800 underline disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {cooldown > 0 ? `আবার পাঠান (${cooldown}s)` : sending ? "পাঠানো হচ্ছে…" : "কোড আবার পাঠান"}
+        {cooldown > 0
+          ? t("verifyPendingPage.resendWithCooldown").replace("{seconds}", cooldown)
+          : sending
+          ? t("verifyPendingPage.sending")
+          : t("verifyPendingPage.resend")}
       </button>
     </div>
   );
 }
 
 export default function VerifyPendingPage() {
+  const { t } = useLanguage();
   const { user, refresh } = useUserAuth();
 
   if (!user) return null;
@@ -124,17 +131,17 @@ export default function VerifyPendingPage() {
 
   return (
     <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
-      <Seo title="অ্যাকাউন্ট ভেরিফিকেশন" description="আপনার ইমেইল ও মোবাইল নাম্বার ভেরিফাই করুন।" />
+      <Seo title={t("verifyPendingPage.seo.title")} description={t("verifyPendingPage.seo.description")} />
       <div className="w-full max-w-md rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
-        <h1 className="text-center text-xl font-bold text-slate-900">অ্যাকাউন্ট ভেরিফিকেশন</h1>
+        <h1 className="text-center text-xl font-bold text-slate-900">{t("verifyPendingPage.heading")}</h1>
         <p className="mt-1 text-center text-sm text-slate-500">
-          {bothVerified ? "আপনার অ্যাকাউন্ট সম্পূর্ণভাবে ভেরিফাইড।" : "অর্ডার করতে হলে ইমেইল ও মোবাইল দুটোই ভেরিফাই করতে হবে।"}
+          {bothVerified ? t("verifyPendingPage.subheadingVerified") : t("verifyPendingPage.subheadingPending")}
         </p>
 
         <div className="mt-6 grid gap-4">
           <VerifyBlock
             icon={Mail}
-            label="ইমেইল"
+            label={t("verifyPendingPage.emailLabel")}
             contact={user.email}
             verified={user.emailVerified}
             verifyPath="/user/verify-email"
@@ -143,7 +150,7 @@ export default function VerifyPendingPage() {
           />
           <VerifyBlock
             icon={Smartphone}
-            label="মোবাইল"
+            label={t("verifyPendingPage.mobileLabel")}
             contact={user.mobile}
             verified={user.mobileVerified}
             verifyPath="/user/verify-mobile"
@@ -154,7 +161,7 @@ export default function VerifyPendingPage() {
 
         {bothVerified && (
           <Button href="/profile" className="mt-6 w-full">
-            প্রোফাইলে যান
+            {t("verifyPendingPage.goToProfile")}
           </Button>
         )}
       </div>

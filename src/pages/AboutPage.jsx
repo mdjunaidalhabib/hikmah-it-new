@@ -4,23 +4,28 @@ import PageHero from '../components/PageHero'
 import Seo from '../components/Seo'
 import Button from '../components/Button'
 import Avatar from '../components/Avatar'
-import { aboutStats, whyUs, brand, trustItems } from '../data/siteData'
+import { trustItemIcons } from '../data/siteData'
 import useSiteSettings from '../lib/useSiteSettings'
+import { useLanguage } from '../i18n/LanguageContext'
 
 export default function AboutPage() {
   const { settings } = useSiteSettings()
   const founder = settings?.founder
+  const { t, tList } = useLanguage()
+  const aboutStats = tList('data.aboutStats')
+  const whyUs = tList('data.whyUs')
+  const trustItems = tList('data.trustItems')
 
   return (
     <div className="bg-brand-50 min-h-screen">
       <Seo
-        title="আমাদের সম্পর্কে"
-        description="Hikmah IT-এর লক্ষ্য জানুন — বাংলাদেশের ব্যবসা ও শিক্ষা প্রতিষ্ঠানের জন্য প্রফেশনাল ওয়েব ডেভেলপমেন্ট সহজলভ্য করা।"
+        title={t('about.seoTitle')}
+        description={t('about.seoDescription')}
       />
       <PageHero
-        eyebrow="আমরা কারা"
-        title="Hikmah IT সম্পর্কে"
-        text={`${brand.tagline} — বাংলাদেশজুড়ে ব্যবসা ও প্রতিষ্ঠানকে শক্তিশালী ডিজিটাল উপস্থিতি তৈরিতে সাহায্য করছি।`}
+        eyebrow={t('about.hero.eyebrow')}
+        title={t('about.hero.title')}
+        text={`${t('brand.tagline')} — ${t('about.hero.textSuffix')}`}
       />
 
       {/* Stats */}
@@ -41,17 +46,17 @@ export default function AboutPage() {
       <section className="py-8 lg:py-12">
         <div className="mx-auto grid w-[min(1180px,calc(100%-40px))] items-center gap-10 lg:grid-cols-2">
           <div>
-            <span className="inline-block rounded-full border border-brand-200 bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700">আমাদের গল্প</span>
-            <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">ব্যবসাকে ডিজিটাল করার প্যাশন থেকে তৈরি</h2>
+            <span className="inline-block rounded-full border border-brand-200 bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700">{t('about.story.eyebrow')}</span>
+            <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">{t('about.story.title')}</h2>
             <p className="mt-4 leading-8 text-slate-600">
-              Hikmah IT প্রতিষ্ঠিত হয়েছে একটি স্পষ্ট লক্ষ্য নিয়ে: বাংলাদেশের ছোট ব্যবসা ও শিক্ষা প্রতিষ্ঠানের জন্য প্রফেশনাল ওয়েব ডেভেলপমেন্ট সহজলভ্য করা। অনেক ব্যবসা ডিজিটাল গ্রোথের সুযোগ হারাচ্ছিল কারণ মানসম্পন্ন ওয়েব সলিউশন হয় খুব ব্যয়বহুল অথবা খুব জটিল ছিল।
+              {t('about.story.paragraph1')}
             </p>
             <p className="mt-4 leading-8 text-slate-600">
-              আমরা সহজ, ক্লিন এবং কার্যকর ওয়েবসাইট তৈরি শুরু করেছি — ই-কমার্স স্টোর, বিজনেস ওয়েবসাইট, পোর্টফোলিও পেজ এবং ইনস্টিটিউশন ম্যানেজমেন্ট সিস্টেম — এমন দামে যা বাংলাদেশের বাজারে সত্যিই কার্যকর।
+              {t('about.story.paragraph2')}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button href="/services">আমাদের সার্ভিস <ArrowRight size={16} /></Button>
-              <Button href="/contact" variant="ghost-dark">কথা বলুন</Button>
+              <Button href="/services">{t('about.story.ctaServices')} <ArrowRight size={16} /></Button>
+              <Button href="/contact" variant="ghost-dark">{t('about.story.ctaContact')}</Button>
             </div>
           </div>
 
@@ -59,13 +64,13 @@ export default function AboutPage() {
           <div className="grid gap-5">
             <div className="rounded-[2rem] border border-brand-100 bg-white p-7 shadow-xl">
               <span className="text-3xl">🎯</span>
-              <h3 className="mt-3 text-xl font-bold text-slate-900">আমাদের মিশন</h3>
-              <p className="mt-2 leading-7 text-slate-600">বাংলাদেশের প্রতিটি ব্যবসা, প্রতিষ্ঠান ও উদ্যোক্তাকে সাশ্রয়ী, প্রফেশনাল এবং ফলাফল-ভিত্তিক ডিজিটাল সলিউশন দিয়ে ক্ষমতায়ন করা — একটি ক্লিন ওয়েবসাইট থেকে শুরু করে সম্পূর্ণ ম্যানেজমেন্ট সিস্টেম পর্যন্ত।</p>
+              <h3 className="mt-3 text-xl font-bold text-slate-900">{t('about.mission.title')}</h3>
+              <p className="mt-2 leading-7 text-slate-600">{t('about.mission.text')}</p>
             </div>
             <div className="rounded-[2rem] border border-brand-100 bg-white p-7 shadow-xl">
               <span className="text-3xl">🌟</span>
-              <h3 className="mt-3 text-xl font-bold text-slate-900">আমাদের ভিশন</h3>
-              <p className="mt-2 leading-7 text-slate-600">ছোট থেকে মাঝারি ব্যবসার জন্য বাংলাদেশের সবচেয়ে বিশ্বস্ত ডিজিটাল এজেন্সি হয়ে ওঠা — ক্লিন ডিজাইন, সৎ প্রাইসিং এবং ডেলিভারির পরেও থেমে না যাওয়া প্রকৃত সাপোর্টের জন্য পরিচিত।</p>
+              <h3 className="mt-3 text-xl font-bold text-slate-900">{t('about.vision.title')}</h3>
+              <p className="mt-2 leading-7 text-slate-600">{t('about.vision.text')}</p>
             </div>
           </div>
         </div>
@@ -74,7 +79,7 @@ export default function AboutPage() {
       {/* Why Choose Us */}
       <section className="py-8 lg:py-12 bg-white">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
-          <SectionHeader eyebrow="কেন Hikmah IT" title="কেন ব্যবসারা আমাদের বেছে নেয়" text="আমরা বাংলাদেশের জন্য তৈরি করি — আমরা লোকাল মার্কেট, পেমেন্ট মেথড এবং ব্যবসায়িক সংস্কৃতি বুঝি।" />
+          <SectionHeader eyebrow={t('about.whyUs.eyebrow')} title={t('about.whyUs.title')} text={t('about.whyUs.text')} />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {whyUs.map((item) => (
               <article key={item.title} className="rounded-[2rem] border border-slate-200 bg-brand-50 p-6 shadow-lg transition hover:shadow-xl">
@@ -90,14 +95,17 @@ export default function AboutPage() {
       {/* Trust badges */}
       <section className="py-8 lg:py-12">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
-          <SectionHeader eyebrow="আমাদের মান" title="বিশ্বাস, গতি এবং প্রফেশনাল উপস্থাপনার জন্য তৈরি" />
+          <SectionHeader eyebrow={t('about.trust.eyebrow')} title={t('about.trust.title')} />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {trustItems.map(({ icon: Icon, title }) => (
-              <div key={title} className="flex items-center gap-3 rounded-3xl border border-slate-200 bg-white p-5 font-semibold text-slate-800 shadow-lg transition hover:shadow-xl">
-                <Icon className="text-brand-600" size={22} />
-                <span>{title}</span>
-              </div>
-            ))}
+            {trustItems.map((title, i) => {
+              const Icon = trustItemIcons[i]
+              return (
+                <div key={title} className="flex items-center gap-3 rounded-3xl border border-slate-200 bg-white p-5 font-semibold text-slate-800 shadow-lg transition hover:shadow-xl">
+                  <Icon className="text-brand-600" size={22} />
+                  <span>{title}</span>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -115,11 +123,11 @@ export default function AboutPage() {
                 className="mx-auto border-4 border-white shadow-lg shadow-brand-900/10"
               />
               <h3 className="mt-4 text-2xl font-medium text-slate-900">{founder.name}</h3>
-              <p className="mt-1 text-sm font-semibold text-brand-600">{founder.role}, Hikmah IT</p>
+              <p className="mt-1 text-sm font-semibold text-brand-600">{founder.role}{t('about.founder.roleSuffix')}</p>
               <p className="mt-4 mx-auto max-w-lg leading-7 text-slate-600">"{founder.bio}"</p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
-                <Button href="/team">সম্পূর্ণ টিমের সাথে পরিচিত হন <ArrowRight size={16} /></Button>
-                <Button href="/contact" variant="ghost-dark">যোগাযোগ করুন</Button>
+                <Button href="/team">{t('about.founder.ctaTeam')} <ArrowRight size={16} /></Button>
+                <Button href="/contact" variant="ghost-dark">{t('about.founder.ctaContact')}</Button>
               </div>
             </div>
           </div>
