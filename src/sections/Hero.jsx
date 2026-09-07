@@ -42,8 +42,8 @@ export default function Hero() {
           </div>
         </div>
         <div className="hidden rounded-[2rem] border border-brand-100 bg-white/80 p-5 shadow-[0_30px_60px_-15px_rgba(247,86,5,0.25)] backdrop-blur-xl lg:block">
-          <div className="relative overflow-hidden rounded-3xl border border-brand-100 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 p-6">
-            <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-amber-300/20 blur-3xl" />
+          <div className="relative overflow-hidden rounded-3xl border border-brand-100 bg-gradient-to-br from-brand-400/90 via-brand-500/90 to-brand-600/90 p-6">
+            <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-amber-200/20 blur-3xl" />
             <div className="relative mb-6 flex items-center justify-between gap-3">
               <span className="rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold text-white ring-1 ring-white/20">লাইভ প্রজেক্ট প্রিভিউ</span>
               <span className="text-sm text-brand-100">প্রিমিয়াম ইউআই</span>

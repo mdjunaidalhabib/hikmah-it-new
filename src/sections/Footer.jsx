@@ -103,8 +103,12 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="relative mx-auto mt-12 flex w-[min(1180px,calc(100%-40px))] flex-col items-center gap-2 border-t border-slate-800 pt-6 text-center text-sm text-slate-500 sm:flex-row sm:justify-between sm:text-left">
+      <div className="relative mx-auto mt-12 flex w-[min(1180px,calc(100%-40px))] flex-col items-center gap-3 border-t border-slate-800 pt-6 text-center text-sm text-slate-500 sm:flex-row sm:justify-between sm:text-left">
         <span>© {new Date().getFullYear()} Hikmah IT। সর্বস্বত্ব সংরক্ষিত।</span>
+        <div className="flex items-center gap-4">
+          <Link className="transition hover:text-brand-400" to="/privacy-policy">প্রাইভেসি পলিসি</Link>
+          <Link className="transition hover:text-brand-400" to="/terms-of-service">ব্যবহারের শর্তাবলী</Link>
+        </div>
         <span className="text-slate-600">Designed &amp; developed with care in Bangladesh</span>
       </div>
     </footer>

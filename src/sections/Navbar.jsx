@@ -54,7 +54,7 @@ export default function Navbar() {
   return (
     <>
       {/* ── Header bar ── */}
-      <header className="sticky top-0 z-50 bg-brand-600 shadow-md shadow-brand-950/20">
+      <header className="sticky top-0 z-50 bg-brand-500 shadow-md shadow-brand-950/20">
         <div className="mx-auto flex h-[60px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-3">
           {/* Logo */}
           <Link to="/" className="shrink-0" aria-label="Hikmah IT হোম">
