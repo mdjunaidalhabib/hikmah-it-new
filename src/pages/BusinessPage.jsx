@@ -24,7 +24,7 @@ export default function BusinessPage() {
   }, [])
 
   return (
-    <div className="bg-brand-50 min-h-screen">
+    <div className="bg-brand-50 min-h-screen dark:bg-slate-900">
       <Seo
         title={t('businessPage.seo.title')}
         description={t('businessPage.seo.description')}
@@ -47,36 +47,36 @@ export default function BusinessPage() {
             {businessWebsiteTypes.map((item, index) => {
               const Icon = icons[index]
               return (
-                <article key={item.title} className="relative flex gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+                <article key={item.title} className="relative flex gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-slate-800 dark:bg-slate-900">
                   <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/20">
                     <Icon size={24} strokeWidth={2.2} />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold tracking-[-0.02em] text-slate-950">{item.title}</h3>
-                    <small className="mt-1 inline-block text-xs font-semibold uppercase tracking-wide text-brand-700">{item.tag}</small>
-                    <p className="mt-3 text-[15px] leading-7 text-slate-600">{item.text}</p>
+                    <h3 className="text-xl font-semibold tracking-[-0.02em] text-slate-950 dark:text-white">{item.title}</h3>
+                    <small className="mt-1 inline-block text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-400">{item.tag}</small>
+                    <p className="mt-3 text-[15px] leading-7 text-slate-600 dark:text-slate-400">{item.text}</p>
                   </div>
-                  <ArrowRight className="absolute right-5 top-5 text-brand-600" size={20} strokeWidth={2.2} />
+                  <ArrowRight className="absolute right-5 top-5 text-brand-600 dark:text-brand-400" size={20} strokeWidth={2.2} />
                 </article>
               )
             })}
           </div>
 
-          <div className="rounded-[2rem] border border-brand-100 bg-gradient-to-br from-white to-brand-50 p-6 shadow-2xl shadow-brand-950/10">
+          <div className="rounded-[2rem] border border-brand-100 bg-gradient-to-br from-white to-brand-50 p-6 shadow-2xl shadow-brand-950/10 dark:border-brand-800/40 dark:from-slate-900 dark:to-slate-800/60">
             <div className="mb-4 flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-amber-500" />
               <span className="h-3 w-3 rounded-full bg-brand-500" />
               <span className="h-3 w-3 rounded-full bg-emerald-500" />
-              <strong className="ml-2 text-sm font-semibold tracking-wide text-slate-700">{t('businessPage.preview.badge')}</strong>
+              <strong className="ml-2 text-sm font-semibold tracking-wide text-slate-700 dark:text-slate-200">{t('businessPage.preview.badge')}</strong>
             </div>
-            <div className="rounded-3xl border border-brand-100 bg-white p-7">
-              <small className="text-sm font-semibold uppercase tracking-wide text-brand-700">{t('businessPage.preview.tag')}</small>
-              <h3 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.03em] text-slate-950">{t('businessPage.preview.title')}</h3>
-              <p className="mt-4 text-[15px] leading-7 text-slate-600">{t('businessPage.preview.text')}</p>
+            <div className="rounded-3xl border border-brand-100 bg-white p-7 dark:border-brand-800/40 dark:bg-slate-900">
+              <small className="text-sm font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-400">{t('businessPage.preview.tag')}</small>
+              <h3 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.03em] text-slate-950 dark:text-white">{t('businessPage.preview.title')}</h3>
+              <p className="mt-4 text-[15px] leading-7 text-slate-600 dark:text-slate-400">{t('businessPage.preview.text')}</p>
             </div>
-            <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-slate-700">
+            <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
               {previewTags.map((item) => (
-                <span key={item} className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-white px-4 py-2 shadow-sm">
+                <span key={item} className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-white px-4 py-2 shadow-sm dark:border-brand-800/40 dark:bg-slate-800">
                   <CheckCircle2 size={16} strokeWidth={2.2} /> {item}
                 </span>
               ))}
@@ -90,7 +90,7 @@ export default function BusinessPage() {
       </section>
 
       {/* Pricing */}
-      <section className="py-8 lg:py-12 bg-white">
+      <section className="py-8 lg:py-12 bg-white dark:bg-slate-900">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <SectionHeader eyebrow={t('businessPage.pricing.eyebrow')} title={t('businessPage.pricing.title')} />
           {loading ? (

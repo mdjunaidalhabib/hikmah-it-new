@@ -20,9 +20,9 @@ export default function Button({
     ghost:
       "border-white/20 bg-white/10 px-6 py-3 text-sm text-white backdrop-blur-sm hover:bg-white/15",
     "ghost-dark":
-      "border-slate-200 bg-white px-6 py-3 text-sm text-slate-900 shadow-sm hover:border-brand-300 hover:text-brand-700 hover:shadow-md",
+      "border-slate-200 bg-white px-6 py-3 text-sm text-slate-900 shadow-sm hover:border-brand-300 hover:text-brand-700 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:border-brand-500 dark:hover:text-brand-400",
     white:
-      "border-white bg-white px-3.5 py-1.5 text-xs text-brand-700 shadow-md shadow-black/10 hover:bg-brand-50",
+      "border-white bg-white px-3.5 py-1.5 text-xs text-brand-700 shadow-md shadow-black/10 hover:bg-brand-50 dark:border-slate-700 dark:bg-slate-800 dark:text-brand-400 dark:hover:bg-slate-700",
   };
 
   const cls = `${base} ${styles[variant] || styles.primary} ${className}`;

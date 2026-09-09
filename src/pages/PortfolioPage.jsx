@@ -20,7 +20,7 @@ export default function PortfolioPage() {
   }, []);
 
   return (
-    <div className="bg-brand-50 min-h-screen">
+    <div className="bg-brand-50 min-h-screen dark:bg-slate-900">
       <Seo
         title={t("portfolioPage.seo.title")}
         description={t("portfolioPage.seo.description")}
@@ -36,7 +36,7 @@ export default function PortfolioPage() {
           {loading ? (
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white">
+                <div key={i} className="overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
                   <Skeleton className="aspect-video w-full rounded-none" />
                   <div className="p-4">
                     <Skeleton className="h-3 w-24" />
@@ -55,9 +55,9 @@ export default function PortfolioPage() {
                   href={item.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl"
+                  className="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-700"
                 >
-                  <div className="relative aspect-video overflow-hidden border-b border-slate-200 bg-slate-100">
+                  <div className="relative aspect-video overflow-hidden border-b border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-800">
                     {item.imageUrl && (
                       <FadeImage
                         src={item.imageUrl}
@@ -70,8 +70,8 @@ export default function PortfolioPage() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-brand-600">{item.category}</span>
-                    <h3 className="mt-1 line-clamp-1 text-lg font-semibold text-slate-900">{item.title}</h3>
+                    <span className="text-xs font-semibold uppercase tracking-wide text-brand-600 dark:text-brand-400">{item.category}</span>
+                    <h3 className="mt-1 line-clamp-1 text-lg font-semibold text-slate-900 dark:text-white">{item.title}</h3>
                   </div>
                 </a>
               ))}
@@ -79,7 +79,7 @@ export default function PortfolioPage() {
           )}
 
           <div className="mt-12 text-center">
-            <p className="text-slate-600">{t("portfolioPage.bottom.text")}</p>
+            <p className="text-slate-600 dark:text-slate-400">{t("portfolioPage.bottom.text")}</p>
             <div className="mt-4 flex flex-wrap justify-center gap-3">
               <Button href="/contact">{t("portfolioPage.bottom.startProject")} <ArrowRight size={16} /></Button>
               <Button href="/pricing" variant="ghost-dark">{t("portfolioPage.bottom.viewPackages")}</Button>

@@ -26,11 +26,11 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
 
   if (verified) {
     return (
-      <div className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
-        <CheckCircle2 className="text-emerald-600" size={20} />
+      <div className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 dark:border-emerald-800/40 dark:bg-emerald-500/10">
+        <CheckCircle2 className="text-emerald-600 dark:text-emerald-400" size={20} />
         <div>
-          <p className="text-sm font-semibold text-emerald-800">{label} {t("verifyPendingPage.verified")}</p>
-          <p className="text-xs text-emerald-700">{contact}</p>
+          <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">{label} {t("verifyPendingPage.verified")}</p>
+          <p className="text-xs text-emerald-700 dark:text-emerald-400">{contact}</p>
         </div>
       </div>
     );
@@ -70,12 +70,12 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
 
   if (!sent) {
     return (
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <div className="flex items-center gap-2 text-amber-800">
+      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800/40 dark:bg-amber-500/10">
+        <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300">
           <Icon size={18} />
           <p className="text-sm font-semibold">{t("verifyPendingPage.verifyThis").replace("{label}", label)}</p>
         </div>
-        <p className="mt-1 text-xs text-amber-700">{t("verifyPendingPage.sendCodePrompt").replace("{contact}", contact)}</p>
+        <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">{t("verifyPendingPage.sendCodePrompt").replace("{contact}", contact)}</p>
 
         <Button type="button" variant="small" onClick={handleSend} disabled={sending} className="mt-3">
           {sending ? t("verifyPendingPage.sending") : t("verifyPendingPage.sendCode")}
@@ -85,12 +85,12 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
   }
 
   return (
-    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-      <div className="flex items-center gap-2 text-amber-800">
+    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800/40 dark:bg-amber-500/10">
+      <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300">
         <Icon size={18} />
         <p className="text-sm font-semibold">{t("verifyPendingPage.verifyThis").replace("{label}", label)}</p>
       </div>
-      <p className="mt-1 text-xs text-amber-700">{t("verifyPendingPage.enterCodePrompt").replace("{contact}", contact)}</p>
+      <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">{t("verifyPendingPage.enterCodePrompt").replace("{contact}", contact)}</p>
 
       <form onSubmit={handleVerify} className="mt-3 flex flex-wrap gap-2">
         <input
@@ -109,7 +109,7 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
         type="button"
         onClick={handleSend}
         disabled={sending || cooldown > 0}
-        className="mt-2 text-xs font-medium text-amber-800 underline disabled:cursor-not-allowed disabled:opacity-50"
+        className="mt-2 text-xs font-medium text-amber-800 underline disabled:cursor-not-allowed disabled:opacity-50 dark:text-amber-300"
       >
         {cooldown > 0
           ? t("verifyPendingPage.resendWithCooldown").replace("{seconds}", cooldown)
@@ -130,11 +130,11 @@ export default function VerifyPendingPage() {
   const bothVerified = user.emailVerified && user.mobileVerified;
 
   return (
-    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
+    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12 dark:bg-slate-900">
       <Seo title={t("verifyPendingPage.seo.title")} description={t("verifyPendingPage.seo.description")} />
-      <div className="w-full max-w-md rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
-        <h1 className="text-center text-xl font-bold text-slate-900">{t("verifyPendingPage.heading")}</h1>
-        <p className="mt-1 text-center text-sm text-slate-500">
+      <div className="w-full max-w-md rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl dark:border-brand-800/40 dark:bg-slate-800">
+        <h1 className="text-center text-xl font-bold text-slate-900 dark:text-white">{t("verifyPendingPage.heading")}</h1>
+        <p className="mt-1 text-center text-sm text-slate-500 dark:text-slate-400">
           {bothVerified ? t("verifyPendingPage.subheadingVerified") : t("verifyPendingPage.subheadingPending")}
         </p>
 

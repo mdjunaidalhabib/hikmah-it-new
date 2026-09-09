@@ -12,9 +12,9 @@ import { formatTaka, getDisplayPrice, getDiscountPercent } from "../lib/pricing"
 import { useLanguage } from "../i18n/LanguageContext";
 
 const inputClass =
-  "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100";
+  "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-brand-500 dark:focus:ring-brand-500/20";
 const invalidInputClass =
-  "mt-1 w-full rounded-xl border border-red-400 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-500 focus:ring-3 focus:ring-red-100";
+  "mt-1 w-full rounded-xl border border-red-400 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-500 focus:ring-3 focus:ring-red-100 dark:border-red-500 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-red-500/20";
 
 const requiredFields = ["customerName", "customerPhone", "senderNumber", "transactionId"];
 
@@ -113,21 +113,21 @@ export default function CheckoutPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen animate-page-in bg-brand-50 py-12 lg:py-16">
+      <div className="min-h-screen animate-page-in bg-brand-50 py-12 lg:py-16 dark:bg-slate-900">
         <div className="mx-auto grid w-[min(1000px,calc(100%-40px))] gap-8 lg:grid-cols-[1fr_1.2fr]">
           <div className="grid gap-6">
-            <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg">
+            <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg dark:border-brand-800/40 dark:bg-slate-800">
               <Skeleton className="h-5 w-24" />
               <Skeleton className="mt-3 h-7 w-2/3" />
               <Skeleton className="mt-2 h-8 w-1/3" />
             </div>
-            <div className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6">
+            <div className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6 dark:border-amber-800/40 dark:bg-amber-500/10">
               <Skeleton className="h-5 w-40" />
               <Skeleton className="mt-4 h-14 w-full" />
               <Skeleton className="mt-2 h-14 w-full" />
             </div>
           </div>
-          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8">
+          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8 dark:border-brand-800/40 dark:bg-slate-800">
             <Skeleton className="h-6 w-40" />
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton key={i} className="mt-4 h-10 w-full" />
@@ -140,10 +140,10 @@ export default function CheckoutPage() {
 
   if (notFound) {
     return (
-      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center">
+      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center dark:bg-slate-900">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">{t("checkoutPage.packageNotFoundHeading")}</h1>
-          <p className="mt-2 text-slate-600">{t("checkoutPage.packageNotFoundText")}</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t("checkoutPage.packageNotFoundHeading")}</h1>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">{t("checkoutPage.packageNotFoundText")}</p>
           <Button href="/pricing" className="mt-6">{t("checkoutPage.viewAllPackagesBtn")}</Button>
         </div>
       </div>
@@ -152,11 +152,11 @@ export default function CheckoutPage() {
 
   if (user && !(user.emailVerified && user.mobileVerified)) {
     return (
-      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center">
-        <div className="max-w-md rounded-[2rem] border border-amber-200 bg-white p-8 shadow-xl">
+      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center dark:bg-slate-900">
+        <div className="max-w-md rounded-[2rem] border border-amber-200 bg-white p-8 shadow-xl dark:border-amber-800/40 dark:bg-slate-800">
           <ShieldCheck className="mx-auto text-amber-500" size={48} />
-          <h1 className="mt-4 text-2xl font-bold text-slate-900">{t("checkoutPage.verificationNeededHeading")}</h1>
-          <p className="mt-3 text-slate-600">
+          <h1 className="mt-4 text-2xl font-bold text-slate-900 dark:text-white">{t("checkoutPage.verificationNeededHeading")}</h1>
+          <p className="mt-3 text-slate-600 dark:text-slate-400">
             {t("checkoutPage.verificationNeededText")}
           </p>
           <Button href="/verify" className="mt-6">{t("checkoutPage.verifyBtn")}</Button>
@@ -167,11 +167,11 @@ export default function CheckoutPage() {
 
   if (submitted) {
     return (
-      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center">
-        <div className="max-w-md rounded-[2rem] border border-emerald-200 bg-white p-8 shadow-xl">
+      <div className="grid min-h-[60vh] animate-page-in place-items-center bg-brand-50 px-6 text-center dark:bg-slate-900">
+        <div className="max-w-md rounded-[2rem] border border-emerald-200 bg-white p-8 shadow-xl dark:border-emerald-800/40 dark:bg-slate-800">
           <CheckCircle2 className="mx-auto text-emerald-500" size={48} />
-          <h1 className="mt-4 text-2xl font-bold text-slate-900">{t("checkoutPage.orderSubmittedHeading")}</h1>
-          <p className="mt-3 text-slate-600">
+          <h1 className="mt-4 text-2xl font-bold text-slate-900 dark:text-white">{t("checkoutPage.orderSubmittedHeading")}</h1>
+          <p className="mt-3 text-slate-600 dark:text-slate-400">
             {t("checkoutPage.orderSubmittedText")}
           </p>
           <Button href="/" className="mt-6">{t("checkoutPage.backHomeBtn")}</Button>
@@ -181,33 +181,33 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen animate-page-in bg-brand-50 py-12 lg:py-16">
+    <div className="min-h-screen animate-page-in bg-brand-50 py-12 lg:py-16 dark:bg-slate-900">
       <Seo title={t("checkoutPage.seoTitle")} description={t("checkoutPage.seoDescription")} />
       <div className="mx-auto grid w-[min(1000px,calc(100%-40px))] gap-8 lg:grid-cols-[1fr_1.2fr]">
         {/* Package summary + payment instructions */}
         <div className="grid gap-6">
-          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg">
-            <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700">{pkg.category}</span>
-            <h2 className="mt-3 text-2xl font-medium text-slate-900">{pkg.name}</h2>
+          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg dark:border-brand-800/40 dark:bg-slate-800">
+            <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700 dark:bg-brand-500/10 dark:text-brand-400">{pkg.category}</span>
+            <h2 className="mt-3 text-2xl font-medium text-slate-900 dark:text-white">{pkg.name}</h2>
             <p className="mt-1 flex items-baseline gap-1.5">
-              <span className="text-3xl font-bold text-brand-600">{getDisplayPrice(pkg)}</span>
-              {pkg.periodLabel && <span className="text-sm font-medium text-slate-500">{pkg.periodLabel}</span>}
+              <span className="text-3xl font-bold text-brand-600 dark:text-brand-400">{getDisplayPrice(pkg)}</span>
+              {pkg.periodLabel && <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{pkg.periodLabel}</span>}
             </p>
             {getDiscountPercent(pkg) > 0 && (
               <p className="mt-1 text-sm text-slate-400">
                 <span className="line-through">{formatTaka(pkg.originalPriceAmount)}</span>{" "}
-                <span className="font-semibold text-emerald-600">{getDiscountPercent(pkg)}{t("pricingCard.discount")}</span>
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400">{getDiscountPercent(pkg)}{t("pricingCard.discount")}</span>
               </p>
             )}
-            {pkg.text && <p className="mt-3 text-sm leading-6 text-slate-600">{pkg.text}</p>}
+            {pkg.text && <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{pkg.text}</p>}
           </div>
 
-          <div className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6">
-            <div className="flex items-center gap-2 text-amber-700">
+          <div className="rounded-[2rem] border border-amber-200 bg-amber-50 p-6 dark:border-amber-800/40 dark:bg-amber-500/10">
+            <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
               <ShieldCheck size={18} />
               <h3 className="font-bold">{t("checkoutPage.paymentInstructionsHeading")}</h3>
             </div>
-            <p className="mt-2 text-sm leading-6 text-amber-900">
+            <p className="mt-2 text-sm leading-6 text-amber-900 dark:text-amber-200">
               {t("checkoutPage.paymentInstructionsText")}
             </p>
             <div className="mt-4 grid gap-2">
@@ -218,28 +218,28 @@ export default function CheckoutPage() {
                     type="button"
                     key={entry._id || entry.number}
                     onClick={() => copyNumber(entry.number)}
-                    className="flex items-center justify-between rounded-xl border border-amber-200 bg-white px-4 py-3 text-left transition hover:border-amber-400"
+                    className="flex items-center justify-between rounded-xl border border-amber-200 bg-white px-4 py-3 text-left transition hover:border-amber-400 dark:border-amber-800/40 dark:bg-slate-800 dark:hover:border-amber-600"
                   >
                     <span>
-                      <span className="block text-xs font-semibold text-slate-500">{entry.methods.join(" / ")}</span>
-                      <span className="block text-lg font-bold text-slate-900">{entry.number}</span>
+                      <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400">{entry.methods.join(" / ")}</span>
+                      <span className="block text-lg font-bold text-slate-900 dark:text-white">{entry.number}</span>
                     </span>
-                    <span className="flex items-center gap-1 text-xs font-semibold text-amber-700">
+                    <span className="flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400">
                       <Copy size={14} /> {copied === entry.number ? t("checkoutPage.copied") : t("checkoutPage.copyLabel")}
                     </span>
                   </button>
                 ))}
               {!settings?.paymentNumbers?.entries?.some((entry) => entry.number && entry.methods?.length) && (
-                <p className="text-sm text-amber-800">{t("checkoutPage.noPaymentNumbers")}</p>
+                <p className="text-sm text-amber-800 dark:text-amber-300">{t("checkoutPage.noPaymentNumbers")}</p>
               )}
             </div>
 
             {settings?.bankAccounts
               ?.filter((account) => account.accountNumber)
               .map((account) => (
-                <div key={account._id} className="mt-4 rounded-xl border border-amber-200 bg-white px-4 py-3">
-                  <span className="block text-xs font-semibold text-slate-500">{t("checkoutPage.bankAccountLabel")}</span>
-                  <span className="mt-1 block text-sm leading-6 text-slate-900">
+                <div key={account._id} className="mt-4 rounded-xl border border-amber-200 bg-white px-4 py-3 dark:border-amber-800/40 dark:bg-slate-800">
+                  <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400">{t("checkoutPage.bankAccountLabel")}</span>
+                  <span className="mt-1 block text-sm leading-6 text-slate-900 dark:text-slate-100">
                     {account.bankName && <>{account.bankName}<br /></>}
                     {account.accountName && <>{t("checkoutPage.accountNameLabel")} {account.accountName}<br /></>}
                     {t("checkoutPage.accountNumberLabel")} <span className="font-bold">{account.accountNumber}</span>
@@ -251,25 +251,25 @@ export default function CheckoutPage() {
         </div>
 
         {/* Form */}
-        <form className="grid gap-4 rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8" onSubmit={handleSubmit} noValidate>
-          <h3 className="text-xl font-bold text-slate-900">{t("checkoutPage.formHeading")}</h3>
+        <form className="grid gap-4 rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8 dark:border-brand-800/40 dark:bg-slate-800" onSubmit={handleSubmit} noValidate>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t("checkoutPage.formHeading")}</h3>
 
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {t("checkoutPage.nameLabel")} <span className="text-red-500">*</span>
             <input className={fieldClass("customerName")} name="customerName" value={form.customerName} onChange={handleChange} required />
           </label>
 
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {t("checkoutPage.phoneLabel")} <span className="text-red-500">*</span>
             <input className={fieldClass("customerPhone")} type="tel" name="customerPhone" value={form.customerPhone} onChange={handleChange} required />
           </label>
 
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {t("checkoutPage.emailOptionalLabel")}
             <input className={inputClass} type="email" name="customerEmail" value={form.customerEmail} onChange={handleChange} />
           </label>
 
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {t("checkoutPage.paymentMethodLabel")}
             <select className={inputClass} name="paymentMethod" value={form.paymentMethod} onChange={handleChange}>
               <option value="bKash">{t("checkoutPage.paymentMethods.bkash")}</option>
@@ -279,29 +279,29 @@ export default function CheckoutPage() {
             </select>
           </label>
 
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {t("checkoutPage.senderNumberLabel")} <span className="text-red-500">*</span>
             <input className={fieldClass("senderNumber")} name="senderNumber" value={form.senderNumber} onChange={handleChange} required placeholder={t("checkoutPage.senderNumberPlaceholder")} />
           </label>
 
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {t("checkoutPage.transactionIdLabel")} <span className="text-red-500">*</span>
             <input className={fieldClass("transactionId")} name="transactionId" value={form.transactionId} onChange={handleChange} required />
           </label>
 
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {t("checkoutPage.referralCodeLabel")}
             <input className={inputClass} name="referralCode" value={form.referralCode} onChange={handleChange} placeholder={t("checkoutPage.optionalPlaceholder")} />
           </label>
 
-          {error && <p className="text-sm font-medium text-red-600">{error}</p>}
+          {error && <p className="text-sm font-medium text-red-600 dark:text-red-400">{error}</p>}
 
           <Button type="submit" className="w-full" disabled={submitting}>
             {submitting ? t("checkoutPage.submitting") : t("checkoutPage.confirmOrder")}
           </Button>
 
-          <p className="text-center text-xs text-slate-400">
-            {t("checkoutPage.helpTextPrefix")} <Link to="/contact" className="text-brand-600 hover:underline">{t("checkoutPage.contactLink")}</Link>
+          <p className="text-center text-xs text-slate-400 dark:text-slate-500">
+            {t("checkoutPage.helpTextPrefix")} <Link to="/contact" className="text-brand-600 hover:underline dark:text-brand-400">{t("checkoutPage.contactLink")}</Link>
           </p>
         </form>
       </div>

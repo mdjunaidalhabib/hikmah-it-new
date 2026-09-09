@@ -7,7 +7,7 @@ export default function Avatar({ name, photo, size = "h-24 w-24", iconSize = 28,
   const showImage = photo && !errored;
 
   return (
-    <div className={`relative shrink-0 overflow-hidden rounded-full bg-slate-100 ${size} ${className}`}>
+    <div className={`relative shrink-0 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 ${size} ${className}`}>
       {showImage && (
         <img
           src={photo}
@@ -20,7 +20,7 @@ export default function Avatar({ name, photo, size = "h-24 w-24", iconSize = 28,
         />
       )}
       {(!showImage || !loaded) && (
-        <div className="absolute inset-0 grid place-items-center bg-slate-100 text-slate-400">
+        <div className="absolute inset-0 grid place-items-center bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
           <UserRound size={iconSize} strokeWidth={1.75} />
         </div>
       )}

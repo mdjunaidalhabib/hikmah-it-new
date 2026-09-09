@@ -25,7 +25,7 @@ export default function PricingPage() {
   }, {});
 
   return (
-    <div className="bg-brand-50 min-h-screen">
+    <div className="bg-brand-50 min-h-screen dark:bg-slate-900">
       <Seo
         title={t("pricingPage.seo.title")}
         description={t("pricingPage.seo.description")}
@@ -50,7 +50,7 @@ export default function PricingPage() {
             <div className="grid gap-14">
               {Object.entries(grouped).map(([category, plans]) => (
                 <div key={category}>
-                  <h3 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">{category}</h3>
+                  <h3 className="mb-6 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{category}</h3>
                   <div className="grid gap-5 pt-3 md:grid-cols-2 lg:grid-cols-3">
                     {plans.map((plan) => (
                       <PricingCard key={plan._id} plan={plan} />
@@ -64,10 +64,10 @@ export default function PricingPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-12 bg-white text-center">
+      <section className="py-12 bg-white text-center dark:bg-slate-900">
         <div className="mx-auto w-[min(600px,calc(100%-40px))]">
-          <h2 className="text-2xl font-bold text-slate-900">{t("pricingPage.cta.title")}</h2>
-          <p className="mt-3 text-slate-600">{t("pricingPage.cta.text")}</p>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{t("pricingPage.cta.title")}</h2>
+          <p className="mt-3 text-slate-600 dark:text-slate-400">{t("pricingPage.cta.text")}</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button href="/contact">{t("pricingPage.cta.contact")}</Button>
             <Button href="/services" variant="ghost-dark">{t("pricingPage.cta.services")}</Button>

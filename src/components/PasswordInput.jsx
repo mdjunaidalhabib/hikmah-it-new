@@ -13,7 +13,7 @@ export default function PasswordInput({ className = "", ...props }) {
       <button
         type="button"
         onClick={() => setVisible((v) => !v)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
         aria-label={visible ? t("passwordInput.hide") : t("passwordInput.show")}
         tabIndex={-1}
       >

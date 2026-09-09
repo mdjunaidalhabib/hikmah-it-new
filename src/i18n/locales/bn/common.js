@@ -40,8 +40,6 @@ export default {
     earnOnline: "অনলাইনে আয় করুন",
     viewFacebook: "ফেসবুক পেজ দেখুন",
     allRightsReserved: "সর্বস্বত্ব সংরক্ষিত।",
-    privacyPolicy: "প্রাইভেসি পলিসি",
-    termsOfService: "ব্যবহারের শর্তাবলী",
     designedIn: "Designed & developed with care in Bangladesh",
   },
   seo: {

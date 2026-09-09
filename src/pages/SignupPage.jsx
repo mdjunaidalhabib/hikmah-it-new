@@ -56,11 +56,11 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
+    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12 dark:bg-slate-900">
       <Seo title={t("signupPage.seo.title")} description={t("signupPage.seo.description")} />
-      <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
-        <h1 className="text-center text-xl font-bold text-slate-900">{t("signupPage.heading")}</h1>
-        <p className="mt-1 text-center text-sm text-slate-500">{t("signupPage.subheading")}</p>
+      <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl dark:border-brand-800/40 dark:bg-slate-800">
+        <h1 className="text-center text-xl font-bold text-slate-900 dark:text-white">{t("signupPage.heading")}</h1>
+        <p className="mt-1 text-center text-sm text-slate-500 dark:text-slate-400">{t("signupPage.subheading")}</p>
 
         <form className="mt-6 grid gap-4" onSubmit={handleSubmit} noValidate>
           <label className={labelClass}>
@@ -90,7 +90,7 @@ export default function SignupPage() {
           </label>
 
           {error && (
-            <p role="alert" className="text-sm font-medium text-red-600">
+            <p role="alert" className="text-sm font-medium text-red-600 dark:text-red-400">
               {error}
             </p>
           )}
@@ -101,9 +101,9 @@ export default function SignupPage() {
           </Button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-slate-500">
+        <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
           {t("signupPage.haveAccount")}{" "}
-          <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700">
+          <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
             {t("signupPage.loginLink")}
           </Link>
         </p>

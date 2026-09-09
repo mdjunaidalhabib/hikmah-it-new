@@ -18,7 +18,7 @@ export default function Portfolio() {
   if (!loading && items.length === 0) return null;
 
   return (
-    <section className="bg-brand-50 py-8 lg:py-12" id="portfolio">
+    <section className="bg-brand-50 py-8 dark:bg-slate-900 lg:py-12" id="portfolio">
       <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
           eyebrow={t("home.portfolio.eyebrow")}
@@ -33,9 +33,9 @@ export default function Portfolio() {
               href={item.url}
               target="_blank"
               rel="noreferrer"
-              className="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl"
+              className="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-800 dark:shadow-black/20 dark:hover:border-brand-800/40"
             >
-              <div className="relative aspect-video overflow-hidden border-b border-slate-200 bg-slate-100">
+              <div className="relative aspect-video overflow-hidden border-b border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
                 {item.imageUrl && (
                   <FadeImage
                     src={item.imageUrl}
@@ -52,11 +52,11 @@ export default function Portfolio() {
               </div>
 
               <div className="p-4">
-                <span className="text-xs font-semibold uppercase tracking-wide text-brand-600">{item.category}</span>
+                <span className="text-xs font-semibold uppercase tracking-wide text-brand-600 dark:text-brand-400">{item.category}</span>
 
-                <h3 className="mt-1 line-clamp-1 text-lg font-semibold text-slate-900">{item.title}</h3>
+                <h3 className="mt-1 line-clamp-1 text-lg font-semibold text-slate-900 dark:text-white">{item.title}</h3>
 
-                <p className="mt-1 line-clamp-2 text-sm leading-5 text-slate-600">{item.text}</p>
+                <p className="mt-1 line-clamp-2 text-sm leading-5 text-slate-600 dark:text-slate-400">{item.text}</p>
               </div>
             </a>
           ))}

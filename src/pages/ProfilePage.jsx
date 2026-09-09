@@ -46,32 +46,32 @@ export default function ProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-brand-50 py-12 lg:py-16">
+    <div className="min-h-screen bg-brand-50 py-12 lg:py-16 dark:bg-slate-900">
       <Seo title={t("profilePage.seo.title")} description={t("profilePage.seo.description")} />
       <div className="mx-auto grid w-[min(1000px,calc(100%-40px))] gap-8 lg:grid-cols-[1fr_1.4fr]">
         {/* Profile summary */}
         <div className="grid gap-6">
-          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg">
+          <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-lg dark:border-brand-800/40 dark:bg-slate-800">
             <Avatar name={user.name} photo={user.photoUrl} size="h-16 w-16" iconSize={26} />
-            <h1 className="mt-4 text-xl font-bold text-slate-900">{user.name}</h1>
+            <h1 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{user.name}</h1>
 
             <div className="mt-4 grid gap-2 text-sm">
-              <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-slate-600">
+              <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-slate-600 dark:text-slate-400">
                 <Smartphone size={15} className="shrink-0" />
                 <span className="min-w-0 flex-1 truncate">{user.mobile}</span>
                 {user.mobileVerified ? (
-                  <ShieldCheck size={14} className="shrink-0 text-emerald-500" />
+                  <ShieldCheck size={14} className="shrink-0 text-emerald-500 dark:text-emerald-400" />
                 ) : (
-                  <span className="shrink-0 whitespace-nowrap text-xs font-semibold text-amber-600">{t("profilePage.verifyNow")}</span>
+                  <span className="shrink-0 whitespace-nowrap text-xs font-semibold text-amber-600 dark:text-amber-400">{t("profilePage.verifyNow")}</span>
                 )}
               </div>
-              <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-slate-600">
+              <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-slate-600 dark:text-slate-400">
                 <Mail size={15} className="shrink-0" />
                 <span className="min-w-0 flex-1 truncate">{user.email}</span>
                 {user.emailVerified ? (
-                  <ShieldCheck size={14} className="shrink-0 text-emerald-500" />
+                  <ShieldCheck size={14} className="shrink-0 text-emerald-500 dark:text-emerald-400" />
                 ) : (
-                  <span className="shrink-0 whitespace-nowrap text-xs font-semibold text-amber-600">{t("profilePage.verifyNow")}</span>
+                  <span className="shrink-0 whitespace-nowrap text-xs font-semibold text-amber-600 dark:text-amber-400">{t("profilePage.verifyNow")}</span>
                 )}
               </div>
             </div>
@@ -84,15 +84,15 @@ export default function ProfilePage() {
 
             <button
               onClick={handleLogout}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:border-slate-700 dark:text-red-400 dark:hover:bg-red-500/10"
             >
               <LogOut size={15} /> {t("profilePage.logout")}
             </button>
           </div>
 
           {/* Referral card */}
-          <div className="rounded-[2rem] border border-emerald-200 bg-emerald-50 p-6">
-            <div className="flex items-center gap-2 text-emerald-700">
+          <div className="rounded-[2rem] border border-emerald-200 bg-emerald-50 p-6 dark:border-emerald-800/40 dark:bg-emerald-500/10">
+            <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
               <Share2 size={18} />
               <h3 className="font-bold">{t("profilePage.referralEarnings")}</h3>
             </div>
@@ -101,26 +101,26 @@ export default function ProfilePage() {
               <Skeleton className="mt-4 h-8 w-32" />
             ) : (
               <>
-                <p className="mt-3 text-xs font-semibold text-emerald-700">{t("profilePage.yourReferralCode")}</p>
+                <p className="mt-3 text-xs font-semibold text-emerald-700 dark:text-emerald-400">{t("profilePage.yourReferralCode")}</p>
                 <button
                   onClick={copyReferralCode}
-                  className="mt-1 flex w-full items-center justify-between rounded-xl border border-emerald-200 bg-white px-4 py-3 text-left"
+                  className="mt-1 flex w-full items-center justify-between rounded-xl border border-emerald-200 bg-white px-4 py-3 text-left dark:border-emerald-800/40 dark:bg-slate-800"
                 >
-                  <span className="text-lg font-bold text-slate-900">{referrals?.referralCode}</span>
-                  <Copy size={15} className="text-emerald-600" />
+                  <span className="text-lg font-bold text-slate-900 dark:text-white">{referrals?.referralCode}</span>
+                  <Copy size={15} className="text-emerald-600 dark:text-emerald-400" />
                 </button>
 
                 <div className="mt-4 grid grid-cols-2 gap-3">
-                  <div className="rounded-xl bg-white px-3 py-2.5 text-center">
-                    <p className="text-lg font-bold text-emerald-700">৳{(referrals?.totalEarned || 0).toLocaleString(lang === "bn" ? "bn-BD" : "en-US")}</p>
-                    <p className="text-xs text-slate-500">{t("profilePage.totalEarned")}</p>
+                  <div className="rounded-xl bg-white px-3 py-2.5 text-center dark:bg-slate-800">
+                    <p className="text-lg font-bold text-emerald-700 dark:text-emerald-400">৳{(referrals?.totalEarned || 0).toLocaleString(lang === "bn" ? "bn-BD" : "en-US")}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{t("profilePage.totalEarned")}</p>
                   </div>
-                  <div className="rounded-xl bg-white px-3 py-2.5 text-center">
-                    <p className="text-lg font-bold text-slate-900">{referrals?.approvedCount || 0}</p>
-                    <p className="text-xs text-slate-500">{t("profilePage.successfulReferrals")}</p>
+                  <div className="rounded-xl bg-white px-3 py-2.5 text-center dark:bg-slate-800">
+                    <p className="text-lg font-bold text-slate-900 dark:text-white">{referrals?.approvedCount || 0}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{t("profilePage.successfulReferrals")}</p>
                   </div>
                 </div>
-                <p className="mt-3 text-xs leading-5 text-emerald-800">
+                <p className="mt-3 text-xs leading-5 text-emerald-800 dark:text-emerald-300">
                   {t("profilePage.referralNote")}
                 </p>
               </>
@@ -129,8 +129,8 @@ export default function ProfilePage() {
         </div>
 
         {/* Orders */}
-        <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8">
-          <div className="flex items-center gap-2 text-slate-900">
+        <div className="rounded-[2rem] border border-brand-100 bg-white p-6 shadow-xl lg:p-8 dark:border-brand-800/40 dark:bg-slate-800">
+          <div className="flex items-center gap-2 text-slate-900 dark:text-white">
             <Wallet size={18} />
             <h2 className="text-lg font-bold">{t("profilePage.myOrders")}</h2>
           </div>
@@ -140,15 +140,15 @@ export default function ProfilePage() {
             {loading ? (
               Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-20 w-full rounded-xl" />)
             ) : orders.length === 0 ? (
-              <p className="py-10 text-center text-sm text-slate-400">{t("profilePage.noOrders")}</p>
+              <p className="py-10 text-center text-sm text-slate-400 dark:text-slate-500">{t("profilePage.noOrders")}</p>
             ) : (
               orders.map((order) => (
-                <div key={order._id} className="rounded-xl border border-slate-100 p-3">
+                <div key={order._id} className="rounded-xl border border-slate-100 p-3 dark:border-slate-700">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="min-w-0 truncate font-medium text-slate-800">{order.packageNameSnapshot}</p>
+                    <p className="min-w-0 truncate font-medium text-slate-800 dark:text-slate-200">{order.packageNameSnapshot}</p>
                     <StatusBadge status={order.status} />
                   </div>
-                  <div className="mt-1.5 flex items-center justify-between text-xs text-slate-500">
+                  <div className="mt-1.5 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                     <span>{order.priceSnapshot}</span>
                     <span>{formatDate(order.createdAt, lang)}</span>
                   </div>
@@ -161,7 +161,7 @@ export default function ProfilePage() {
           <div className="mt-4 hidden overflow-x-auto sm:block">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-100 text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <tr className="border-b border-slate-100 text-left text-xs font-semibold uppercase tracking-wide text-slate-400 dark:border-slate-700 dark:text-slate-500">
                   <th className="py-2 pr-3">{t("profilePage.tablePackage")}</th>
                   <th className="py-2 pr-3">{t("profilePage.tablePrice")}</th>
                   <th className="py-2 pr-3">{t("profilePage.tableDate")}</th>
@@ -173,16 +173,16 @@ export default function ProfilePage() {
                   Array.from({ length: 3 }).map((_, i) => <SkeletonRow key={i} cols={4} />)
                 ) : orders.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="py-10 text-center text-sm text-slate-400">
+                    <td colSpan={4} className="py-10 text-center text-sm text-slate-400 dark:text-slate-500">
                       {t("profilePage.noOrders")}
                     </td>
                   </tr>
                 ) : (
                   orders.map((order) => (
-                    <tr key={order._id} className="border-b border-slate-50 last:border-0">
-                      <td className="py-3 pr-3 font-medium text-slate-800">{order.packageNameSnapshot}</td>
-                      <td className="py-3 pr-3 text-slate-600">{order.priceSnapshot}</td>
-                      <td className="py-3 pr-3 text-slate-500">{formatDate(order.createdAt, lang)}</td>
+                    <tr key={order._id} className="border-b border-slate-50 last:border-0 dark:border-slate-800">
+                      <td className="py-3 pr-3 font-medium text-slate-800 dark:text-slate-200">{order.packageNameSnapshot}</td>
+                      <td className="py-3 pr-3 text-slate-600 dark:text-slate-400">{order.priceSnapshot}</td>
+                      <td className="py-3 pr-3 text-slate-500 dark:text-slate-400">{formatDate(order.createdAt, lang)}</td>
                       <td className="py-3 pr-3">
                         <StatusBadge status={order.status} />
                       </td>

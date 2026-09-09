@@ -7,9 +7,9 @@ import { apiPost } from "../lib/api";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const inputClass =
-  "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100 focus-visible:ring-3";
+  "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-3 focus:ring-brand-100 focus-visible:ring-3 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-brand-500 dark:focus:ring-brand-500/20";
 const invalidInputClass =
-  "mt-1 w-full rounded-xl border border-red-400 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-500 focus:ring-3 focus:ring-red-100";
+  "mt-1 w-full rounded-xl border border-red-400 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-500 focus:ring-3 focus:ring-red-100 dark:border-red-500 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-red-500/20";
 
 const requiredFields = ["name", "phone"];
 
@@ -69,19 +69,19 @@ export default function ContactForm({ className = "" }) {
 
   if (status === "sent") {
     return (
-      <div className={`rounded-2xl border border-emerald-100 bg-emerald-50 p-6 text-center shadow-xl ${className}`}>
-        <p className="font-semibold text-emerald-700">{t("contactForm.sentTitle")}</p>
+      <div className={`rounded-2xl border border-emerald-100 bg-emerald-50 p-6 text-center shadow-xl dark:border-emerald-800/40 dark:bg-emerald-500/10 ${className}`}>
+        <p className="font-semibold text-emerald-700 dark:text-emerald-400">{t("contactForm.sentTitle")}</p>
       </div>
     );
   }
 
   return (
     <form
-      className={`grid gap-3 rounded-2xl border border-brand-100 bg-white p-6 shadow-xl ${className}`}
+      className={`grid gap-3 rounded-2xl border border-brand-100 bg-white p-6 shadow-xl dark:border-brand-800/40 dark:bg-slate-900 ${className}`}
       onSubmit={handleSubmit}
       noValidate
     >
-      <label className="text-sm font-medium text-slate-700">
+      <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
         {t("contactForm.name")} <span className="text-red-500">*</span>
         <input
           className={fieldClass("name")}
@@ -94,7 +94,7 @@ export default function ContactForm({ className = "" }) {
         />
       </label>
 
-      <label className="text-sm font-medium text-slate-700">
+      <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
         {t("contactForm.phone")} <span className="text-red-500">*</span>
         <input
           className={fieldClass("phone")}
@@ -107,7 +107,7 @@ export default function ContactForm({ className = "" }) {
         />
       </label>
 
-      <label className="text-sm font-medium text-slate-700">
+      <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
         {t("contactForm.service")}
         <select className={inputClass} name="service" value={form.service} onChange={handleChange}>
           <option value="">{t("contactForm.selectService")}</option>
@@ -117,7 +117,7 @@ export default function ContactForm({ className = "" }) {
         </select>
       </label>
 
-      <label className="text-sm font-medium text-slate-700">
+      <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
         {t("contactForm.message")}
         <textarea
           className={inputClass}
@@ -130,7 +130,7 @@ export default function ContactForm({ className = "" }) {
       </label>
 
       {error && (
-        <p role="alert" className="text-sm font-medium text-red-600">
+        <p role="alert" className="text-sm font-medium text-red-600 dark:text-red-400">
           {error}
         </p>
       )}

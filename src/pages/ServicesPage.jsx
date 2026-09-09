@@ -23,7 +23,7 @@ export default function ServicesPage() {
   }, []);
 
   return (
-    <div className="bg-brand-50 min-h-screen">
+    <div className="bg-brand-50 min-h-screen dark:bg-slate-900">
       <Seo
         title={t("servicesPage.seo.title")}
         description={t("servicesPage.seo.description")}
@@ -67,15 +67,15 @@ export default function ServicesPage() {
       </section>
 
       {/* Process */}
-      <section className="py-8 lg:py-12 bg-white">
+      <section className="py-8 lg:py-12 bg-white dark:bg-slate-900">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <SectionHeader eyebrow={t("servicesPage.process.eyebrow")} title={t("servicesPage.process.title")} />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {workProcess.map((item) => (
-              <article key={item.step} className="rounded-3xl border border-slate-200 bg-brand-50 p-6 shadow-lg shadow-slate-950/5 transition hover:shadow-xl">
+              <article key={item.step} className="rounded-3xl border border-slate-200 bg-brand-50 p-6 shadow-lg shadow-slate-950/5 transition hover:shadow-xl dark:border-slate-800 dark:bg-brand-500/10">
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-600 font-bold text-white">{item.step}</span>
-                <h3 className="mt-5 text-xl font-semibold text-slate-900">{item.title}</h3>
-                <p className="mt-2 leading-7 text-slate-600">{item.text}</p>
+                <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-white">{item.title}</h3>
+                <p className="mt-2 leading-7 text-slate-600 dark:text-slate-400">{item.text}</p>
               </article>
             ))}
           </div>
@@ -85,8 +85,8 @@ export default function ServicesPage() {
       {/* CTA */}
       <section className="py-12 text-center">
         <div className="mx-auto w-[min(600px,calc(100%-40px))]">
-          <h2 className="text-2xl font-bold text-slate-900">{t("servicesPage.cta.title")}</h2>
-          <p className="mt-3 text-slate-600">{t("servicesPage.cta.text")}</p>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{t("servicesPage.cta.title")}</h2>
+          <p className="mt-3 text-slate-600 dark:text-slate-400">{t("servicesPage.cta.text")}</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button href="/contact">{t("servicesPage.cta.primary")} <ArrowRight size={16} /></Button>
             <Button href="/pricing" variant="ghost-dark">{t("servicesPage.cta.secondary")}</Button>

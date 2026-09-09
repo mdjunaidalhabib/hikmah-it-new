@@ -7,7 +7,7 @@ export default function Faq() {
   const faq = tList("data.faq");
 
   return (
-    <section className="bg-brand-50 py-8 lg:py-12" id="faq">
+    <section className="bg-brand-50 py-8 dark:bg-slate-900 lg:py-12" id="faq">
       <div className="mx-auto w-[min(1100px,calc(100%-40px))]">
         <SectionHeader
           eyebrow={t("home.faq.eyebrow")}
@@ -20,17 +20,17 @@ export default function Faq() {
           {faq.map((item) => (
             <details
               key={item.q}
-              className="group mb-4 break-inside-avoid rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-950/5 transition duration-300 hover:border-brand-200 hover:shadow-xl group-open:border-brand-200"
+              className="group mb-4 break-inside-avoid rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-950/5 transition duration-300 hover:border-brand-200 hover:shadow-xl group-open:border-brand-200 dark:border-slate-800 dark:bg-slate-800 dark:shadow-black/20 dark:hover:border-brand-800/40 dark:group-open:border-brand-800/40"
             >
-              <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold tracking-tight text-slate-950 marker:content-none">
+              <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold tracking-tight text-slate-950 marker:content-none dark:text-white">
                 <span className="pr-3">{item.q}</span>
 
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-500 transition duration-300 group-open:rotate-180 group-open:bg-brand-100 group-open:text-brand-600">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-500 transition duration-300 group-open:rotate-180 group-open:bg-brand-100 group-open:text-brand-600 dark:bg-slate-700 dark:text-slate-400 dark:group-open:bg-brand-500/20 dark:group-open:text-brand-400">
                   <ChevronDown size={17} />
                 </span>
               </summary>
 
-              <p className="mt-3 leading-7 text-slate-600">{item.a}</p>
+              <p className="mt-3 leading-7 text-slate-600 dark:text-slate-400">{item.a}</p>
             </details>
           ))}
         </div>

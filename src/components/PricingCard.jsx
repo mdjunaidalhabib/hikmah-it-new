@@ -15,8 +15,8 @@ export default function PricingCard({ plan }) {
     <article
       className={`relative flex h-full flex-col rounded-[1.75rem] border p-7 shadow-lg transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl ${
         highlighted
-          ? "border-brand-300 bg-gradient-to-br from-white via-brand-50 to-amber-50 shadow-brand-950/10 ring-2 ring-brand-200 lg:-translate-y-2 lg:hover:-translate-y-2.5"
-          : "border-slate-200 bg-white shadow-slate-950/5 hover:border-brand-200"
+          ? "border-brand-300 bg-gradient-to-br from-white via-brand-50 to-amber-50 shadow-brand-950/10 ring-2 ring-brand-200 dark:border-brand-500/40 dark:from-slate-900 dark:via-brand-500/10 dark:to-amber-500/10 dark:ring-brand-500/30 lg:-translate-y-2 lg:hover:-translate-y-2.5"
+          : "border-slate-200 bg-white shadow-slate-950/5 hover:border-brand-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-500/40"
       }`}
     >
       {highlighted && (
@@ -25,30 +25,30 @@ export default function PricingCard({ plan }) {
         </span>
       )}
 
-      <h3 className="text-xl font-bold text-slate-900">{name}</h3>
+      <h3 className="text-xl font-bold text-slate-900 dark:text-white">{name}</h3>
 
       <div className="mt-3 flex items-baseline gap-1.5">
-        <span className="bg-gradient-to-br from-brand-600 to-brand-800 bg-clip-text text-3xl font-extrabold text-transparent">{price}</span>
-        {periodLabel && <span className="text-sm font-medium text-slate-500">{periodLabel}</span>}
+        <span className="bg-gradient-to-br from-brand-600 to-brand-800 bg-clip-text text-3xl font-extrabold text-transparent dark:from-brand-400 dark:to-brand-600">{price}</span>
+        {periodLabel && <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{periodLabel}</span>}
       </div>
 
       {discountPercent > 0 && (
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">
           <span className="line-through">{formatTaka(originalPriceAmount)}</span>{" "}
-          <span className="font-semibold text-emerald-600">{discountPercent}{t("pricingCard.discount")}</span>
+          <span className="font-semibold text-emerald-600 dark:text-emerald-400">{discountPercent}{t("pricingCard.discount")}</span>
         </p>
       )}
 
-      {renewalText && <p className="mt-1 text-xs font-semibold text-slate-500">{renewalText}</p>}
+      {renewalText && <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{renewalText}</p>}
 
-      <p className="mt-3 text-sm leading-6 text-slate-600">{text}</p>
+      <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{text}</p>
 
       {limits && limits.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {limits.map((limit) => (
             <span
               key={limit}
-              className="rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700"
+              className="rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 dark:border-brand-800/40 dark:bg-brand-500/10 dark:text-brand-400"
             >
               {limit}
             </span>
@@ -56,16 +56,16 @@ export default function PricingCard({ plan }) {
         </div>
       )}
 
-      <ul className="my-6 grid gap-2.5 text-sm text-slate-700">
+      <ul className="my-6 grid gap-2.5 text-sm text-slate-700 dark:text-slate-300">
         {features.map((feature) => (
           <li key={feature} className="flex items-start gap-2">
-            <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-brand-600" />
+            <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400" />
             <span>{feature}</span>
           </li>
         ))}
         {notIncluded?.map((feature) => (
-          <li key={feature} className="flex items-start gap-2 text-slate-400">
-            <XCircle size={16} className="mt-0.5 shrink-0 text-slate-300" />
+          <li key={feature} className="flex items-start gap-2 text-slate-400 dark:text-slate-500">
+            <XCircle size={16} className="mt-0.5 shrink-0 text-slate-300 dark:text-slate-600" />
             <span className="line-through">{feature}</span>
           </li>
         ))}

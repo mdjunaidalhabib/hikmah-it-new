@@ -40,11 +40,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12">
+    <div className="grid min-h-screen place-items-center bg-brand-50 px-4 py-12 dark:bg-slate-900">
       <Seo title={t("loginPage.seo.title")} description={t("loginPage.seo.description")} />
-      <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
-        <h1 className="text-center text-xl font-bold text-slate-900">{t("loginPage.heading")}</h1>
-        <p className="mt-1 text-center text-sm text-slate-500">{t("loginPage.subheading")}</p>
+      <div className="w-full max-w-sm rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl dark:border-brand-800/40 dark:bg-slate-800">
+        <h1 className="text-center text-xl font-bold text-slate-900 dark:text-white">{t("loginPage.heading")}</h1>
+        <p className="mt-1 text-center text-sm text-slate-500 dark:text-slate-400">{t("loginPage.subheading")}</p>
 
         <form className="mt-6 grid gap-4" onSubmit={handleSubmit} noValidate>
           <label className={labelClass}>
@@ -66,7 +66,7 @@ export default function LoginPage() {
           </label>
 
           {error && (
-            <p role="alert" className="text-sm font-medium text-red-600">
+            <p role="alert" className="text-sm font-medium text-red-600 dark:text-red-400">
               {error}
             </p>
           )}
@@ -77,12 +77,12 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <Link to="/forgot-password" className="mt-4 block text-center text-sm font-medium text-brand-600 hover:text-brand-700">
+        <Link to="/forgot-password" className="mt-4 block text-center text-sm font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
           {t("loginPage.forgotPassword")}
         </Link>
-        <p className="mt-2 text-center text-sm text-slate-500">
+        <p className="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">
           {t("loginPage.noAccount")}{" "}
-          <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-700">
+          <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
             {t("loginPage.signupLink")}
           </Link>
         </p>

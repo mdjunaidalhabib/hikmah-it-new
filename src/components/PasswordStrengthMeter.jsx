@@ -12,9 +12,9 @@ function scorePassword(password) {
 }
 
 const LEVELS = [
-  { max: 1, key: "weak", color: "bg-red-500", text: "text-red-600" },
-  { max: 3, key: "medium", color: "bg-amber-500", text: "text-amber-600" },
-  { max: 5, key: "strong", color: "bg-emerald-500", text: "text-emerald-600" },
+  { max: 1, key: "weak", color: "bg-red-500", text: "text-red-600 dark:text-red-400" },
+  { max: 3, key: "medium", color: "bg-amber-500", text: "text-amber-600 dark:text-amber-400" },
+  { max: 5, key: "strong", color: "bg-emerald-500", text: "text-emerald-600 dark:text-emerald-400" },
 ];
 
 export default function PasswordStrengthMeter({ password }) {
@@ -27,7 +27,7 @@ export default function PasswordStrengthMeter({ password }) {
 
   return (
     <div className="mt-1.5">
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
         <div className={`h-full rounded-full transition-all duration-300 ${level.color}`} style={{ width: `${percent}%` }} />
       </div>
       <p className={`mt-1 text-xs font-medium ${level.text}`}>

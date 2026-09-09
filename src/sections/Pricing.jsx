@@ -24,7 +24,7 @@ export default function Pricing() {
   if (!loading && packages.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden bg-brand-50 py-8 lg:py-12" id="pricing">
+    <section className="relative overflow-hidden bg-brand-50 py-8 dark:bg-slate-900 lg:py-12" id="pricing">
       <div className="pointer-events-none absolute left-1/2 top-0 h-80 w-[36rem] -translate-x-1/2 rounded-full bg-brand-400/10 blur-3xl" />
       <div className="relative mx-auto w-[min(1180px,calc(100%-40px))]">
         <SectionHeader
@@ -33,12 +33,12 @@ export default function Pricing() {
         />
 
         {loading ? (
-          <p className="py-10 text-center text-sm text-slate-400">{t("common.loading")}</p>
+          <p className="py-10 text-center text-sm text-slate-400 dark:text-slate-500">{t("common.loading")}</p>
         ) : (
           <div className="grid gap-12">
             {Object.entries(grouped).map(([category, plans]) => (
               <div key={category}>
-                <h3 className="mb-5 text-3xl font-bold tracking-tight text-slate-900">
+                <h3 className="mb-5 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                   {category}
                 </h3>
 

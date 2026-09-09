@@ -40,8 +40,6 @@ export default {
     earnOnline: "Earn Online",
     viewFacebook: "View Facebook Page",
     allRightsReserved: "All rights reserved.",
-    privacyPolicy: "Privacy Policy",
-    termsOfService: "Terms of Service",
     designedIn: "Designed & developed with care in Bangladesh",
   },
   seo: {

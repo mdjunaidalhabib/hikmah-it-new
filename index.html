@@ -21,6 +21,15 @@
 
     <link rel="icon" href="/hikmah-favicon.jpg" type="image/jpeg" />
     <title>Hikmah IT | ই-কমার্স ও মাদরাসা ম্যানেজমেন্ট সফটওয়্যার</title>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("hikmah-theme");
+          var isDark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", isDark);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

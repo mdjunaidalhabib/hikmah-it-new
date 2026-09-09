@@ -25,7 +25,7 @@ export default function MadrasahPage() {
   }, [])
 
   return (
-    <div className="bg-brand-50 min-h-screen">
+    <div className="bg-brand-50 min-h-screen dark:bg-slate-900">
       <Seo
         title={t('madrasahPage.seo.title')}
         description={t('madrasahPage.seo.description')}
@@ -44,31 +44,31 @@ export default function MadrasahPage() {
       {/* Dashboard Preview */}
       <section className="py-12 lg:py-16">
         <div className="mx-auto grid w-[min(1180px,calc(100%-40px))] gap-6 lg:grid-cols-2">
-          <div className="rounded-[2rem] border border-brand-100 bg-gradient-to-br from-white to-brand-50 p-6 shadow-2xl">
+          <div className="rounded-[2rem] border border-brand-100 bg-gradient-to-br from-white to-brand-50 p-6 shadow-2xl dark:border-brand-800/40 dark:from-slate-900 dark:to-slate-800/60">
             <div className="mb-5 rounded-3xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-600 p-5 text-center text-xl font-semibold text-white">
               {t('madrasahPage.dashboard.title')}
             </div>
             <div className="grid gap-3">
               {dashboardItems.map((item) => (
-                <div key={item} className="flex items-center justify-between rounded-2xl border border-brand-100 bg-white px-4 py-4">
-                  <span className="font-medium text-slate-700">{item}</span>
-                  <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-600">{t('madrasahPage.dashboard.statusActive')}</span>
+                <div key={item} className="flex items-center justify-between rounded-2xl border border-brand-100 bg-white px-4 py-4 dark:border-brand-800/40 dark:bg-slate-800">
+                  <span className="font-medium text-slate-700 dark:text-slate-200">{item}</span>
+                  <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">{t('madrasahPage.dashboard.statusActive')}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex flex-col justify-between rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl">
+          <div className="flex flex-col justify-between rounded-[2rem] border border-brand-100 bg-white p-8 shadow-xl dark:border-brand-800/40 dark:bg-slate-900">
             <div className="space-y-4">
-              <div className="rounded-2xl bg-gradient-to-r from-brand-50 to-emerald-50 p-5">
-                <h3 className="text-lg font-bold text-slate-800">{t('madrasahPage.panel.title')}</h3>
-                <p className="mt-1 text-sm text-slate-600">{t('madrasahPage.panel.text')}</p>
+              <div className="rounded-2xl bg-gradient-to-r from-brand-50 to-emerald-50 p-5 dark:from-brand-500/10 dark:to-emerald-500/10">
+                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">{t('madrasahPage.panel.title')}</h3>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t('madrasahPage.panel.text')}</p>
               </div>
               <div className="grid gap-3">
                 {panelItems.map((item) => (
-                  <div key={item} className="flex items-start gap-3 rounded-2xl border border-slate-200 p-4 text-sm">
-                    <span className="mt-1 text-emerald-600">✓</span>
-                    <span className="font-semibold text-slate-700">{item}</span>
+                  <div key={item} className="flex items-start gap-3 rounded-2xl border border-slate-200 p-4 text-sm dark:border-slate-800">
+                    <span className="mt-1 text-emerald-600 dark:text-emerald-400">✓</span>
+                    <span className="font-semibold text-slate-700 dark:text-slate-200">{item}</span>
                   </div>
                 ))}
               </div>
@@ -91,7 +91,7 @@ export default function MadrasahPage() {
       </section>
 
       {/* Pricing */}
-      <section className="pb-12 lg:pb-16 bg-white">
+      <section className="pb-12 lg:pb-16 bg-white dark:bg-slate-900">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <SectionHeader eyebrow={t('madrasahPage.pricing.eyebrow')} title={t('madrasahPage.pricing.title')} />
           {loading ? (

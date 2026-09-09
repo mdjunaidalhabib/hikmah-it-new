@@ -26,7 +26,7 @@ export default function TeamPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-brand-50">
+    <div className="min-h-screen bg-brand-50 dark:bg-slate-900">
       <Seo
         title={t("team.seoTitle")}
         description={t("team.seoDescription")}
@@ -41,7 +41,7 @@ export default function TeamPage() {
       {settingsLoading ? (
         <section className="py-12 lg:py-16">
           <div className="mx-auto w-[min(900px,calc(100%-40px))]">
-            <div className="rounded-[2rem] border border-brand-200 bg-white p-8 shadow-2xl shadow-brand-950/10">
+            <div className="rounded-[2rem] border border-brand-200 bg-white p-8 shadow-2xl shadow-brand-950/10 dark:border-brand-800/40 dark:bg-slate-900">
               <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
                 <Skeleton className="h-28 w-28 shrink-0 rounded-full" />
                 <div className="w-full text-center sm:text-left">
@@ -58,14 +58,14 @@ export default function TeamPage() {
       ) : founder?.name ? (
         <section className="py-12 lg:py-16">
           <div className="mx-auto w-[min(900px,calc(100%-40px))]">
-            <div className="rounded-[2rem] border border-brand-200 bg-white p-8 shadow-2xl shadow-brand-950/10">
+            <div className="rounded-[2rem] border border-brand-200 bg-white p-8 shadow-2xl shadow-brand-950/10 dark:border-brand-800/40 dark:bg-slate-900">
               <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
                 <Avatar
                   name={founder.name}
                   photo={founder.photoUrl}
                   size="h-28 w-28"
                   iconSize={32}
-                  className="border-4 border-white shadow-lg shadow-brand-900/10"
+                  className="border-4 border-white shadow-lg shadow-brand-900/10 dark:border-slate-900"
                 />
 
                 <div className="text-center sm:text-left">
@@ -73,18 +73,18 @@ export default function TeamPage() {
                     {founder.role}
                   </span>
 
-                  <h2 className="mt-2 text-2xl font-medium text-slate-900">{founder.name}</h2>
+                  <h2 className="mt-2 text-2xl font-medium text-slate-900 dark:text-white">{founder.name}</h2>
 
-                  <p className="mt-1 flex items-center justify-center gap-1 text-sm text-slate-500 sm:justify-start">
+                  <p className="mt-1 flex items-center justify-center gap-1 text-sm text-slate-500 dark:text-slate-400 sm:justify-start">
                     <MapPin size={14} />
                     {founder.location}
                   </p>
 
-                  <p className="mt-3 leading-7 text-slate-600">{founder.bio}</p>
+                  <p className="mt-3 leading-7 text-slate-600 dark:text-slate-400">{founder.bio}</p>
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {(founder.skills || []).map((skill) => (
-                      <span key={skill} className="rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
+                      <span key={skill} className="rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 dark:border-brand-800/40 dark:bg-brand-500/10 dark:text-brand-400">
                         {skill}
                       </span>
                     ))}
@@ -130,20 +130,20 @@ export default function TeamPage() {
               {partners.map((member) => (
                 <article
                   key={member._id}
-                  className="rounded-[2rem] border border-slate-200 bg-white p-6 text-center shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
+                  className="rounded-[2rem] border border-slate-200 bg-white p-6 text-center shadow-lg transition hover:-translate-y-1 hover:shadow-2xl dark:border-slate-800 dark:bg-slate-900"
                 >
                   <Avatar
                     name={member.name}
                     photo={member.photoUrl}
-                    className="mx-auto border-4 border-white shadow-lg shadow-brand-900/10"
+                    className="mx-auto border-4 border-white shadow-lg shadow-brand-900/10 dark:border-slate-900"
                   />
 
-                  <h3 className="mt-4 text-xl font-bold text-slate-900">{member.name}</h3>
+                  <h3 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{member.name}</h3>
 
-                  <p className="mt-1 text-sm font-semibold text-brand-600">{member.role}</p>
+                  <p className="mt-1 text-sm font-semibold text-brand-600 dark:text-brand-400">{member.role}</p>
 
                   {member.location && (
-                    <p className="mt-1 flex items-center justify-center gap-1 text-xs text-slate-500">
+                    <p className="mt-1 flex items-center justify-center gap-1 text-xs text-slate-500 dark:text-slate-400">
                       <MapPin size={12} />
                       {member.location}
                     </p>
@@ -152,7 +152,7 @@ export default function TeamPage() {
                   {member.skills?.length > 0 && (
                     <div className="mt-3 flex flex-wrap justify-center gap-2">
                       {member.skills.map((skill) => (
-                        <span key={skill} className="rounded-full border border-brand-100 bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700">
+                        <span key={skill} className="rounded-full border border-brand-100 bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700 dark:border-brand-800/40 dark:bg-brand-500/10 dark:text-brand-400">
                           {skill}
                         </span>
                       ))}
@@ -160,8 +160,8 @@ export default function TeamPage() {
                   )}
 
                   {member.earningText && (
-                    <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-2">
-                      <span className="text-xs font-semibold text-emerald-700">💰 {t("team.partners.totalEarnings")}: {member.earningText}</span>
+                    <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-2 dark:border-emerald-800/40 dark:bg-emerald-500/10">
+                      <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">💰 {t("team.partners.totalEarnings")}: {member.earningText}</span>
                     </div>
                   )}
 
@@ -172,7 +172,7 @@ export default function TeamPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={t("team.partners.facebookAria").replace("{name}", member.name)}
-                        className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-brand-300 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50"
+                        className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-brand-300 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400 dark:hover:border-brand-700 dark:hover:text-brand-400"
                       >
                         <ExternalLink size={16} />
                       </a>
@@ -184,7 +184,7 @@ export default function TeamPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={t("team.partners.whatsappAria").replace("{name}", member.name)}
-                        className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300/50"
+                        className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300/50 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400 dark:hover:border-emerald-700 dark:hover:text-emerald-400"
                       >
                         <MessageCircle size={16} />
                       </a>
@@ -198,30 +198,30 @@ export default function TeamPage() {
       </section>
 
       {/* Earn Through Referrals */}
-      <section className="bg-white py-12 lg:py-16">
+      <section className="bg-white py-12 lg:py-16 dark:bg-slate-900">
         <div className="mx-auto w-[min(1180px,calc(100%-40px))]">
           <div className="mb-10 text-center">
-            <span className="inline-flex items-center rounded-full border border-brand-200 bg-brand-50 px-3.5 py-2 text-sm font-semibold text-brand-700">
+            <span className="inline-flex items-center rounded-full border border-brand-200 bg-brand-50 px-3.5 py-2 text-sm font-semibold text-brand-700 dark:border-brand-800/40 dark:bg-brand-500/10 dark:text-brand-400">
               {t("team.referral.badge")}
             </span>
 
-            <h2 className="mt-4 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+            <h2 className="mt-4 text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl lg:text-4xl dark:text-white">
               {t("team.referral.title")}
             </h2>
 
-            <p className="mt-3 text-base text-slate-600">{t("team.referral.text")}</p>
+            <p className="mt-3 text-base text-slate-600 dark:text-slate-400">{t("team.referral.text")}</p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
             {joinRoles.map((role, i) => (
-              <article key={role.role} className="rounded-[2rem] border border-brand-100 bg-brand-50/50 p-7 transition hover:bg-brand-50">
+              <article key={role.role} className="rounded-[2rem] border border-brand-100 bg-brand-50/50 p-7 transition hover:bg-brand-50 dark:border-brand-800/40 dark:bg-brand-500/10 dark:hover:bg-brand-500/20">
                 <div className="text-4xl">{joinRoleIcons[i]}</div>
 
-                <h3 className="mt-4 text-xl font-bold text-slate-900">{role.role}</h3>
+                <h3 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{role.role}</h3>
 
-                <p className="mt-3 text-slate-600">{role.desc}</p>
+                <p className="mt-3 text-slate-600 dark:text-slate-400">{role.desc}</p>
 
-                <div className="mt-5 rounded-xl border border-brand-200 bg-white px-4 py-3 text-brand-700">
+                <div className="mt-5 rounded-xl border border-brand-200 bg-white px-4 py-3 text-brand-700 dark:border-brand-800/40 dark:bg-slate-800 dark:text-brand-400">
                   💰 {t("team.referral.commissionLabel")}: {role.earn}
                 </div>
               </article>

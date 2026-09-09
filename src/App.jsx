@@ -26,8 +26,6 @@ import VerifyPendingPage from './pages/VerifyPendingPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import ProfilePage from './pages/ProfilePage'
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
-import TermsOfServicePage from './pages/TermsOfServicePage'
 
 import { UserAuthProvider } from './context/UserAuthContext'
 import RequireUserAuth from './components/RequireUserAuth'
@@ -115,8 +113,6 @@ function PublicRoutes() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
             <Route
               path="/verify"
               element={
@@ -159,7 +155,7 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="font-sans text-slate-950 antialiased">
+      <div className="min-h-screen bg-white font-sans text-slate-950 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100">
         <ScrollToTop />
         <Toaster position="top-center" toastOptions={{ duration: 3500 }} />
         <AppRoutes />

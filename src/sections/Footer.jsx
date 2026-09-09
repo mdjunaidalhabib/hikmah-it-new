@@ -107,10 +107,6 @@ export default function Footer() {
 
       <div className="relative mx-auto mt-12 flex w-[min(1180px,calc(100%-40px))] flex-col items-center gap-3 border-t border-slate-800 pt-6 text-center text-sm text-slate-500 sm:flex-row sm:justify-between sm:text-left">
         <span>© {new Date().getFullYear()} Hikmah IT. {t("footer.allRightsReserved")}</span>
-        <div className="flex items-center gap-4">
-          <Link className="transition hover:text-brand-400" to="/privacy-policy">{t("footer.privacyPolicy")}</Link>
-          <Link className="transition hover:text-brand-400" to="/terms-of-service">{t("footer.termsOfService")}</Link>
-        </div>
         <span className="text-slate-600">{t("footer.designedIn")}</span>
       </div>
     </footer>
