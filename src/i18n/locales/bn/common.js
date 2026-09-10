@@ -4,6 +4,7 @@ export default {
     signup: "সাইন আপ",
     myProfile: "আমার প্রোফাইল",
     freeConsult: "ফ্রি জানুন",
+    freeConsultShort: "পরামর্শ",
     openMenu: "মেনু খুলুন",
     closeMenu: "মেনু বন্ধ করুন",
     navigation: "নেভিগেশন",

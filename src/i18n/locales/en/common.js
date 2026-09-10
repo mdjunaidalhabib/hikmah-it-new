@@ -4,6 +4,7 @@ export default {
     signup: "Sign up",
     myProfile: "My Profile",
     freeConsult: "Get Free Consultation",
+    freeConsultShort: "Consult",
     openMenu: "Open menu",
     closeMenu: "Close menu",
     navigation: "NAVIGATION",

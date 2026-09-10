@@ -88,39 +88,54 @@ export default function Navbar() {
     <>
       {/* ── Header bar ── */}
       <header className="sticky top-0 z-50 border-b border-brand-100 bg-brand-50 shadow-sm shadow-brand-950/5 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20">
-        <div className="mx-auto grid h-[60px] w-[min(1180px,calc(100%-40px))] grid-cols-[1fr_auto_1fr] items-center gap-3">
+        <div className="mx-auto flex h-[60px] w-[min(1180px,calc(100%-24px))] items-center justify-between sm:w-[min(1180px,calc(100%-40px))] xl:grid xl:grid-cols-[1fr_auto_1fr] xl:gap-3">
           {/* Logo */}
           <Link to="/" className="shrink-0 justify-self-start" aria-label={t("common.homeAriaLabel")}>
             <Logo
               src={settings?.logoUrl}
-              className={`h-16 w-[142px] shrink-0 object-contain object-left sm:h-48 sm:w-[155px] lg:h-[68px] lg:w-[167px] ${settingsLoading ? "invisible" : ""}`}
+              className={`h-14 w-[118px] shrink-0 object-contain object-left sm:h-16 sm:w-[155px] lg:h-[68px] lg:w-[167px] ${settingsLoading ? "invisible" : ""}`}
             />
           </Link>
 
           {/* Desktop nav — its own grid column, always centered between the logo and right-side columns regardless of their content width */}
           <nav className="hidden items-center gap-1 xl:flex">
-            {allNavItems.map(({ href, label, key }) => (
-              <NavLink
-                key={href}
-                to={href}
-                className={({ isActive }) =>
-                  `relative shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-center text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 ${
-                    isActive
-                      ? "bg-brand-600 text-white shadow-sm shadow-brand-950/20"
-                      : "text-slate-700 hover:bg-white hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-brand-400"
-                  }`
-                }
-              >
-                {label}
-              </NavLink>
-            ))}
+            {allNavItems.map(({ href, label, key }) => {
+              const isEarn = key === "earn";
+              return (
+                <NavLink
+                  key={href}
+                  to={href}
+                  className={({ isActive }) =>
+                    `relative flex shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-3 py-1.5 text-center text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 ${
+                      isActive
+                        ? "bg-brand-600 text-white shadow-sm shadow-brand-950/20"
+                        : isEarn
+                        ? "bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-200 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-300 dark:ring-brand-500/30 dark:hover:bg-brand-500/15"
+                        : "text-slate-700 hover:bg-white hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-brand-400"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {label}
+                      {isEarn && (
+                        <Sparkles
+                          size={13}
+                          className={isActive ? "text-white" : "text-brand-600 dark:text-brand-400"}
+                        />
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              );
+            })}
           </nav>
 
           {/* Right side */}
-          <div className="flex shrink-0 items-center justify-self-end gap-2 sm:gap-2.5 xl:ml-4">
+          <div className="flex shrink-0 items-center justify-self-end gap-1.5 sm:gap-2.5 xl:ml-4">
             <ThemeSwitch className="border-brand-200 bg-white p-1.5 text-slate-700 hover:bg-brand-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700" />
 
-            <LangSwitch className="hidden border-brand-200 bg-white px-3 py-1.5 text-xs text-slate-700 hover:bg-brand-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 xl:inline-flex" />
+            <LangSwitch className="border-brand-200 bg-white px-3 py-1.5 text-xs text-slate-700 hover:bg-brand-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700" />
 
             <div className={`hidden min-w-[190px] items-center justify-end gap-1.5 xl:flex ${userLoading ? "invisible" : ""}`}>
               {user ? (
@@ -153,7 +168,7 @@ export default function Navbar() {
             <Button
               href="/contact"
               variant="small"
-              className="shrink-0 whitespace-nowrap"
+              className="hidden shrink-0 whitespace-nowrap xl:inline-flex"
             >
               {t("common.freeConsult")}
             </Button>
@@ -231,6 +246,8 @@ export default function Navbar() {
                       `group relative flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-bold tracking-wide transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300/50 ${
                         isActive
                           ? "bg-brand-600 text-white shadow-sm shadow-brand-950/20"
+                          : isEarn
+                          ? "bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-200 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-300 dark:ring-brand-500/30 dark:hover:bg-brand-500/15"
                           : "text-slate-900 hover:bg-white/70 hover:text-brand-700 dark:text-slate-200 dark:hover:bg-slate-800/70 dark:hover:text-brand-400"
                       }`
                     }
@@ -242,6 +259,8 @@ export default function Navbar() {
                           className={`grid h-7 w-7 shrink-0 place-items-center rounded-md transition ${
                             isActive
                               ? "bg-white/20 text-white"
+                              : isEarn
+                              ? "bg-brand-600 text-white group-hover:bg-brand-700"
                               : "bg-white text-slate-600 group-hover:bg-brand-100 group-hover:text-brand-700 dark:bg-slate-800 dark:text-slate-300 dark:group-hover:bg-slate-700 dark:group-hover:text-brand-400"
                           }`}
                         >
@@ -274,6 +293,16 @@ export default function Navbar() {
 
         {/* Drawer footer CTA */}
         <div className="border-t border-brand-100 px-4 py-5 dark:border-slate-800">
+          <Button
+            href="/contact"
+            variant="small"
+            className="mb-3 w-full !gap-1.5 whitespace-nowrap"
+            onClick={() => setOpen(false)}
+          >
+            {t("common.freeConsult")}
+            <ArrowRight size={13} />
+          </Button>
+
           <div className="mb-3">
             {user ? (
               <Button
