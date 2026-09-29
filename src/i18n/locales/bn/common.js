@@ -23,7 +23,6 @@ export default {
     team: "টিম",
     about: "আমাদের সম্পর্কে",
     earn: "আয় করুন",
-    sms: "Quick SMS",
   },
   brand: {
     tagline: "ব্যবসা ও শিক্ষা প্রতিষ্ঠানের জন্য স্মার্ট ডিজিটাল সমাধান",

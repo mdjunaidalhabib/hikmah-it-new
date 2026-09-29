@@ -23,7 +23,6 @@ export default {
     team: "Team",
     about: "About Us",
     earn: "Earn",
-    sms: "Quick SMS",
   },
   brand: {
     tagline: "Smart digital solutions for businesses and educational institutions",

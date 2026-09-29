@@ -47,7 +47,6 @@ export const navItems = [
   { key: "portfolio", href: "/portfolio" },
   { key: "team", href: "/team" },
   { key: "about", href: "/about" },
-  { key: "sms", href: "/sms" },
 ];
 
 export const quickLinks = [

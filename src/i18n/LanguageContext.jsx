@@ -3,7 +3,7 @@ import en from "./locales/en/index.js";
 import bn from "./locales/bn/index.js";
 
 const dictionaries = { en, bn };
-const STORAGE_KEY = "hikmah-lang";
+const STORAGE_KEY = "hikmah-lang-v2";
 
 const LanguageContext = createContext(null);
 
@@ -13,9 +13,9 @@ function getFromDict(dict, path) {
 
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(() => {
-    if (typeof window === "undefined") return "en";
+    if (typeof window === "undefined") return "bn";
     const saved = window.localStorage.getItem(STORAGE_KEY);
-    return saved === "bn" || saved === "en" ? saved : "en";
+    return saved === "bn" || saved === "en" ? saved : "bn";
   });
 
   useEffect(() => {

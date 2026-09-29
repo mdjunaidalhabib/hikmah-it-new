@@ -20,10 +20,10 @@ export default function Hero() {
             {t("home.hero.badge")}
           </span>
           <h1 className="mt-5 max-w-2xl text-2xl font-semibold leading-snug tracking-[-0.02em] sm:text-3xl sm:leading-[1.3] lg:text-[2.65rem] lg:leading-[1.2]">
-            <span className="block text-brand-600">{t("home.hero.titleLine1")} </span>
-            <span className="block text-emerald-600">{t("home.hero.titleLine2")} </span>
-            <span className="block text-blue-600">{t("home.hero.titleLine3")} </span>
-            <span className="block text-violet-600">{t("home.hero.titleLine4")}</span>
+            <span className="block text-brand-600 dark:text-brand-400">{t("home.hero.titleLine1")} </span>
+            <span className="block text-emerald-600 dark:text-emerald-400">{t("home.hero.titleLine2")} </span>
+            <span className="block text-blue-600 dark:text-sky-400">{t("home.hero.titleLine3")} </span>
+            <span className="block text-violet-600 dark:text-violet-400">{t("home.hero.titleLine4")}</span>
           </h1>
           <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400 sm:text-base sm:leading-7">
             {t("home.hero.description").replace("{brand}", brand.name)}
@@ -47,12 +47,12 @@ export default function Hero() {
             ))}
           </div>
         </div>
-        <div className="hidden rounded-[2rem] border border-slate-200 bg-white/80 p-5 shadow-[0_30px_60px_-15px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 dark:shadow-black/40 lg:block">
-          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <div className="hidden rounded-[2rem] border border-slate-200 bg-white/80 p-5 shadow-[0_30px_60px_-15px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-900/60 dark:shadow-black/40 lg:block">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-700/60 dark:bg-slate-950">
             {/* Signature multi-color mesh — echoes the headline's brand/emerald/blue/violet palette */}
-            <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-300/25 blur-3xl" />
-            <div className="pointer-events-none absolute -left-16 top-1/3 h-40 w-40 rounded-full bg-blue-300/20 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-16 right-10 h-40 w-40 rounded-full bg-emerald-300/20 blur-3xl" />
+            <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-300/25 blur-3xl dark:bg-brand-500/15" />
+            <div className="pointer-events-none absolute -left-16 top-1/3 h-40 w-40 rounded-full bg-blue-300/20 blur-3xl dark:bg-blue-500/10" />
+            <div className="pointer-events-none absolute -bottom-16 right-10 h-40 w-40 rounded-full bg-emerald-300/20 blur-3xl dark:bg-emerald-500/10" />
 
             <div className="relative mb-6 flex items-center justify-between gap-3">
               <span className="rounded-full border border-brand-100 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 dark:border-brand-800/40 dark:bg-brand-500/10 dark:text-brand-400">{t("home.hero.previewBadge")}</span>

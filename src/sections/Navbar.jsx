@@ -13,7 +13,6 @@ import {
   LogIn,
   UserPlus,
   Sparkles,
-  Zap,
   Languages,
   Sun,
   Moon,
@@ -36,7 +35,6 @@ const iconMap = {
   "/team": Users,
   "/about": Info,
   "/earn": TrendingUp,
-  "/sms": Zap,
 };
 
 export default function Navbar() {
@@ -62,7 +60,7 @@ export default function Navbar() {
     ...navItems.map((item) => ({ ...item, label: t(`nav.${item.key}`) })),
     { key: "earn", href: "/earn", label: t("nav.earn") },
   ];
-  const highlightIcons = { earn: Sparkles, sms: Zap };
+  const highlightIcons = { earn: Sparkles };
 
   const LangSwitch = ({ className = "" }) => (
     <button
@@ -103,7 +101,7 @@ export default function Navbar() {
           {/* Desktop nav — its own grid column, always centered between the logo and right-side columns regardless of their content width */}
           <nav className="hidden items-center gap-1 xl:flex">
             {allNavItems.map(({ href, label, key }) => {
-              const isEarn = key === "earn" || key === "sms";
+              const isEarn = key === "earn";
               const HighlightIcon = highlightIcons[key];
               return (
                 <NavLink
@@ -240,7 +238,7 @@ export default function Navbar() {
           <ul className="space-y-0.5">
             {allNavItems.map(({ href, label, key }) => {
               const Icon = iconMap[href] || ArrowRight;
-              const isEarn = key === "earn" || key === "sms";
+              const isEarn = key === "earn";
               const HighlightIcon = highlightIcons[key];
               return (
                 <li key={href}>
