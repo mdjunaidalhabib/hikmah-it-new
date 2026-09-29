@@ -1,6 +1,7 @@
 import Seo from '../components/Seo'
 import Hero from '../sections/Hero'
 import Services from '../sections/Services'
+import SmsHighlight from '../sections/SmsHighlight'
 import Trust from '../sections/Trust'
 import Testimonials from '../sections/Testimonials'
 import Portfolio from '../sections/Portfolio'
@@ -30,6 +31,7 @@ export default function HomePage() {
       <Seo title={seo.title} description={seo.description} />
       <Hero />
       <Services />
+      <SmsHighlight />
       <Trust />
       <Testimonials />
       <Portfolio />

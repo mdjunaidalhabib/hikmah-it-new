@@ -9,6 +9,7 @@ import {
   Smartphone,
   Database,
   Headphones,
+  MessageSquareText,
 } from "lucide-react";
 
 export const SERVICE_ICONS = {
@@ -22,6 +23,7 @@ export const SERVICE_ICONS = {
   Smartphone,
   Database,
   Headphones,
+  MessageSquareText,
 };
 
 export const DEFAULT_SERVICE_ICON = "ShoppingBag";

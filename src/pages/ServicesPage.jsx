@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 import { apiGet } from "../lib/api";
 import { SERVICE_ICONS, DEFAULT_SERVICE_ICON } from "../lib/serviceIcons";
 import { useLanguage } from "../i18n/LanguageContext";
+import withSmsService from "../lib/withSmsService";
 
 export default function ServicesPage() {
   const { t, tList } = useLanguage();
@@ -52,7 +53,7 @@ export default function ServicesPage() {
             <p className="py-10 text-center text-sm text-slate-400">{t("servicesPage.grid.empty")}</p>
           ) : (
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {services.map((service) => (
+              {withSmsService(services, t).map((service) => (
                 <ServiceCard
                   key={service._id}
                   title={service.title}

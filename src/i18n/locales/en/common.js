@@ -23,6 +23,7 @@ export default {
     team: "Team",
     about: "About Us",
     earn: "Earn",
+    sms: "Quick SMS",
   },
   brand: {
     tagline: "Smart digital solutions for businesses and educational institutions",
@@ -38,6 +39,7 @@ export default {
     portfolioWebsite: "Portfolio Website",
     landingPage: "Landing Page",
     hostingDomain: "Hosting & Domain",
+    quickSms: "Quick SMS – Bulk SMS & API",
     earnOnline: "Earn Online",
     viewFacebook: "View Facebook Page",
     allRightsReserved: "All rights reserved.",

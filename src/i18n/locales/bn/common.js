@@ -23,6 +23,7 @@ export default {
     team: "টিম",
     about: "আমাদের সম্পর্কে",
     earn: "আয় করুন",
+    sms: "Quick SMS",
   },
   brand: {
     tagline: "ব্যবসা ও শিক্ষা প্রতিষ্ঠানের জন্য স্মার্ট ডিজিটাল সমাধান",
@@ -38,6 +39,7 @@ export default {
     portfolioWebsite: "পোর্টফোলিও ওয়েবসাইট",
     landingPage: "ল্যান্ডিং পেজ",
     hostingDomain: "হোস্টিং ও ডোমেইন",
+    quickSms: "Quick SMS – বাল্ক এসএমএস ও এপিআই",
     earnOnline: "অনলাইনে আয় করুন",
     viewFacebook: "ফেসবুক পেজ দেখুন",
     allRightsReserved: "সর্বস্বত্ব সংরক্ষিত।",

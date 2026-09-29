@@ -72,6 +72,9 @@ export default function Footer() {
           <Link className={link} to="/madrasah">
             {t("footer.madrasahManagement")}
           </Link>
+          <Link className={link} to="/sms">
+            {t("footer.quickSms")}
+          </Link>
           <Link className={link} to="/business">
             {t("footer.portfolioWebsite")}
           </Link>

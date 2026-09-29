@@ -4,6 +4,7 @@ import { ServiceCard } from "../components/Card";
 import { apiGet } from "../lib/api";
 import { SERVICE_ICONS, DEFAULT_SERVICE_ICON } from "../lib/serviceIcons";
 import { useLanguage } from "../i18n/LanguageContext";
+import withSmsService from "../lib/withSmsService";
 
 export default function Services() {
   const [services, setServices] = useState([]);
@@ -29,7 +30,7 @@ export default function Services() {
           text={t("home.services.text")}
         />
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
+          {withSmsService(services, t).map((service) => (
             <ServiceCard
               key={service._id}
               title={service.title}

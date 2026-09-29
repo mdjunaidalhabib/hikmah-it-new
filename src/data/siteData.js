@@ -6,18 +6,26 @@ import {
   Database,
   FileText,
   GraduationCap,
+  CodeXml,
+  Handshake,
   Headphones,
+  KeyRound,
+  Languages,
   LayoutDashboard,
   LockKeyhole,
   Megaphone,
+  MessageSquareText,
   MonitorSmartphone,
   PackageCheck,
   Rocket,
   Search,
   ShieldCheck,
   Smartphone,
+  Send,
+  UserPlus,
   Users,
   WalletCards,
+  Webhook,
 } from "lucide-react";
 
 // Non-text, structural site data. All display text lives in src/i18n/locales/{en,bn}.
@@ -39,6 +47,7 @@ export const navItems = [
   { key: "portfolio", href: "/portfolio" },
   { key: "team", href: "/team" },
   { key: "about", href: "/about" },
+  { key: "sms", href: "/sms" },
 ];
 
 export const quickLinks = [
@@ -59,3 +68,21 @@ export const madrasahFeatureIcons = [GraduationCap, Users, Calculator, BookOpen,
 export const trustItemIcons = [ShieldCheck, MonitorSmartphone, Database, Headphones, Rocket, BadgeCheck, LockKeyhole, BarChart3];
 
 export const joinRoleIcons = ["🤝", "📢", "💼"];
+
+// Quick SMS (separate product hosted at sms.hikmahit.com) — text lives in locales/{en,bn}/smsPage.js
+export const smsLinks = {
+  home: "https://sms.hikmahit.com",
+  register: "https://sms.hikmahit.com/register",
+  docs: "https://sms.hikmahit.com/docs",
+  pricing: "https://sms.hikmahit.com/pricing",
+  reseller: "https://sms.hikmahit.com/become-reseller",
+  apiEndpoint: "https://sms.hikmahit.com/api/v1/sms/send",
+};
+
+export const smsFeatureIcons = [MessageSquareText, CodeXml, BadgeCheck, Webhook, KeyRound, Handshake, WalletCards, Languages];
+
+export const smsStepIcons = [UserPlus, WalletCards, Send];
+
+// Static fallback so the Quick SMS card shows even when the services list comes from the database
+// (see src/lib/withSmsService.js). Title/text come from smsPage.service in the locale files.
+export const smsServiceEntry = { _id: "static-quick-sms", href: "/sms", iconName: "MessageSquareText" };

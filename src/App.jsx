@@ -18,6 +18,7 @@ import ContactPage from './pages/ContactPage'
 import TeamPage from './pages/TeamPage'
 import AboutPage from './pages/AboutPage'
 import EarnPage from './pages/EarnPage'
+import SmsPage from './pages/SmsPage'
 import CheckoutPage from './pages/CheckoutPage'
 import NotFoundPage from './pages/NotFoundPage'
 import LoginPage from './pages/LoginPage'
@@ -109,6 +110,7 @@ function PublicRoutes() {
             <Route path="/team" element={<TeamPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/earn" element={<EarnPage />} />
+            <Route path="/sms" element={<SmsPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
