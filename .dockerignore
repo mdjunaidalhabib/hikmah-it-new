@@ -1,0 +1,10 @@
+node_modules
+server/node_modules
+server/uploads
+dist
+.env
+server/.env
+.git
+.claude
+src.zip
+_cdp_debug.js
