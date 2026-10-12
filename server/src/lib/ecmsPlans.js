@@ -1,0 +1,91 @@
+// ECMS-এর পাবলিক plan catalog (ECMS backend: GET /plans) থেকে প্ল্যান এনে
+// Hikmah-র Package আকারে সাজায়। দাম/ফিচারের একমাত্র উৎস ECMS সুপার-অ্যাডমিন,
+// তাই Hikmah-তে ECMS প্ল্যানের জন্য আলাদা করে Package বানানো লাগে না।
+//
+// ENV: ECMS_API_URL — ECMS backend-এর base URL, যেমন https://api.ecms.example.com
+// (শেষে স্ল্যাশ ছাড়া)। সেট না থাকলে এই ফিচার বন্ধ থাকে এবং আগের মতো
+// Hikmah-র নিজস্ব Package-ই দেখায়।
+
+const CACHE_TTL_MS = 60 * 1000;
+const FETCH_TIMEOUT_MS = 5000;
+
+// ID prefix: Mongo ObjectId-এ কখনো underscore থাকে না, আর ECMS plan key-তেও
+// থাকে না (key শুধু a-z, 0-9, -) — তাই "ecms_<key>" কখনো আসল Package id-র সাথে মিলবে না।
+export const ECMS_ID_PREFIX = "ecms_";
+
+let cache = { at: 0, plans: null };
+
+export function isEcmsPackageId(id) {
+  return typeof id === "string" && id.startsWith(ECMS_ID_PREFIX);
+}
+
+export function ecmsKeyFromId(id) {
+  return id.slice(ECMS_ID_PREFIX.length);
+}
+
+function periodLabel(days) {
+  const d = Number(days) || 0;
+  if (d === 30) return "/মাস";
+  if (d === 90) return "/৩ মাস";
+  if (d === 180) return "/৬ মাস";
+  if (d === 365) return "/বছর";
+  if (!d) return "";
+  return `/${d.toLocaleString("bn-BD")} দিন`;
+}
+
+export function toPackageShape(plan) {
+  const isFree = !plan.price && plan.ctaType !== "contact";
+  return {
+    _id: `${ECMS_ID_PREFIX}${plan.key}`,
+    source: "ecms",
+    ecmsPlanKey: plan.key,
+    category: "ECMS",
+    name: `ECMS ${plan.name}`,
+    priceAmount: plan.price || 0,
+    originalPriceAmount: plan.originalPrice || 0,
+    priceLabel: plan.ctaType === "contact" ? "আলোচনা সাপেক্ষে" : isFree ? "বিনামূল্যে" : "",
+    periodLabel: plan.price ? periodLabel(plan.billingDays) : "",
+    renewalText: "",
+    text: plan.tagline || "",
+    limits: [],
+    features: plan.highlights || [],
+    notIncluded: [],
+    highlighted: !!plan.isPopular,
+    ctaType: plan.ctaType || "buy",
+    sortOrder: plan.order ?? 0,
+  };
+}
+
+async function fetchRaw() {
+  const base = (process.env.ECMS_API_URL || "").replace(/\/$/, "");
+  if (!base) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch(`${base}/plans`, { signal: controller.signal });
+    if (!res.ok) throw new Error(`ECMS /plans responded ${res.status}`);
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ECMS বন্ধ থাকলে পুরোনো cache (stale) ফেরত দেয়, না থাকলে খালি তালিকা — সাইট কখনো ভাঙে না।
+export async function getEcmsPlans() {
+  if (cache.plans && Date.now() - cache.at < CACHE_TTL_MS) return cache.plans;
+  try {
+    const raw = await fetchRaw();
+    if (raw === null) return [];
+    cache = { at: Date.now(), plans: raw.map(toPackageShape) };
+    return cache.plans;
+  } catch (err) {
+    console.error("[ecmsPlans] fetch failed:", err.message);
+    return cache.plans || [];
+  }
+}
+
+export async function getEcmsPlanById(id) {
+  const plans = await getEcmsPlans();
+  return plans.find((p) => p._id === id) || null;
+}

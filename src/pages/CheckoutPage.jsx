@@ -4,6 +4,8 @@ import { CheckCircle2, Copy, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import Seo from "../components/Seo";
 import Button from "../components/Button";
+import PasswordInput from "../components/PasswordInput";
+import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import { Skeleton } from "../components/Skeleton";
 import { apiGet, apiPost } from "../lib/api";
 import useSiteSettings from "../lib/useSiteSettings";
@@ -17,6 +19,9 @@ const invalidInputClass =
   "mt-1 w-full rounded-xl border border-red-400 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-500 focus:ring-3 focus:ring-red-100 dark:border-red-500 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-red-500/20";
 
 const requiredFields = ["customerName", "customerPhone", "senderNumber", "transactionId"];
+// ECMS প্ল্যানে শপ তৈরির জন্য এগুলোও লাগে (ইমেইলই শপ-অ্যাডমিনের লগইন)
+const ecmsRequiredFields = ["customerEmail", "shopName", "shopPassword", "shopPasswordConfirm"];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function formatPrice(pkg) {
   if (!pkg) return "";
@@ -42,6 +47,9 @@ export default function CheckoutPage() {
     senderNumber: "",
     transactionId: "",
     referralCode: "",
+    shopName: "",
+    shopPassword: "",
+    shopPasswordConfirm: "",
   });
   const [error, setError] = useState("");
   const [invalidFields, setInvalidFields] = useState([]);
@@ -81,17 +89,41 @@ export default function CheckoutPage() {
     setTimeout(() => setCopied(""), 1500);
   };
 
+  const isEcms = pkg?.source === "ecms";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    const missing = requiredFields.filter((field) => !form[field].trim());
+    const needed = isEcms ? [...requiredFields, ...ecmsRequiredFields] : requiredFields;
+    // পাসওয়ার্ডে trim করা হয় না (স্পেস পাসওয়ার্ডের অংশ হতে পারে) — শুধু খালি কিনা দেখা
+    const missing = needed.filter((field) =>
+      field.startsWith("shopPassword") ? !form[field] : !form[field].trim()
+    );
     if (missing.length > 0) {
       setInvalidFields(missing);
       setError(t("checkoutPage.requiredError"));
       return;
     }
+
+    if (isEcms) {
+      const fail = (field, key) => {
+        setInvalidFields([field]);
+        setError(t(`checkoutPage.errors.${key}`));
+      };
+      const shopName = form.shopName.trim();
+      if (shopName.length < 2 || shopName.length > 60) return fail("shopName", "shopNameLength");
+      if (!EMAIL_RE.test(form.customerEmail.trim())) return fail("customerEmail", "emailInvalid");
+      if (form.shopPassword.length < 8) return fail("shopPassword", "passwordTooShort");
+      if (new TextEncoder().encode(form.shopPassword).length > 72) return fail("shopPassword", "passwordTooLong");
+      if (!/\p{L}/u.test(form.shopPassword) || !/\d/.test(form.shopPassword)) return fail("shopPassword", "passwordWeak");
+      if (form.shopPassword !== form.shopPasswordConfirm) return fail("shopPasswordConfirm", "passwordMismatch");
+    }
     setInvalidFields([]);
+
+    // confirm ফিল্ড সার্ভারে যায় না; শপের তথ্য শুধু ECMS প্ল্যানে যায়
+    const { shopName, shopPassword, shopPasswordConfirm, ...rest } = form;
+    void shopPasswordConfirm;
 
     setSubmitting(true);
     try {
@@ -99,8 +131,11 @@ export default function CheckoutPage() {
         packageId: pkg._id,
         packageNameSnapshot: pkg.name,
         priceSnapshot: formatPrice(pkg),
-        ...form,
+        ...rest,
+        ...(isEcms ? { shopName: shopName.trim(), shopPassword } : {}),
       });
+      // পাসওয়ার্ড স্টেটে ফেলে রাখা হয় না
+      setForm((prev) => ({ ...prev, shopPassword: "", shopPasswordConfirm: "" }));
       setSubmitted(true);
       toast.success(t("checkoutPage.orderSubmittedToast"));
     } catch (err) {
@@ -172,7 +207,7 @@ export default function CheckoutPage() {
           <CheckCircle2 className="mx-auto text-emerald-500" size={48} />
           <h1 className="mt-4 text-2xl font-bold text-slate-900 dark:text-white">{t("checkoutPage.orderSubmittedHeading")}</h1>
           <p className="mt-3 text-slate-600 dark:text-slate-400">
-            {t("checkoutPage.orderSubmittedText")}
+            {isEcms ? t("checkoutPage.orderSubmittedEcmsText") : t("checkoutPage.orderSubmittedText")}
           </p>
           <Button href="/" className="mt-6">{t("checkoutPage.backHomeBtn")}</Button>
         </div>
@@ -265,9 +300,41 @@ export default function CheckoutPage() {
           </label>
 
           <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
-            {t("checkoutPage.emailOptionalLabel")}
-            <input className={inputClass} type="email" name="customerEmail" value={form.customerEmail} onChange={handleChange} />
+            {isEcms ? (
+              <>
+                {t("checkoutPage.ecmsEmailLabel")} <span className="text-red-500">*</span>
+              </>
+            ) : (
+              t("checkoutPage.emailOptionalLabel")
+            )}
+            <input className={isEcms ? fieldClass("customerEmail") : inputClass} type="email" name="customerEmail" value={form.customerEmail} onChange={handleChange} required={isEcms} />
           </label>
+
+          {isEcms && (
+            <div className="grid gap-4 rounded-2xl border border-brand-100 bg-brand-50/60 p-4 dark:border-brand-800/40 dark:bg-slate-900/40">
+              <div>
+                <p className="text-sm font-bold text-slate-900 dark:text-white">{t("checkoutPage.ecmsSectionHeading")}</p>
+                <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{t("checkoutPage.ecmsSectionHint")}</p>
+              </div>
+
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                {t("checkoutPage.shopNameLabel")} <span className="text-red-500">*</span>
+                <input className={fieldClass("shopName")} name="shopName" value={form.shopName} onChange={handleChange} maxLength={60} placeholder={t("checkoutPage.shopNamePlaceholder")} required />
+              </label>
+
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                {t("checkoutPage.shopPasswordLabel")} <span className="text-red-500">*</span>
+                <PasswordInput name="shopPassword" value={form.shopPassword} onChange={handleChange} autoComplete="new-password" className={invalidFields.includes("shopPassword") ? "border-red-400" : ""} required />
+                <PasswordStrengthMeter password={form.shopPassword} />
+                <span className="mt-1 block text-xs font-normal text-slate-400 dark:text-slate-500">{t("checkoutPage.shopPasswordHint")}</span>
+              </label>
+
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                {t("checkoutPage.shopPasswordConfirmLabel")} <span className="text-red-500">*</span>
+                <PasswordInput name="shopPasswordConfirm" value={form.shopPasswordConfirm} onChange={handleChange} autoComplete="new-password" className={invalidFields.includes("shopPasswordConfirm") ? "border-red-400" : ""} required />
+              </label>
+            </div>
+          )}
 
           <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {t("checkoutPage.paymentMethodLabel")}

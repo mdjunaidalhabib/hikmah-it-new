@@ -1,0 +1,1101 @@
+diff -ruN a/server/src/lib/ecmsPlans.js b/server/src/lib/ecmsPlans.js
+--- a/server/src/lib/ecmsPlans.js	1970-01-01 00:00:00.000000000 +0000
++++ b/server/src/lib/ecmsPlans.js	2026-10-12 02:22:29.246010010 +0000
+@@ -0,0 +1,91 @@
++// ECMS-এর পাবলিক plan catalog (ECMS backend: GET /plans) থেকে প্ল্যান এনে
++// Hikmah-র Package আকারে সাজায়। দাম/ফিচারের একমাত্র উৎস ECMS সুপার-অ্যাডমিন,
++// তাই Hikmah-তে ECMS প্ল্যানের জন্য আলাদা করে Package বানানো লাগে না।
++//
++// ENV: ECMS_API_URL — ECMS backend-এর base URL, যেমন https://api.ecms.example.com
++// (শেষে স্ল্যাশ ছাড়া)। সেট না থাকলে এই ফিচার বন্ধ থাকে এবং আগের মতো
++// Hikmah-র নিজস্ব Package-ই দেখায়।
++
++const CACHE_TTL_MS = 60 * 1000;
++const FETCH_TIMEOUT_MS = 5000;
++
++// ID prefix: Mongo ObjectId-এ কখনো underscore থাকে না, আর ECMS plan key-তেও
++// থাকে না (key শুধু a-z, 0-9, -) — তাই "ecms_<key>" কখনো আসল Package id-র সাথে মিলবে না।
++export const ECMS_ID_PREFIX = "ecms_";
++
++let cache = { at: 0, plans: null };
++
++export function isEcmsPackageId(id) {
++  return typeof id === "string" && id.startsWith(ECMS_ID_PREFIX);
++}
++
++export function ecmsKeyFromId(id) {
++  return id.slice(ECMS_ID_PREFIX.length);
++}
++
++function periodLabel(days) {
++  const d = Number(days) || 0;
++  if (d === 30) return "/মাস";
++  if (d === 90) return "/৩ মাস";
++  if (d === 180) return "/৬ মাস";
++  if (d === 365) return "/বছর";
++  if (!d) return "";
++  return `/${d.toLocaleString("bn-BD")} দিন`;
++}
++
++export function toPackageShape(plan) {
++  const isFree = !plan.price && plan.ctaType !== "contact";
++  return {
++    _id: `${ECMS_ID_PREFIX}${plan.key}`,
++    source: "ecms",
++    ecmsPlanKey: plan.key,
++    category: "ECMS",
++    name: `ECMS ${plan.name}`,
++    priceAmount: plan.price || 0,
++    originalPriceAmount: plan.originalPrice || 0,
++    priceLabel: plan.ctaType === "contact" ? "আলোচনা সাপেক্ষে" : isFree ? "বিনামূল্যে" : "",
++    periodLabel: plan.price ? periodLabel(plan.billingDays) : "",
++    renewalText: "",
++    text: plan.tagline || "",
++    limits: [],
++    features: plan.highlights || [],
++    notIncluded: [],
++    highlighted: !!plan.isPopular,
++    ctaType: plan.ctaType || "buy",
++    sortOrder: plan.order ?? 0,
++  };
++}
++
++async function fetchRaw() {
++  const base = (process.env.ECMS_API_URL || "").replace(/\/$/, "");
++  if (!base) return null;
++  const controller = new AbortController();
++  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
++  try {
++    const res = await fetch(`${base}/plans`, { signal: controller.signal });
++    if (!res.ok) throw new Error(`ECMS /plans responded ${res.status}`);
++    const data = await res.json();
++    return Array.isArray(data) ? data : [];
++  } finally {
++    clearTimeout(timer);
++  }
++}
++
++// ECMS বন্ধ থাকলে পুরোনো cache (stale) ফেরত দেয়, না থাকলে খালি তালিকা — সাইট কখনো ভাঙে না।
++export async function getEcmsPlans() {
++  if (cache.plans && Date.now() - cache.at < CACHE_TTL_MS) return cache.plans;
++  try {
++    const raw = await fetchRaw();
++    if (raw === null) return [];
++    cache = { at: Date.now(), plans: raw.map(toPackageShape) };
++    return cache.plans;
++  } catch (err) {
++    console.error("[ecmsPlans] fetch failed:", err.message);
++    return cache.plans || [];
++  }
++}
++
++export async function getEcmsPlanById(id) {
++  const plans = await getEcmsPlans();
++  return plans.find((p) => p._id === id) || null;
++}
+diff -ruN a/server/src/lib/ecmsProvision.js b/server/src/lib/ecmsProvision.js
+--- a/server/src/lib/ecmsProvision.js	1970-01-01 00:00:00.000000000 +0000
++++ b/server/src/lib/ecmsProvision.js	2026-10-12 02:39:10.831044876 +0000
+@@ -0,0 +1,54 @@
++// Purchase approve হলে ECMS-এ শপ চালু/নবায়ন করার ক্লায়েন্ট।
++//
++// ENV (Hikmah server):
++//   ECMS_API_URL          — ECMS backend base URL (ecmsPlans.js-এর মতোই)
++//   ECMS_INTEGRATION_KEY  — ECMS backend-এর HIKMAH_INTEGRATION_KEY-এর হুবহু একই মান (কমপক্ষে ২৪ ক্যারেক্টার)
++
++const TIMEOUT_MS = 20000;
++
++export function isProvisioningConfigured() {
++  return !!(process.env.ECMS_API_URL && process.env.ECMS_INTEGRATION_KEY);
++}
++
++async function callEcms(path, payload) {
++  if (!isProvisioningConfigured()) {
++    throw new Error("ECMS_API_URL / ECMS_INTEGRATION_KEY সেট করা নেই");
++  }
++
++  const base = process.env.ECMS_API_URL.replace(/\/$/, "");
++  const controller = new AbortController();
++  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
++
++  try {
++    const res = await fetch(`${base}/integration${path}`, {
++      method: "POST",
++      headers: {
++        "Content-Type": "application/json",
++        "x-integration-key": process.env.ECMS_INTEGRATION_KEY,
++      },
++      body: JSON.stringify(payload),
++      signal: controller.signal,
++    });
++
++    const data = await res.json().catch(() => ({}));
++    if (!res.ok) {
++      throw new Error(data?.message || `ECMS responded ${res.status}`);
++    }
++    return data;
++  } catch (err) {
++    if (err.name === "AbortError") throw new Error("ECMS সাড়া দিতে দেরি করছে (timeout)");
++    throw err;
++  } finally {
++    clearTimeout(timer);
++  }
++}
++
++// passwordHash = কাস্টমারের দেওয়া পাসওয়ার্ডের bcrypt hash (plain নয়)
++export function provisionEcmsShop({ externalRef, planKey, customerName, customerEmail, customerPhone, shopName, passwordHash }) {
++  return callEcms("/provision-shop", { externalRef, planKey, customerName, customerEmail, customerPhone, shopName, passwordHash });
++}
++
++// অর্ডার reject হলে: নতুন শপ → সাসপেন্ড, নবায়ন/আপগ্রেড → আগের অবস্থায় ফেরানো
++export function revokeEcmsShop({ externalRef }) {
++  return callEcms("/revoke-shop", { externalRef });
++}
+diff -ruN a/server/src/lib/mailer.js b/server/src/lib/mailer.js
+--- a/server/src/lib/mailer.js	2026-10-12 02:21:21.781515363 +0000
++++ b/server/src/lib/mailer.js	2026-10-12 08:43:46.516975385 +0000
+@@ -86,3 +86,65 @@
+     consoleFallbackLabel: "password reset OTP",
+   });
+ }
++
++const escapeHtml = (v = "") =>
++  String(v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
++
++// ECMS শপ চালু/নবায়নের পর কাস্টমারকে ইমেইল। নতুন শপে লগইন পাসওয়ার্ড থাকে (শুধু এই একবারই)।
++// ফেরত মান: "sent" | "skipped" | "failed" — Resend না থাকলে send() চুপচাপ skip করে, তাই আলাদা করে চেক।
++export async function sendEcmsShopReadyEmail(to, d) {
++  if (!resend) {
++    await send({ to, subject: "", html: "", purpose: "ecms-shop-ready", consoleFallbackLabel: "ECMS shop ready email" });
++    return "skipped";
++  }
++
++  const renewed = d.result === "renewed";
++  const subject = renewed
++    ? `আপনার ECMS প্ল্যান আপডেট হয়েছে — ${d.planName}`
++    : `আপনার ECMS শপ তৈরি হয়েছে — ${d.planName}`;
++
++  const expiry = d.expiresAt ? new Date(d.expiresAt).toLocaleDateString("bn-BD") : "সীমাহীন";
++  // passwordMode: customer = চেকআউটে নিজের দেওয়া | existing = আগের অ্যাকাউন্ট (পাসওয়ার্ড কখনো ইমেইলে যায় না)
++  let credentials;
++  if (d.passwordMode === "customer") {
++    credentials = `<p><strong>অ্যাডমিন ইমেইল:</strong> ${escapeHtml(d.adminEmail)}<br/>পাসওয়ার্ড: অর্ডার করার সময় আপনি যেটা দিয়েছিলেন সেটাই। (নিরাপত্তার জন্য ইমেইলে পাসওয়ার্ড পাঠানো হয় না।)</p>`;
++  } else {
++    credentials = `<p><strong>অ্যাডমিন ইমেইল:</strong> ${escapeHtml(d.adminEmail)} (আপনার আগের পাসওয়ার্ডই চলবে)</p>`;
++  }
++
++  const html = `
++    <h2>${renewed ? "প্ল্যান আপডেট সম্পন্ন" : "স্বাগতম! আপনার শপ প্রস্তুত"}</h2>
++    <p>${d.shopName ? `<strong>শপ:</strong> ${escapeHtml(d.shopName)}<br/>` : ""}<strong>প্ল্যান:</strong> ${escapeHtml(d.planName)}<br/><strong>মেয়াদ শেষ:</strong> ${escapeHtml(expiry)}</p>
++    ${d.storeUrl ? `<p><strong>আপনার শপ:</strong> <a href="${escapeHtml(d.storeUrl)}">${escapeHtml(d.storeUrl)}</a></p>` : ""}
++    ${d.adminUrl ? `<p><strong>অ্যাডমিন প্যানেল:</strong> <a href="${escapeHtml(d.adminUrl)}">${escapeHtml(d.adminUrl)}</a></p>` : ""}
++    ${credentials}
++    <p>সাহায্য লাগলে এই ইমেইলের উত্তর দিন।</p>
++  `;
++
++  try {
++    await send({ to, subject, html, purpose: "ecms-shop-ready", consoleFallbackLabel: "ECMS shop ready email" });
++    return "sent";
++  } catch {
++    return "failed";
++  }
++}
++
++// অর্ডার পরে reject হলে কাস্টমারকে জানানো। ফেরত মান: "sent" | "skipped" | "failed"
++export async function sendEcmsShopRevokedEmail(to, d) {
++  if (!resend) return "skipped";
++
++  const suspended = d.result === "suspended";
++  const subject = suspended ? `আপনার ECMS শপ সাময়িকভাবে বন্ধ — ${d.planName}` : `আপনার ECMS অর্ডার বাতিল হয়েছে — ${d.planName}`;
++  const html = `
++    <h2>${suspended ? "আপনার শপ সাময়িকভাবে বন্ধ করা হয়েছে" : "অর্ডার বাতিল হয়েছে"}</h2>
++    <p>আপনার <strong>${escapeHtml(d.planName)}</strong> অর্ডারটি আমরা বাতিল করেছি (পেমেন্ট যাচাই সম্পন্ন হয়নি)।</p>
++    <p>${suspended ? "আপনার শপের কোনো ডেটা মোছা হয়নি, তবে পেমেন্ট নিশ্চিত না হওয়া পর্যন্ত শপটি বন্ধ থাকবে।" : "আপনার শপ আগের প্ল্যানেই চলবে।"}</p>
++    <p>ভুল হয়েছে মনে হলে সঠিক Transaction ID দিয়ে আমাদের সাথে যোগাযোগ করুন — যাচাই হলে শপ আবার চালু করা হবে।</p>
++  `;
++  try {
++    await send({ to, subject, html, purpose: "ecms-shop-revoked", consoleFallbackLabel: "ECMS shop revoked email" });
++    return "sent";
++  } catch {
++    return "failed";
++  }
++}
+diff -ruN a/server/src/models/Purchase.js b/server/src/models/Purchase.js
+--- a/server/src/models/Purchase.js	2026-10-12 02:21:21.782283627 +0000
++++ b/server/src/models/Purchase.js	2026-10-12 02:39:10.830523629 +0000
+@@ -3,6 +3,14 @@
+ const purchaseSchema = new mongoose.Schema(
+   {
+     packageId: { type: mongoose.Schema.Types.ObjectId, ref: "Package" },
++    // ECMS প্ল্যান কিনলে packageId থাকে না (ECMS plan key এখানে থাকে) —
++    // ভবিষ্যতে approve করলে ECMS-এ অটো শপ চালু করতে এটা লাগবে
++    ecmsPlanKey: { type: String, default: "", trim: true },
++    // চেকআউটে কাস্টমারের দেওয়া ECMS শপের নাম
++    shopName: { type: String, default: "", trim: true },
++    // কাস্টমারের দেওয়া শপ-পাসওয়ার্ডের bcrypt hash (plain password কখনো রাখা হয় না)।
++    // select:false — অ্যাডমিন লিস্ট/কোনো API রেসপন্সে আসে না; ECMS-এ প্রভিশন সফল হলে মুছে ফেলা হয়।
++    ecmsPasswordHash: { type: String, default: "", select: false },
+     packageNameSnapshot: { type: String, required: true },
+     priceSnapshot: { type: String, required: true },
+     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+@@ -16,6 +24,24 @@
+     referredByUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+     referralCommission: { type: Number, default: 0 },
+     status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
++
++    // ECMS অটো-প্রভিশনিং (ecmsPlanKey থাকলেই প্রযোজ্য)। পাসওয়ার্ড কখনো এখানে সেভ হয় না।
++    // none → pending → done | failed ; reject হলে: revoked | revoke_failed (ECMS বন্ধ করা যায়নি, Retry দরকার)
++    provisionStatus: {
++      type: String,
++      enum: ["none", "pending", "done", "failed", "revoked", "revoke_failed"],
++      default: "none",
++    },
++    provisionRevokedAt: { type: Date, default: null },
++    ecmsRevokeNote: { type: String, default: "" },
++    provisionError: { type: String, default: "" },
++    provisionStartedAt: { type: Date, default: null },
++    provisionedAt: { type: Date, default: null },
++    ecmsResult: { type: String, default: "" }, // created | renewed | already_processed
++    ecmsShopId: { type: String, default: "" },
++    ecmsShopSlug: { type: String, default: "" },
++    ecmsStoreUrl: { type: String, default: "" },
++    ecmsAdminUrl: { type: String, default: "" },
+     adminNote: { type: String, default: "" },
+     deletedAt: { type: Date, default: null },
+   },
+diff -ruN a/server/src/routes/adminPurchases.js b/server/src/routes/adminPurchases.js
+--- a/server/src/routes/adminPurchases.js	2026-10-12 02:21:21.782799354 +0000
++++ b/server/src/routes/adminPurchases.js	2026-10-12 08:43:46.516625549 +0000
+@@ -1,8 +1,188 @@
+ import { Router } from "express";
+ import Purchase from "../models/Purchase.js";
++import User from "../models/User.js";
++import { provisionEcmsShop, revokeEcmsShop, isProvisioningConfigured } from "../lib/ecmsProvision.js";
++import { getEcmsPlans } from "../lib/ecmsPlans.js";
++import { sendEcmsShopReadyEmail, sendEcmsShopRevokedEmail } from "../lib/mailer.js";
+ 
+ const router = Router();
+ 
++// একই purchase-এর জন্য একসাথে দুইবার প্রভিশন/revoke চলা আটকায় (দুইবার ক্লিক/রেস)।
++// "pending" অবস্থায় ২ মিনিটের বেশি আটকে থাকলে (সার্ভার ক্র্যাশ) আবার চেষ্টা করা যাবে।
++const STALE_PENDING_MS = 2 * 60 * 1000;
++const NOT_CONFIGURED = "ECMS_API_URL / ECMS_INTEGRATION_KEY সেট করা নেই";
++
++const staleBefore = () => new Date(Date.now() - STALE_PENDING_MS);
++
++// approve → ECMS চালু। 'revoked' মানে আগে reject হয়েছিল, এখন আবার approve (re-approve)।
++function claimProvisioning(purchaseId) {
++  return Purchase.findOneAndUpdate(
++    {
++      _id: purchaseId,
++      status: "approved",
++      ecmsPlanKey: { $ne: "" },
++      $or: [
++        { provisionStatus: { $in: ["none", "failed", "revoked"] } },
++        { provisionStatus: "pending", provisionStartedAt: { $lt: staleBefore() } },
++      ],
++    },
++    { provisionStatus: "pending", provisionStartedAt: new Date(), provisionError: "" },
++    { new: true }
++  );
++}
++
++// reject → ECMS বন্ধ/ফেরানো
++function claimRevoke(purchaseId) {
++  return Purchase.findOneAndUpdate(
++    {
++      _id: purchaseId,
++      status: { $ne: "approved" },
++      ecmsPlanKey: { $ne: "" },
++      $or: [
++        { provisionStatus: { $in: ["done", "failed", "revoke_failed"] } },
++        { provisionStatus: "pending", provisionStartedAt: { $lt: staleBefore() } },
++      ],
++    },
++    { provisionStatus: "pending", provisionStartedAt: new Date(), provisionError: "" },
++    { new: true }
++  );
++}
++
++async function resolveCustomerEmail(purchase) {
++  if (purchase.customerEmail) return purchase.customerEmail;
++  const buyer = purchase.userId ? await User.findById(purchase.userId).select("email") : null;
++  return buyer?.email || "";
++}
++
++async function planNameOf(purchase) {
++  const plans = await getEcmsPlans();
++  return plans.find((p) => p.ecmsPlanKey === purchase.ecmsPlanKey)?.name || purchase.packageNameSnapshot;
++}
++
++// approve-এর পর ECMS-এ শপ চালু/নবায়ন। approve নিজে কখনো এখানে ব্যর্থ হয়ে ফিরে যায় না —
++// ব্যর্থ হলে provisionStatus="failed" থাকে, অ্যাডমিন "Retry" চাপতে পারে।
++async function runProvisioning(purchase) {
++  try {
++    const customerEmail = await resolveCustomerEmail(purchase);
++    if (!customerEmail) throw new Error("কাস্টমারের ইমেইল নেই — ECMS অ্যাকাউন্ট খোলা যাবে না");
++
++    // hash select:false, তাই আলাদা করে চেয়ে আনা
++    const withHash = await Purchase.findById(purchase._id).select("+ecmsPasswordHash");
++
++    const data = await provisionEcmsShop({
++      externalRef: String(purchase._id),
++      planKey: purchase.ecmsPlanKey,
++      customerName: purchase.customerName,
++      customerEmail,
++      customerPhone: purchase.customerPhone,
++      shopName: purchase.shopName || undefined,
++      passwordHash: withHash?.ecmsPasswordHash || undefined,
++    });
++
++    const planName = await planNameOf(purchase);
++    const passwordMode = data.admin?.passwordMode || "existing";
++
++    let emailStatus = "skipped";
++    if (data.result !== "already_processed") {
++      emailStatus = await sendEcmsShopReadyEmail(customerEmail, {
++        result: data.result,
++        planName,
++        shopName: data.shop?.name,
++        expiresAt: data.shop?.planExpiresAt,
++        storeUrl: data.storeUrl,
++        adminUrl: data.adminUrl,
++        adminEmail: data.admin?.email || customerEmail,
++        passwordMode,
++      });
++    }
++
++    const saved = await Purchase.findByIdAndUpdate(
++      purchase._id,
++      {
++        $set: {
++          provisionStatus: "done",
++          provisionError: "",
++          provisionedAt: new Date(),
++          provisionRevokedAt: null,
++          ecmsRevokeNote: "",
++          ecmsResult: data.result,
++          ecmsShopId: data.shop?.id || "",
++          ecmsShopSlug: data.shop?.slug || "",
++          ecmsStoreUrl: data.storeUrl || "",
++          ecmsAdminUrl: data.adminUrl || "",
++        },
++        // প্রভিশন হয়ে গেছে — hash আর রাখার দরকার নেই
++        $unset: { ecmsPasswordHash: "" },
++      },
++      { new: true }
++    );
++
++    return {
++      purchase: saved,
++      provision: {
++        ok: true,
++        result: data.result,
++        notes: data.notes || [],
++        emailStatus,
++        adminEmail: data.admin?.email || customerEmail,
++      },
++    };
++  } catch (err) {
++    console.error("[ecms-provision] failed for purchase", String(purchase._id), err.message);
++    const saved = await Purchase.findByIdAndUpdate(
++      purchase._id,
++      { provisionStatus: "failed", provisionError: String(err.message || err).slice(0, 500) },
++      { new: true }
++    );
++    return { purchase: saved, provision: { ok: false, error: err.message } };
++  }
++}
++
++// অর্ডার reject হলে ECMS শপ বন্ধ (নতুন শপ) বা আগের অবস্থায় ফেরানো (নবায়ন/আপগ্রেড)।
++// reject নিজে কখনো আটকায় না — ব্যর্থ হলে provisionStatus="revoke_failed", অ্যাডমিন Retry করতে পারবে।
++async function runRevoke(purchase) {
++  try {
++    const data = await revokeEcmsShop({ externalRef: String(purchase._id) });
++    const applied = ["suspended", "reverted", "already_revoked"].includes(data.result);
++
++    const saved = await Purchase.findByIdAndUpdate(
++      purchase._id,
++      {
++        $set: {
++          provisionStatus: applied ? "revoked" : "none",
++          provisionError: "",
++          provisionRevokedAt: applied ? new Date() : null,
++          ecmsRevokeNote: (data.notes || []).join(" · "),
++        },
++        $unset: { ecmsPasswordHash: "" },
++      },
++      { new: true }
++    );
++
++    // শুধু সত্যিকারের বদল হলেই কাস্টমারকে জানানো (already_revoked/not_applied-এ নয়)
++    let emailStatus = "skipped";
++    if (data.result === "suspended" || data.result === "reverted") {
++      const to = await resolveCustomerEmail(purchase);
++      if (to) {
++        emailStatus = await sendEcmsShopRevokedEmail(to, { result: data.result, planName: await planNameOf(purchase) });
++      }
++    }
++
++    return {
++      purchase: saved,
++      provision: { ok: true, revoke: true, result: data.result, notes: data.notes || [], emailStatus },
++    };
++  } catch (err) {
++    console.error("[ecms-revoke] failed for purchase", String(purchase._id), err.message);
++    const saved = await Purchase.findByIdAndUpdate(
++      purchase._id,
++      { provisionStatus: "revoke_failed", provisionError: String(err.message || err).slice(0, 500) },
++      { new: true }
++    );
++    return { purchase: saved, provision: { ok: false, revoke: true, error: err.message } };
++  }
++}
++
+ router.get("/", async (req, res) => {
+   const { status } = req.query;
+   const filter = { deletedAt: null };
+@@ -17,15 +197,115 @@
+     return res.status(400).json({ message: "Invalid status" });
+   }
+ 
++  const before = await Purchase.findById(req.params.id);
++  if (!before) return res.status(404).json({ message: "Purchase not found" });
++
++  // ECMS প্রভিশন চলাকালীন স্ট্যাটাস বদলালে দুই কাজ ধাক্কা খেত — একটু অপেক্ষা করতে বলা হয়
++  if (
++    status &&
++    status !== before.status &&
++    before.ecmsPlanKey &&
++    before.provisionStatus === "pending" &&
++    before.provisionStartedAt &&
++    before.provisionStartedAt > staleBefore()
++  ) {
++    return res.status(409).json({ message: "ECMS প্রভিশনিং এখন চলছে — কয়েক সেকেন্ড পরে আবার চেষ্টা করুন" });
++  }
++
+   const update = {};
+   if (status) update.status = status;
+   if (adminNote !== undefined) update.adminNote = adminNote;
+ 
+   const purchase = await Purchase.findByIdAndUpdate(req.params.id, update, { new: true });
+-  if (!purchase) return res.status(404).json({ message: "Purchase not found" });
++
++  if (purchase.ecmsPlanKey && status) {
++    // ── approve: ECMS-এ শপ চালু/নবায়ন (আগে 'done' হয়ে থাকলে আবার চলে না) ──
++    if (status === "approved") {
++      // reject-এর সময় ECMS বন্ধ করা যায়নি, এখন আবার approve → ECMS-এ কিছুই বদলায়নি, শুধু অবস্থা ঠিক করা
++      if (purchase.provisionStatus === "revoke_failed") {
++        const saved = await Purchase.findByIdAndUpdate(purchase._id, { provisionStatus: "done", provisionError: "" }, { new: true });
++        return res.json(saved);
++      }
++
++      if (purchase.provisionStatus !== "done") {
++        if (!isProvisioningConfigured()) {
++          const saved = await Purchase.findByIdAndUpdate(
++            purchase._id,
++            { provisionStatus: "failed", provisionError: NOT_CONFIGURED },
++            { new: true }
++          );
++          return res.json({ ...saved.toObject(), provision: { ok: false, error: NOT_CONFIGURED } });
++        }
++        const claimed = await claimProvisioning(purchase._id);
++        if (claimed) {
++          const out = await runProvisioning(claimed);
++          return res.json({ ...out.purchase.toObject(), provision: out.provision });
++        }
++      }
++    }
++
++    // ── reject / pending-এ ফেরানো: ECMS-এ প্রয়োগ হয়ে থাকলে বন্ধ বা ফেরানো ──
++    if (status !== "approved") {
++      const needsRevoke = ["done", "revoke_failed", "failed", "pending"].includes(purchase.provisionStatus);
++      if (needsRevoke) {
++        if (!isProvisioningConfigured()) {
++          // 'done' থাকলে ECMS শপ চালু আছে অথচ বন্ধ করা যাচ্ছে না — অ্যাডমিনকে স্পষ্ট জানানো জরুরি
++          if (["done", "revoke_failed"].includes(purchase.provisionStatus)) {
++            const saved = await Purchase.findByIdAndUpdate(
++              purchase._id,
++              { provisionStatus: "revoke_failed", provisionError: NOT_CONFIGURED },
++              { new: true }
++            );
++            return res.json({ ...saved.toObject(), provision: { ok: false, revoke: true, error: NOT_CONFIGURED } });
++          }
++        } else {
++          const claimed = await claimRevoke(purchase._id);
++          if (claimed) {
++            const out = await runRevoke(claimed);
++            return res.json({ ...out.purchase.toObject(), provision: out.provision });
++          }
++        }
++      }
++    }
++  }
++
+   res.json(purchase);
+ });
+ 
++// ব্যর্থ হলে (বা ECMS_* env পরে সেট করলে) হাতে আবার চালানো
++router.post("/:id/provision", async (req, res) => {
++  const purchase = await Purchase.findById(req.params.id).catch(() => null);
++  if (!purchase) return res.status(404).json({ message: "Purchase not found" });
++  if (!purchase.ecmsPlanKey) return res.status(400).json({ message: "এটা ECMS প্ল্যানের অর্ডার না" });
++  if (purchase.status !== "approved") return res.status(400).json({ message: "আগে অর্ডার approve করুন" });
++  if (purchase.provisionStatus === "done") return res.status(400).json({ message: "ইতিমধ্যে ECMS-এ চালু হয়ে গেছে" });
++  if (!isProvisioningConfigured()) return res.status(503).json({ message: NOT_CONFIGURED });
++
++  const claimed = await claimProvisioning(purchase._id);
++  if (!claimed) return res.status(409).json({ message: "প্রভিশনিং এখন চলছে — একটু পরে দেখুন" });
++
++  const out = await runProvisioning(claimed);
++  res.json({ ...out.purchase.toObject(), provision: out.provision });
++});
++
++// reject করা অর্ডারে ECMS বন্ধ করা ব্যর্থ হলে হাতে আবার চালানো
++router.post("/:id/revoke", async (req, res) => {
++  const purchase = await Purchase.findById(req.params.id).catch(() => null);
++  if (!purchase) return res.status(404).json({ message: "Purchase not found" });
++  if (!purchase.ecmsPlanKey) return res.status(400).json({ message: "এটা ECMS প্ল্যানের অর্ডার না" });
++  if (purchase.status === "approved") return res.status(400).json({ message: "অর্ডার approved — আগে reject করুন" });
++  if (purchase.provisionStatus !== "revoke_failed") {
++    return res.status(400).json({ message: "এই অর্ডারে ECMS বন্ধ করার কিছু বাকি নেই" });
++  }
++  if (!isProvisioningConfigured()) return res.status(503).json({ message: NOT_CONFIGURED });
++
++  const claimed = await claimRevoke(purchase._id);
++  if (!claimed) return res.status(409).json({ message: "কাজ এখন চলছে — একটু পরে দেখুন" });
++
++  const out = await runRevoke(claimed);
++  res.json({ ...out.purchase.toObject(), provision: out.provision });
++});
++
+ router.delete("/:id", async (req, res) => {
+   const purchase = await Purchase.findById(req.params.id).catch(() => null);
+   if (!purchase) return res.status(404).json({ message: "Purchase not found" });
+diff -ruN a/server/src/routes/public.js b/server/src/routes/public.js
+--- a/server/src/routes/public.js	2026-10-12 02:21:21.783556294 +0000
++++ b/server/src/routes/public.js	2026-10-12 02:39:10.831321338 +0000
+@@ -1,4 +1,5 @@
+ import { Router } from "express";
++import bcrypt from "bcryptjs";
+ import Package from "../models/Package.js";
+ import Partner from "../models/Partner.js";
+ import Portfolio from "../models/Portfolio.js";
+@@ -10,6 +11,7 @@
+ import User from "../models/User.js";
+ import requireUserAuth from "../middleware/requireUserAuth.js";
+ import { sendNewOrderEmail } from "../lib/mailer.js";
++import { getEcmsPlans, getEcmsPlanById, isEcmsPackageId, ecmsKeyFromId } from "../lib/ecmsPlans.js";
+ 
+ const router = Router();
+ 
+@@ -20,7 +22,19 @@
+   res.json(packages);
+ });
+ 
++// ECMS প্ল্যান (দাম/ফিচার ECMS সুপার-অ্যাডমিন থেকে আসে) — Package আকারে
++router.get("/ecms-plans", async (req, res) => {
++  const settings = await SiteSettings.getSingleton();
++  if (settings.sectionVisibility?.packages === false) return res.json([]);
++  res.json(await getEcmsPlans());
++});
++
+ router.get("/packages/:id", async (req, res) => {
++  if (isEcmsPackageId(req.params.id)) {
++    const plan = await getEcmsPlanById(req.params.id);
++    if (!plan || plan.ctaType === "contact") return res.status(404).json({ message: "Package not found" });
++    return res.json(plan);
++  }
+   const pkg = await Package.findOne({ _id: req.params.id, deletedAt: null, active: { $ne: false } }).catch(() => null);
+   if (!pkg) return res.status(404).json({ message: "Package not found" });
+   res.json(pkg);
+@@ -79,6 +93,8 @@
+     senderNumber,
+     transactionId,
+     referralCode,
++    shopName,
++    shopPassword,
+   } = req.body;
+ 
+   if (
+@@ -93,6 +109,44 @@
+     return res.status(400).json({ message: "Missing required fields" });
+   }
+ 
++  // ECMS প্ল্যান হলে দাম সার্ভারেই ECMS থেকে নেওয়া হয় (ক্লায়েন্টের পাঠানো নয়)
++  let ecmsPlan = null;
++  if (isEcmsPackageId(packageId)) {
++    ecmsPlan = await getEcmsPlanById(packageId);
++    if (!ecmsPlan || ecmsPlan.ctaType === "contact") {
++      return res.status(400).json({ message: "This plan is not available for purchase" });
++    }
++  }
++
++  // ECMS প্ল্যান: শপের নাম + পাসওয়ার্ড চেকআউটেই নেওয়া হয়। পাসওয়ার্ড সাথে সাথে hash হয়ে যায়,
++  // plain আকারে কোথাও সেভ বা লগ হয় না।
++  let ecmsShopName = "";
++  let ecmsPasswordHash = "";
++  let ecmsEmail = "";
++  if (ecmsPlan) {
++    ecmsShopName = String(shopName || "").trim();
++    if (ecmsShopName.length < 2 || ecmsShopName.length > 60) {
++      return res.status(400).json({ message: "Shop name must be between 2 and 60 characters" });
++    }
++
++    const rawPassword = String(shopPassword || "");
++    // bcrypt শুধু প্রথম ৭২ বাইটই দেখে — তার বেশি হলে বাকিটা নিঃশব্দে বাদ যেত
++    if (rawPassword.length < 8 || Buffer.byteLength(rawPassword) > 72) {
++      return res.status(400).json({ message: "Shop password must be 8 to 72 characters" });
++    }
++    if (!/\p{L}/u.test(rawPassword) || !/\d/.test(rawPassword)) {
++      return res.status(400).json({ message: "Shop password must contain at least one letter and one number" });
++    }
++
++    // এই ইমেইলই ECMS অ্যাডমিন প্যানেলের লগইন — খালি থাকলে ভেরিফায়েড অ্যাকাউন্ট-ইমেইল
++    ecmsEmail = String(customerEmail || "").trim().toLowerCase() || buyer.email;
++    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ecmsEmail)) {
++      return res.status(400).json({ message: "A valid email is required for your shop login" });
++    }
++
++    ecmsPasswordHash = await bcrypt.hash(rawPassword, 10);
++  }
++
+   let referredByUserId = null;
+   let referralCommission = 0;
+   const trimmedReferralCode = (referralCode || "").trim().toUpperCase();
+@@ -100,7 +154,11 @@
+     const referrer = await User.findOne({ referralCode: trimmedReferralCode, deletedAt: null });
+     if (referrer && referrer._id.toString() !== buyer._id.toString()) {
+       referredByUserId = referrer._id;
+-      const pkg = packageId ? await Package.findById(packageId).catch(() => null) : null;
++      const pkg = ecmsPlan
++        ? ecmsPlan
++        : packageId
++          ? await Package.findById(packageId).catch(() => null)
++          : null;
+       if (pkg?.priceAmount) {
+         const settings = await SiteSettings.getSingleton();
+         const percent = settings.referralCommissionPercent || 0;
+@@ -110,13 +168,16 @@
+   }
+ 
+   const purchase = await Purchase.create({
+-    packageId: packageId || undefined,
++    packageId: ecmsPlan ? undefined : packageId || undefined,
++    ecmsPlanKey: ecmsPlan ? ecmsKeyFromId(packageId) : "",
+     packageNameSnapshot,
+     priceSnapshot,
+     userId: buyer._id,
+     customerName,
+     customerPhone,
+-    customerEmail,
++    customerEmail: ecmsPlan ? ecmsEmail : customerEmail,
++    shopName: ecmsShopName,
++    ecmsPasswordHash,
+     paymentMethod,
+     senderNumber,
+     transactionId,
+diff -ruN a/src/admin/pages/PurchasesManager.jsx b/src/admin/pages/PurchasesManager.jsx
+--- a/src/admin/pages/PurchasesManager.jsx	2026-10-12 02:21:21.786162321 +0000
++++ b/src/admin/pages/PurchasesManager.jsx	2026-10-12 08:43:51.211132696 +0000
+@@ -1,7 +1,7 @@
+ import { useEffect, useState } from "react";
+-import { Check, X, Trash2 } from "lucide-react";
++import { Check, X, Trash2, RefreshCw } from "lucide-react";
+ import toast from "react-hot-toast";
+-import { apiGet, apiPatch, apiDelete } from "../../lib/api";
++import { apiGet, apiPatch, apiPost, apiDelete } from "../../lib/api";
+ import { AdminCard, EmptyState, StatusBadge } from "../components/ui";
+ import { SkeletonRow } from "../../components/Skeleton";
+ import { useConfirm } from "../context/ConfirmContext";
+@@ -42,15 +42,67 @@
+     }
+   };
+ 
++  // ECMS অটো-প্রভিশনের ফলাফল toast + (ইমেইল না গেলে) পাসওয়ার্ড একবার দেখানো
++  const reportProvision = (provision) => {
++    if (!provision) return;
++    if (!provision.ok) {
++      toast.error(
++        provision.revoke
++          ? `ECMS শপ বন্ধ/ফেরানো যায়নি: ${provision.error}. শপ এখনো চালু আছে — "Retry ECMS" চাপুন।`
++          : `ECMS শপ চালু হয়নি: ${provision.error}. পরে "Retry ECMS" চাপুন।`,
++        { duration: 9000 }
++      );
++      return;
++    }
++    if (provision.revoke) {
++      const msg = {
++        suspended: "ECMS শপ সাসপেন্ড করা হয়েছে (ডেটা অক্ষত)",
++        reverted: "ECMS প্ল্যান আগের অবস্থায় ফেরানো হয়েছে",
++        already_revoked: "ECMS-এ আগেই বন্ধ/ফেরানো ছিল",
++        not_applied: "ECMS-এ এই অর্ডার প্রয়োগই হয়নি — কিছু বদলায়নি",
++      }[provision.result];
++      toast.success(msg || "ECMS আপডেট হয়েছে");
++      (provision.notes || []).forEach((n) => toast(n, { duration: 6000 }));
++      return;
++    }
++    const label = { created: "নতুন ECMS শপ তৈরি হয়েছে", renewed: "ECMS প্ল্যান আপডেট/নবায়ন হয়েছে", already_processed: "ECMS-এ আগেই প্রয়োগ হয়েছিল" }[provision.result];
++    toast.success(label || "ECMS প্রভিশন সম্পন্ন");
++    (provision.notes || []).forEach((n) => toast(n, { duration: 6000 }));
++    // পাসওয়ার্ড কখনো সিস্টেম থেকে দেখানো/পাঠানো হয় না — ইমেইল না গেলে শুধু জানানো
++    if (provision.emailStatus === "failed" || provision.emailStatus === "skipped") {
++      toast("কাস্টমারকে কনফার্মেশন ইমেইল পাঠানো যায়নি — হাতে জানিয়ে দিন (লগইন: তার দেওয়া ইমেইল ও পাসওয়ার্ড)", { duration: 8000 });
++    }
++  };
++
++  const retryProvision = async (purchase) => {
++    try {
++      const path = purchase.status === "approved" ? "provision" : "revoke";
++      const res = await apiPost(`/admin/purchases/${purchase._id}/${path}`, {});
++      await load(tab);
++      reportProvision(res.provision);
++    } catch (err) {
++      toast.error(err.message);
++    }
++  };
++
+   const decide = async (purchase, status) => {
+     let adminNote = purchase.adminNote || "";
++    if (status === "rejected" && purchase.status === "approved" && purchase.ecmsPlanKey) {
++      const ok = await confirm({
++        title: "অনুমোদিত ECMS অর্ডার বাতিল করবেন?",
++        message: `"${purchase.packageNameSnapshot}" — ${purchase.customerName}\nনতুন তৈরি শপ সাসপেন্ড হবে (ডেটা মোছা হবে না); নবায়ন/আপগ্রেড হলে আগের প্ল্যানে ফিরবে। কাস্টমারকে ইমেইলে জানানো হবে।`,
++        confirmLabel: "বাতিল ও ECMS বন্ধ করুন",
++      });
++      if (!ok) return;
++    }
+     if (status === "rejected") {
+       adminNote = prompt("Optional note for rejection:", adminNote) ?? adminNote;
+     }
+     try {
+-      await apiPatch(`/admin/purchases/${purchase._id}`, { status, adminNote });
++      const res = await apiPatch(`/admin/purchases/${purchase._id}`, { status, adminNote });
+       await load(tab);
+       toast.success(status === "approved" ? "Purchase approved" : "Purchase rejected");
++      reportProvision(res.provision);
+     } catch (err) {
+       toast.error(err.message);
+     }
+@@ -110,6 +162,12 @@
+                     <td className="py-3 pr-3">
+                       <p className="font-semibold text-slate-800">{p.packageNameSnapshot}</p>
+                       <p className="text-slate-500">{p.priceSnapshot}</p>
++                      {p.ecmsPlanKey && (
++                        <p className="mt-1 text-xs font-semibold text-indigo-600">
++                          ECMS · {p.ecmsPlanKey}
++                          {p.shopName ? ` · ${p.shopName}` : ""}
++                        </p>
++                      )}
+                     </td>
+                     <td className="py-3 pr-3">
+                       <p className="font-medium text-slate-800">{p.customerName}</p>
+@@ -128,6 +186,30 @@
+                     <td className="py-3 pr-3">
+                       <StatusBadge status={p.status} />
+                       {p.adminNote && <p className="mt-1 max-w-[160px] text-xs text-slate-400">{p.adminNote}</p>}
++                      {p.ecmsPlanKey && p.status !== "approved" && p.provisionStatus === "revoked" && (
++                        <p className="mt-1 max-w-[180px] text-xs text-amber-600">
++                          ECMS বন্ধ/ফেরানো হয়েছে{p.ecmsRevokeNote ? ` — ${p.ecmsRevokeNote}` : ""}
++                        </p>
++                      )}
++                      {p.ecmsPlanKey && p.status !== "approved" && p.provisionStatus === "revoke_failed" && (
++                        <p className="mt-1 max-w-[180px] text-xs text-red-600">
++                          ECMS শপ এখনো চালু! বন্ধ করা যায়নি: {p.provisionError}
++                        </p>
++                      )}
++                      {p.ecmsPlanKey && p.status === "approved" && (
++                        <div className="mt-1 max-w-[180px] text-xs">
++                          {p.provisionStatus === "done" && (
++                            <p className="text-emerald-600">
++                              ECMS ✓ {p.ecmsResult === "renewed" ? "নবায়ন" : "শপ চালু"}
++                              {p.ecmsShopSlug ? ` (${p.ecmsShopSlug})` : ""}
++                            </p>
++                          )}
++                          {p.provisionStatus === "pending" && <p className="text-amber-600">ECMS চলছে…</p>}
++                          {(p.provisionStatus === "failed" || p.provisionStatus === "none") && (
++                            <p className="text-red-600">ECMS ✗ {p.provisionError || "এখনো চালু হয়নি"}</p>
++                          )}
++                        </div>
++                      )}
+                     </td>
+                     <td className="py-3 text-right">
+                       <div className="flex justify-end gap-2">
+@@ -149,6 +231,38 @@
+                             </button>
+                           </>
+                         )}
++                        {p.ecmsPlanKey && p.status === "approved" && (
++                          <button
++                            onClick={() => decide(p, "rejected")}
++                            className="rounded-lg bg-red-50 p-2 text-red-600 hover:bg-red-100"
++                            aria-label="Reject and suspend ECMS shop"
++                            title="বাতিল করুন (ECMS শপ বন্ধ হবে)"
++                          >
++                            <X size={15} />
++                          </button>
++                        )}
++                        {p.ecmsPlanKey && p.status === "rejected" && (
++                          <button
++                            onClick={() => decide(p, "approved")}
++                            className="rounded-lg bg-emerald-50 p-2 text-emerald-600 hover:bg-emerald-100"
++                            aria-label="Re-approve"
++                            title="আবার approve (ECMS শপ আবার চালু হবে)"
++                          >
++                            <Check size={15} />
++                          </button>
++                        )}
++                        {p.ecmsPlanKey &&
++                          ((p.status === "approved" && p.provisionStatus !== "done") ||
++                            (p.status === "rejected" && p.provisionStatus === "revoke_failed")) && (
++                          <button
++                            onClick={() => retryProvision(p)}
++                            className="rounded-lg bg-indigo-50 p-2 text-indigo-600 hover:bg-indigo-100"
++                            aria-label="Retry ECMS provisioning"
++                            title="Retry ECMS"
++                          >
++                            <RefreshCw size={15} />
++                          </button>
++                        )}
+                         <button
+                           onClick={() => handleDelete(p)}
+                           className="rounded-lg p-2 text-slate-400 hover:bg-red-50 hover:text-red-600"
+diff -ruN a/src/components/PricingCard.jsx b/src/components/PricingCard.jsx
+--- a/src/components/PricingCard.jsx	2026-10-12 02:21:21.787235167 +0000
++++ b/src/components/PricingCard.jsx	2026-10-12 02:22:29.260866682 +0000
+@@ -5,9 +5,10 @@
+ 
+ export default function PricingCard({ plan }) {
+   const { t } = useLanguage();
+-  const { _id, name, originalPriceAmount, periodLabel, text, features, notIncluded, limits, renewalText, highlighted } = plan;
+-  const href = _id ? `/checkout/${_id}` : "/pricing";
+-  const label = _id ? t("pricingCard.buyPackage") : t("pricingCard.viewPackage");
++  const { _id, name, originalPriceAmount, periodLabel, text, features, notIncluded, limits, renewalText, highlighted, ctaType } = plan;
++  const isContact = ctaType === "contact";
++  const href = _id && !isContact ? `/checkout/${_id}` : isContact ? "/contact" : "/pricing";
++  const label = _id && !isContact ? t("pricingCard.buyPackage") : t("pricingCard.viewPackage");
+   const price = getDisplayPrice(plan);
+   const discountPercent = getDiscountPercent(plan);
+ 
+diff -ruN a/src/i18n/locales/bn/checkoutPage.js b/src/i18n/locales/bn/checkoutPage.js
+--- a/src/i18n/locales/bn/checkoutPage.js	2026-10-12 02:21:21.788425559 +0000
++++ b/src/i18n/locales/bn/checkoutPage.js	2026-10-12 08:29:47.386313149 +0000
+@@ -41,6 +41,24 @@
+     optionalPlaceholder: "ঐচ্ছিক",
+     submitting: "সাবমিট হচ্ছে…",
+     confirmOrder: "অর্ডার কনফার্ম করুন",
++    orderSubmittedEcmsText:
++      "আমরা আপনার পেমেন্ট যাচাই করব। অনুমোদন হলে আপনার শপ নিজে থেকেই তৈরি হয়ে যাবে এবং কনফার্মেশন ইমেইল পাবেন। এখানে যে ইমেইল ও পাসওয়ার্ড দিয়েছেন সেটা দিয়েই লগইন করতে পারবেন।",
++    ecmsSectionHeading: "আপনার শপের তথ্য",
++    ecmsSectionHint: "পেমেন্ট যাচাই হলে এই তথ্য দিয়ে আপনার অনলাইন শপ তৈরি হবে।",
++    ecmsEmailLabel: "ইমেইল (শপে লগইনের জন্য)",
++    shopNameLabel: "শপের নাম",
++    shopNamePlaceholder: "যেমন: রহিম ফ্যাশন",
++    shopPasswordLabel: "শপ অ্যাডমিন পাসওয়ার্ড",
++    shopPasswordConfirmLabel: "পাসওয়ার্ড আবার দিন",
++    shopPasswordHint: "কমপক্ষে ৮ ক্যারেক্টার, একটি অক্ষর ও একটি সংখ্যা সহ। এটা ইমেইলে পাঠানো বা সাধারণ লেখা হিসেবে রাখা হয় না।",
++    errors: {
++      shopNameLength: "শপের নাম ২ থেকে ৬০ অক্ষরের মধ্যে হতে হবে।",
++      emailInvalid: "সঠিক ইমেইল ঠিকানা দিন।",
++      passwordTooShort: "পাসওয়ার্ড কমপক্ষে ৮ ক্যারেক্টার হতে হবে।",
++      passwordTooLong: "পাসওয়ার্ড অনেক বড় (সর্বোচ্চ ৭২ ক্যারেক্টার)।",
++      passwordWeak: "পাসওয়ার্ডে অন্তত একটি অক্ষর ও একটি সংখ্যা থাকতে হবে।",
++      passwordMismatch: "দুটি পাসওয়ার্ড মিলছে না।",
++    },
+     helpTextPrefix: "কোনো সমস্যা হলে",
+     contactLink: "যোগাযোগ করুন",
+   },
+diff -ruN a/src/i18n/locales/en/checkoutPage.js b/src/i18n/locales/en/checkoutPage.js
+--- a/src/i18n/locales/en/checkoutPage.js	2026-10-12 02:21:21.790065642 +0000
++++ b/src/i18n/locales/en/checkoutPage.js	2026-10-12 08:29:47.385840166 +0000
+@@ -41,6 +41,24 @@
+     optionalPlaceholder: "Optional",
+     submitting: "Submitting…",
+     confirmOrder: "Confirm Order",
++    orderSubmittedEcmsText:
++      "We'll verify your payment. Once approved, your shop is created automatically and a confirmation email is sent to you. You can log in with the email and password you set here.",
++    ecmsSectionHeading: "Your Shop Setup",
++    ecmsSectionHint: "These details create your online shop once your payment is verified.",
++    ecmsEmailLabel: "Email (your shop login)",
++    shopNameLabel: "Shop Name",
++    shopNamePlaceholder: "e.g. Rahim Fashion",
++    shopPasswordLabel: "Shop Admin Password",
++    shopPasswordConfirmLabel: "Confirm Password",
++    shopPasswordHint: "At least 8 characters with a letter and a number. We never email or store it in plain text.",
++    errors: {
++      shopNameLength: "Shop name must be 2 to 60 characters.",
++      emailInvalid: "Please enter a valid email address.",
++      passwordTooShort: "Password must be at least 8 characters.",
++      passwordTooLong: "Password is too long (max 72 characters).",
++      passwordWeak: "Password must contain at least one letter and one number.",
++      passwordMismatch: "The two passwords do not match.",
++    },
+     helpTextPrefix: "Having trouble?",
+     contactLink: "Contact us",
+   },
+diff -ruN a/src/pages/CheckoutPage.jsx b/src/pages/CheckoutPage.jsx
+--- a/src/pages/CheckoutPage.jsx	2026-10-12 02:21:21.791985201 +0000
++++ b/src/pages/CheckoutPage.jsx	2026-10-12 08:29:47.386825396 +0000
+@@ -4,6 +4,8 @@
+ import toast from "react-hot-toast";
+ import Seo from "../components/Seo";
+ import Button from "../components/Button";
++import PasswordInput from "../components/PasswordInput";
++import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
+ import { Skeleton } from "../components/Skeleton";
+ import { apiGet, apiPost } from "../lib/api";
+ import useSiteSettings from "../lib/useSiteSettings";
+@@ -17,6 +19,9 @@
+   "mt-1 w-full rounded-xl border border-red-400 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-500 focus:ring-3 focus:ring-red-100 dark:border-red-500 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-red-500/20";
+ 
+ const requiredFields = ["customerName", "customerPhone", "senderNumber", "transactionId"];
++// ECMS প্ল্যানে শপ তৈরির জন্য এগুলোও লাগে (ইমেইলই শপ-অ্যাডমিনের লগইন)
++const ecmsRequiredFields = ["customerEmail", "shopName", "shopPassword", "shopPasswordConfirm"];
++const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ 
+ function formatPrice(pkg) {
+   if (!pkg) return "";
+@@ -42,6 +47,9 @@
+     senderNumber: "",
+     transactionId: "",
+     referralCode: "",
++    shopName: "",
++    shopPassword: "",
++    shopPasswordConfirm: "",
+   });
+   const [error, setError] = useState("");
+   const [invalidFields, setInvalidFields] = useState([]);
+@@ -81,26 +89,53 @@
+     setTimeout(() => setCopied(""), 1500);
+   };
+ 
++  const isEcms = pkg?.source === "ecms";
++
+   const handleSubmit = async (e) => {
+     e.preventDefault();
+     setError("");
+ 
+-    const missing = requiredFields.filter((field) => !form[field].trim());
++    const needed = isEcms ? [...requiredFields, ...ecmsRequiredFields] : requiredFields;
++    // পাসওয়ার্ডে trim করা হয় না (স্পেস পাসওয়ার্ডের অংশ হতে পারে) — শুধু খালি কিনা দেখা
++    const missing = needed.filter((field) =>
++      field.startsWith("shopPassword") ? !form[field] : !form[field].trim()
++    );
+     if (missing.length > 0) {
+       setInvalidFields(missing);
+       setError(t("checkoutPage.requiredError"));
+       return;
+     }
++
++    if (isEcms) {
++      const fail = (field, key) => {
++        setInvalidFields([field]);
++        setError(t(`checkoutPage.errors.${key}`));
++      };
++      const shopName = form.shopName.trim();
++      if (shopName.length < 2 || shopName.length > 60) return fail("shopName", "shopNameLength");
++      if (!EMAIL_RE.test(form.customerEmail.trim())) return fail("customerEmail", "emailInvalid");
++      if (form.shopPassword.length < 8) return fail("shopPassword", "passwordTooShort");
++      if (new TextEncoder().encode(form.shopPassword).length > 72) return fail("shopPassword", "passwordTooLong");
++      if (!/\p{L}/u.test(form.shopPassword) || !/\d/.test(form.shopPassword)) return fail("shopPassword", "passwordWeak");
++      if (form.shopPassword !== form.shopPasswordConfirm) return fail("shopPasswordConfirm", "passwordMismatch");
++    }
+     setInvalidFields([]);
+ 
++    // confirm ফিল্ড সার্ভারে যায় না; শপের তথ্য শুধু ECMS প্ল্যানে যায়
++    const { shopName, shopPassword, shopPasswordConfirm, ...rest } = form;
++    void shopPasswordConfirm;
++
+     setSubmitting(true);
+     try {
+       await apiPost("/public/purchases", {
+         packageId: pkg._id,
+         packageNameSnapshot: pkg.name,
+         priceSnapshot: formatPrice(pkg),
+-        ...form,
++        ...rest,
++        ...(isEcms ? { shopName: shopName.trim(), shopPassword } : {}),
+       });
++      // পাসওয়ার্ড স্টেটে ফেলে রাখা হয় না
++      setForm((prev) => ({ ...prev, shopPassword: "", shopPasswordConfirm: "" }));
+       setSubmitted(true);
+       toast.success(t("checkoutPage.orderSubmittedToast"));
+     } catch (err) {
+@@ -172,7 +207,7 @@
+           <CheckCircle2 className="mx-auto text-emerald-500" size={48} />
+           <h1 className="mt-4 text-2xl font-bold text-slate-900 dark:text-white">{t("checkoutPage.orderSubmittedHeading")}</h1>
+           <p className="mt-3 text-slate-600 dark:text-slate-400">
+-            {t("checkoutPage.orderSubmittedText")}
++            {isEcms ? t("checkoutPage.orderSubmittedEcmsText") : t("checkoutPage.orderSubmittedText")}
+           </p>
+           <Button href="/" className="mt-6">{t("checkoutPage.backHomeBtn")}</Button>
+         </div>
+@@ -265,10 +300,42 @@
+           </label>
+ 
+           <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+-            {t("checkoutPage.emailOptionalLabel")}
+-            <input className={inputClass} type="email" name="customerEmail" value={form.customerEmail} onChange={handleChange} />
++            {isEcms ? (
++              <>
++                {t("checkoutPage.ecmsEmailLabel")} <span className="text-red-500">*</span>
++              </>
++            ) : (
++              t("checkoutPage.emailOptionalLabel")
++            )}
++            <input className={isEcms ? fieldClass("customerEmail") : inputClass} type="email" name="customerEmail" value={form.customerEmail} onChange={handleChange} required={isEcms} />
+           </label>
+ 
++          {isEcms && (
++            <div className="grid gap-4 rounded-2xl border border-brand-100 bg-brand-50/60 p-4 dark:border-brand-800/40 dark:bg-slate-900/40">
++              <div>
++                <p className="text-sm font-bold text-slate-900 dark:text-white">{t("checkoutPage.ecmsSectionHeading")}</p>
++                <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{t("checkoutPage.ecmsSectionHint")}</p>
++              </div>
++
++              <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
++                {t("checkoutPage.shopNameLabel")} <span className="text-red-500">*</span>
++                <input className={fieldClass("shopName")} name="shopName" value={form.shopName} onChange={handleChange} maxLength={60} placeholder={t("checkoutPage.shopNamePlaceholder")} required />
++              </label>
++
++              <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
++                {t("checkoutPage.shopPasswordLabel")} <span className="text-red-500">*</span>
++                <PasswordInput name="shopPassword" value={form.shopPassword} onChange={handleChange} autoComplete="new-password" className={invalidFields.includes("shopPassword") ? "border-red-400" : ""} required />
++                <PasswordStrengthMeter password={form.shopPassword} />
++                <span className="mt-1 block text-xs font-normal text-slate-400 dark:text-slate-500">{t("checkoutPage.shopPasswordHint")}</span>
++              </label>
++
++              <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
++                {t("checkoutPage.shopPasswordConfirmLabel")} <span className="text-red-500">*</span>
++                <PasswordInput name="shopPasswordConfirm" value={form.shopPasswordConfirm} onChange={handleChange} autoComplete="new-password" className={invalidFields.includes("shopPasswordConfirm") ? "border-red-400" : ""} required />
++              </label>
++            </div>
++          )}
++
+           <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+             {t("checkoutPage.paymentMethodLabel")}
+             <select className={inputClass} name="paymentMethod" value={form.paymentMethod} onChange={handleChange}>
+diff -ruN a/src/pages/EcommercePage.jsx b/src/pages/EcommercePage.jsx
+--- a/src/pages/EcommercePage.jsx	2026-10-12 02:21:21.792136101 +0000
++++ b/src/pages/EcommercePage.jsx	2026-10-12 02:22:29.261351103 +0000
+@@ -17,8 +17,18 @@
+   const [loading, setLoading] = useState(true)
+ 
+   useEffect(() => {
+-    apiGet('/public/packages')
+-      .then((packages) => setPlans(packages.filter((p) => p.category === 'ই-কমার্স ওয়েবসাইট')))
++    // ECMS প্ল্যান ECMS-এর সুপার-অ্যাডমিন থেকে আসে। ECMS_API_URL সেট না থাকলে বা
++    // ECMS বন্ধ থাকলে আগের মতো Hikmah-র নিজস্ব ই-কমার্স প্যাকেজ দেখায়।
++    apiGet('/public/ecms-plans')
++      .catch(() => [])
++      .then((ecmsPlans) => {
++        if (ecmsPlans.length > 0) return ecmsPlans
++        return apiGet('/public/packages').then((packages) =>
++          packages.filter((p) => p.category === 'ই-কমার্স ওয়েবসাইট')
++        )
++      })
++      .then(setPlans)
++      .catch(() => setPlans([]))
+       .finally(() => setLoading(false))
+   }, [])
+ 

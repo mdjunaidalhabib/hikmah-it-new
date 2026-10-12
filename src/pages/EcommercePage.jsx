@@ -17,8 +17,18 @@ export default function EcommercePage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    apiGet('/public/packages')
-      .then((packages) => setPlans(packages.filter((p) => p.category === 'ই-কমার্স ওয়েবসাইট')))
+    // ECMS প্ল্যান ECMS-এর সুপার-অ্যাডমিন থেকে আসে। ECMS_API_URL সেট না থাকলে বা
+    // ECMS বন্ধ থাকলে আগের মতো Hikmah-র নিজস্ব ই-কমার্স প্যাকেজ দেখায়।
+    apiGet('/public/ecms-plans')
+      .catch(() => [])
+      .then((ecmsPlans) => {
+        if (ecmsPlans.length > 0) return ecmsPlans
+        return apiGet('/public/packages').then((packages) =>
+          packages.filter((p) => p.category === 'ই-কমার্স ওয়েবসাইট')
+        )
+      })
+      .then(setPlans)
+      .catch(() => setPlans([]))
       .finally(() => setLoading(false))
   }, [])
 

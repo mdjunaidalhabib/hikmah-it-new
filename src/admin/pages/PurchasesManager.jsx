@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Check, X, Trash2 } from "lucide-react";
+import { Check, X, Trash2, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
-import { apiGet, apiPatch, apiDelete } from "../../lib/api";
+import { apiGet, apiPatch, apiPost, apiDelete } from "../../lib/api";
 import { AdminCard, EmptyState, StatusBadge } from "../components/ui";
 import { SkeletonRow } from "../../components/Skeleton";
 import { useConfirm } from "../context/ConfirmContext";
@@ -42,15 +42,67 @@ export default function PurchasesManager() {
     }
   };
 
+  // ECMS অটো-প্রভিশনের ফলাফল toast + (ইমেইল না গেলে) পাসওয়ার্ড একবার দেখানো
+  const reportProvision = (provision) => {
+    if (!provision) return;
+    if (!provision.ok) {
+      toast.error(
+        provision.revoke
+          ? `ECMS শপ বন্ধ/ফেরানো যায়নি: ${provision.error}. শপ এখনো চালু আছে — "Retry ECMS" চাপুন।`
+          : `ECMS শপ চালু হয়নি: ${provision.error}. পরে "Retry ECMS" চাপুন।`,
+        { duration: 9000 }
+      );
+      return;
+    }
+    if (provision.revoke) {
+      const msg = {
+        suspended: "ECMS শপ সাসপেন্ড করা হয়েছে (ডেটা অক্ষত)",
+        reverted: "ECMS প্ল্যান আগের অবস্থায় ফেরানো হয়েছে",
+        already_revoked: "ECMS-এ আগেই বন্ধ/ফেরানো ছিল",
+        not_applied: "ECMS-এ এই অর্ডার প্রয়োগই হয়নি — কিছু বদলায়নি",
+      }[provision.result];
+      toast.success(msg || "ECMS আপডেট হয়েছে");
+      (provision.notes || []).forEach((n) => toast(n, { duration: 6000 }));
+      return;
+    }
+    const label = { created: "নতুন ECMS শপ তৈরি হয়েছে", renewed: "ECMS প্ল্যান আপডেট/নবায়ন হয়েছে", already_processed: "ECMS-এ আগেই প্রয়োগ হয়েছিল" }[provision.result];
+    toast.success(label || "ECMS প্রভিশন সম্পন্ন");
+    (provision.notes || []).forEach((n) => toast(n, { duration: 6000 }));
+    // পাসওয়ার্ড কখনো সিস্টেম থেকে দেখানো/পাঠানো হয় না — ইমেইল না গেলে শুধু জানানো
+    if (provision.emailStatus === "failed" || provision.emailStatus === "skipped") {
+      toast("কাস্টমারকে কনফার্মেশন ইমেইল পাঠানো যায়নি — হাতে জানিয়ে দিন (লগইন: তার দেওয়া ইমেইল ও পাসওয়ার্ড)", { duration: 8000 });
+    }
+  };
+
+  const retryProvision = async (purchase) => {
+    try {
+      const path = purchase.status === "approved" ? "provision" : "revoke";
+      const res = await apiPost(`/admin/purchases/${purchase._id}/${path}`, {});
+      await load(tab);
+      reportProvision(res.provision);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const decide = async (purchase, status) => {
     let adminNote = purchase.adminNote || "";
+    if (status === "rejected" && purchase.status === "approved" && purchase.ecmsPlanKey) {
+      const ok = await confirm({
+        title: "অনুমোদিত ECMS অর্ডার বাতিল করবেন?",
+        message: `"${purchase.packageNameSnapshot}" — ${purchase.customerName}\nনতুন তৈরি শপ সাসপেন্ড হবে (ডেটা মোছা হবে না); নবায়ন/আপগ্রেড হলে আগের প্ল্যানে ফিরবে। কাস্টমারকে ইমেইলে জানানো হবে।`,
+        confirmLabel: "বাতিল ও ECMS বন্ধ করুন",
+      });
+      if (!ok) return;
+    }
     if (status === "rejected") {
       adminNote = prompt("Optional note for rejection:", adminNote) ?? adminNote;
     }
     try {
-      await apiPatch(`/admin/purchases/${purchase._id}`, { status, adminNote });
+      const res = await apiPatch(`/admin/purchases/${purchase._id}`, { status, adminNote });
       await load(tab);
       toast.success(status === "approved" ? "Purchase approved" : "Purchase rejected");
+      reportProvision(res.provision);
     } catch (err) {
       toast.error(err.message);
     }
@@ -110,6 +162,12 @@ export default function PurchasesManager() {
                     <td className="py-3 pr-3">
                       <p className="font-semibold text-slate-800">{p.packageNameSnapshot}</p>
                       <p className="text-slate-500">{p.priceSnapshot}</p>
+                      {p.ecmsPlanKey && (
+                        <p className="mt-1 text-xs font-semibold text-indigo-600">
+                          ECMS · {p.ecmsPlanKey}
+                          {p.shopName ? ` · ${p.shopName}` : ""}
+                        </p>
+                      )}
                     </td>
                     <td className="py-3 pr-3">
                       <p className="font-medium text-slate-800">{p.customerName}</p>
@@ -128,6 +186,30 @@ export default function PurchasesManager() {
                     <td className="py-3 pr-3">
                       <StatusBadge status={p.status} />
                       {p.adminNote && <p className="mt-1 max-w-[160px] text-xs text-slate-400">{p.adminNote}</p>}
+                      {p.ecmsPlanKey && p.status !== "approved" && p.provisionStatus === "revoked" && (
+                        <p className="mt-1 max-w-[180px] text-xs text-amber-600">
+                          ECMS বন্ধ/ফেরানো হয়েছে{p.ecmsRevokeNote ? ` — ${p.ecmsRevokeNote}` : ""}
+                        </p>
+                      )}
+                      {p.ecmsPlanKey && p.status !== "approved" && p.provisionStatus === "revoke_failed" && (
+                        <p className="mt-1 max-w-[180px] text-xs text-red-600">
+                          ECMS শপ এখনো চালু! বন্ধ করা যায়নি: {p.provisionError}
+                        </p>
+                      )}
+                      {p.ecmsPlanKey && p.status === "approved" && (
+                        <div className="mt-1 max-w-[180px] text-xs">
+                          {p.provisionStatus === "done" && (
+                            <p className="text-emerald-600">
+                              ECMS ✓ {p.ecmsResult === "renewed" ? "নবায়ন" : "শপ চালু"}
+                              {p.ecmsShopSlug ? ` (${p.ecmsShopSlug})` : ""}
+                            </p>
+                          )}
+                          {p.provisionStatus === "pending" && <p className="text-amber-600">ECMS চলছে…</p>}
+                          {(p.provisionStatus === "failed" || p.provisionStatus === "none") && (
+                            <p className="text-red-600">ECMS ✗ {p.provisionError || "এখনো চালু হয়নি"}</p>
+                          )}
+                        </div>
+                      )}
                     </td>
                     <td className="py-3 text-right">
                       <div className="flex justify-end gap-2">
@@ -148,6 +230,38 @@ export default function PurchasesManager() {
                               <X size={15} />
                             </button>
                           </>
+                        )}
+                        {p.ecmsPlanKey && p.status === "approved" && (
+                          <button
+                            onClick={() => decide(p, "rejected")}
+                            className="rounded-lg bg-red-50 p-2 text-red-600 hover:bg-red-100"
+                            aria-label="Reject and suspend ECMS shop"
+                            title="বাতিল করুন (ECMS শপ বন্ধ হবে)"
+                          >
+                            <X size={15} />
+                          </button>
+                        )}
+                        {p.ecmsPlanKey && p.status === "rejected" && (
+                          <button
+                            onClick={() => decide(p, "approved")}
+                            className="rounded-lg bg-emerald-50 p-2 text-emerald-600 hover:bg-emerald-100"
+                            aria-label="Re-approve"
+                            title="আবার approve (ECMS শপ আবার চালু হবে)"
+                          >
+                            <Check size={15} />
+                          </button>
+                        )}
+                        {p.ecmsPlanKey &&
+                          ((p.status === "approved" && p.provisionStatus !== "done") ||
+                            (p.status === "rejected" && p.provisionStatus === "revoke_failed")) && (
+                          <button
+                            onClick={() => retryProvision(p)}
+                            className="rounded-lg bg-indigo-50 p-2 text-indigo-600 hover:bg-indigo-100"
+                            aria-label="Retry ECMS provisioning"
+                            title="Retry ECMS"
+                          >
+                            <RefreshCw size={15} />
+                          </button>
                         )}
                         <button
                           onClick={() => handleDelete(p)}

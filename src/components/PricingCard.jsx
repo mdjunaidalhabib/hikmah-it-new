@@ -5,9 +5,10 @@ import { useLanguage } from "../i18n/LanguageContext";
 
 export default function PricingCard({ plan }) {
   const { t } = useLanguage();
-  const { _id, name, originalPriceAmount, periodLabel, text, features, notIncluded, limits, renewalText, highlighted } = plan;
-  const href = _id ? `/checkout/${_id}` : "/pricing";
-  const label = _id ? t("pricingCard.buyPackage") : t("pricingCard.viewPackage");
+  const { _id, name, originalPriceAmount, periodLabel, text, features, notIncluded, limits, renewalText, highlighted, ctaType } = plan;
+  const isContact = ctaType === "contact";
+  const href = _id && !isContact ? `/checkout/${_id}` : isContact ? "/contact" : "/pricing";
+  const label = _id && !isContact ? t("pricingCard.buyPackage") : t("pricingCard.viewPackage");
   const price = getDisplayPrice(plan);
   const discountPercent = getDiscountPercent(plan);
 
