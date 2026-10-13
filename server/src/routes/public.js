@@ -11,15 +11,20 @@ import SiteSettings from "../models/SiteSettings.js";
 import User from "../models/User.js";
 import requireUserAuth from "../middleware/requireUserAuth.js";
 import { sendNewOrderEmail } from "../lib/mailer.js";
-import { getEcmsPlans, getEcmsPlanById, isEcmsPackageId, ecmsKeyFromId } from "../lib/ecmsPlans.js";
+import { getEcmsPlans, getEcmsPlanById, isEcmsPackageId, ecmsKeyFromId, ECOMMERCE_CATEGORY } from "../lib/ecmsPlans.js";
 
 const router = Router();
 
 router.get("/packages", async (req, res) => {
   const settings = await SiteSettings.getSingleton();
   if (settings.sectionVisibility?.packages === false) return res.json([]);
-  const packages = await Package.find({ deletedAt: null, active: { $ne: false } }).sort({ category: 1, sortOrder: 1 });
-  res.json(packages);
+  // ই-কমার্স প্ল্যানের একমাত্র উৎস ECMS সুপার-অ্যাডমিন — Hikmah-র পুরোনো ই-কমার্স Package
+  // (ডাটাবেসে থাকলেও) এখানে বাদ দিয়ে ECMS প্ল্যান বসানো হয়।
+  const [own, ecmsPlans] = await Promise.all([
+    Package.find({ deletedAt: null, active: { $ne: false }, category: { $ne: ECOMMERCE_CATEGORY } }).sort({ category: 1, sortOrder: 1 }),
+    getEcmsPlans(),
+  ]);
+  res.json([...ecmsPlans, ...own]);
 });
 
 // ECMS প্ল্যান (দাম/ফিচার ECMS সুপার-অ্যাডমিন থেকে আসে) — Package আকারে

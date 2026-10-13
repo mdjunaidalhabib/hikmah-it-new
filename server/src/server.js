@@ -21,6 +21,15 @@ async function start() {
     process.exit(1);
   }
 
+  // ECMS ইন্টিগ্রেশন env — না থাকলে সাইট চলে, কিন্তু ই-কমার্স প্ল্যান ও শপ চালু বন্ধ থাকে।
+  // তাই ভুল যেন চোখে পড়ে, লগে স্পষ্ট error দেওয়া হয়।
+  if (!process.env.ECMS_API_URL) {
+    console.error("[ENV CHECK] ❌ ECMS_API_URL সেট নেই — ই-কমার্স প্ল্যান (pricing/ecommerce পেজে) দেখাবে না");
+  }
+  if (!process.env.ECMS_INTEGRATION_KEY) {
+    console.error("[ENV CHECK] ❌ ECMS_INTEGRATION_KEY সেট নেই — Purchase approve করলে ECMS-এ শপ চালু হবে না");
+  }
+
   await mongoose.connect(process.env.MONGODB_URI, {
     dbName: process.env.MONGODB_DB_NAME,
   });

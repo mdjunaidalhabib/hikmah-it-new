@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { CheckCircle2, Mail, Smartphone } from "lucide-react";
 import toast from "react-hot-toast";
 import Seo from "../components/Seo";
@@ -124,8 +125,12 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
 export default function VerifyPendingPage() {
   const { t } = useLanguage();
   const { user, refresh } = useUserAuth();
+  const location = useLocation();
 
   if (!user) return null;
+
+  // চেকআউট/অন্য পেজ থেকে signup-এ এলে verify শেষে সেখানেই ফিরে যায়
+  const returnTo = location.state?.from?.pathname || "";
 
   const bothVerified = user.emailVerified && user.mobileVerified;
 
@@ -160,8 +165,8 @@ export default function VerifyPendingPage() {
         </div>
 
         {bothVerified && (
-          <Button href="/profile" className="mt-6 w-full">
-            {t("verifyPendingPage.goToProfile")}
+          <Button href={returnTo || "/profile"} className="mt-6 w-full">
+            {returnTo ? t("verifyPendingPage.continueOrder") : t("verifyPendingPage.goToProfile")}
           </Button>
         )}
       </div>

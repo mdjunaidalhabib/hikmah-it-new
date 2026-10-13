@@ -82,7 +82,7 @@ export default function LoginPage() {
         </Link>
         <p className="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">
           {t("loginPage.noAccount")}{" "}
-          <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
+          <Link to="/signup" state={{ from: location.state?.from }} className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
             {t("loginPage.signupLink")}
           </Link>
         </p>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { UserPlus } from "lucide-react";
 import toast from "react-hot-toast";
 import Seo from "../components/Seo";
@@ -16,6 +16,7 @@ export default function SignupPage() {
   const { t } = useLanguage();
   const { signup } = useUserAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,7 @@ export default function SignupPage() {
     try {
       await signup(form);
       toast.success(t("signupPage.successToast"));
-      navigate("/verify", { replace: true });
+      navigate("/verify", { replace: true, state: { from: location.state?.from } });
     } catch (err) {
       setError(err.message);
       toast.error(err.message);
@@ -103,7 +104,7 @@ export default function SignupPage() {
 
         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
           {t("signupPage.haveAccount")}{" "}
-          <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
+          <Link to="/login" state={{ from: location.state?.from }} className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
             {t("signupPage.loginLink")}
           </Link>
         </p>

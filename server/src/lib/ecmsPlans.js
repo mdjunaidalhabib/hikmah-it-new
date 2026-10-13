@@ -13,6 +13,10 @@ const FETCH_TIMEOUT_MS = 5000;
 // থাকে না (key শুধু a-z, 0-9, -) — তাই "ecms_<key>" কখনো আসল Package id-র সাথে মিলবে না।
 export const ECMS_ID_PREFIX = "ecms_";
 
+// Hikmah-র নিজস্ব ই-কমার্স Package-এর ক্যাটাগরি নাম। ECMS প্ল্যান এই নামেই দেখায়,
+// আর এই ক্যাটাগরির পুরোনো Package পাবলিক সাইটে আর দেখানো হয় না (public.js)।
+export const ECOMMERCE_CATEGORY = "ই-কমার্স ওয়েবসাইট";
+
 let cache = { at: 0, plans: null };
 
 export function isEcmsPackageId(id) {
@@ -39,7 +43,7 @@ export function toPackageShape(plan) {
     _id: `${ECMS_ID_PREFIX}${plan.key}`,
     source: "ecms",
     ecmsPlanKey: plan.key,
-    category: "ECMS",
+    category: ECOMMERCE_CATEGORY,
     name: `ECMS ${plan.name}`,
     priceAmount: plan.price || 0,
     originalPriceAmount: plan.originalPrice || 0,

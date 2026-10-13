@@ -21,6 +21,7 @@ export default {
     resend: "কোড আবার পাঠান",
     resendWithCooldown: "আবার পাঠান ({seconds}s)",
     goToProfile: "প্রোফাইলে যান",
+    continueOrder: "অর্ডার চালিয়ে যান",
     otpLengthError: "৬ ডিজিটের কোড দিন",
     verifiedToast: "{label} ভেরিফাই হয়েছে",
   },

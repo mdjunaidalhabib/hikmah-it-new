@@ -21,6 +21,7 @@ export default {
     resend: "Resend Code",
     resendWithCooldown: "Resend ({seconds}s)",
     goToProfile: "Go to Profile",
+    continueOrder: "Continue your order",
     otpLengthError: "Enter the 6-digit code",
     verifiedToast: "{label} verified",
   },

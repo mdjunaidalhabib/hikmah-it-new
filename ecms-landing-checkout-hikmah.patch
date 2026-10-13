@@ -1,0 +1,244 @@
+diff --git a/server/src/lib/ecmsPlans.js b/server/src/lib/ecmsPlans.js
+index 22dca81..3e53341 100644
+--- a/server/src/lib/ecmsPlans.js
++++ b/server/src/lib/ecmsPlans.js
+@@ -13,6 +13,10 @@ const FETCH_TIMEOUT_MS = 5000;
+ // থাকে না (key শুধু a-z, 0-9, -) — তাই "ecms_<key>" কখনো আসল Package id-র সাথে মিলবে না।
+ export const ECMS_ID_PREFIX = "ecms_";
+ 
++// Hikmah-র নিজস্ব ই-কমার্স Package-এর ক্যাটাগরি নাম। ECMS প্ল্যান এই নামেই দেখায়,
++// আর এই ক্যাটাগরির পুরোনো Package পাবলিক সাইটে আর দেখানো হয় না (public.js)।
++export const ECOMMERCE_CATEGORY = "ই-কমার্স ওয়েবসাইট";
++
+ let cache = { at: 0, plans: null };
+ 
+ export function isEcmsPackageId(id) {
+@@ -39,7 +43,7 @@ export function toPackageShape(plan) {
+     _id: `${ECMS_ID_PREFIX}${plan.key}`,
+     source: "ecms",
+     ecmsPlanKey: plan.key,
+-    category: "ECMS",
++    category: ECOMMERCE_CATEGORY,
+     name: `ECMS ${plan.name}`,
+     priceAmount: plan.price || 0,
+     originalPriceAmount: plan.originalPrice || 0,
+diff --git a/server/src/routes/public.js b/server/src/routes/public.js
+index 140450c..6fd950a 100644
+--- a/server/src/routes/public.js
++++ b/server/src/routes/public.js
+@@ -11,15 +11,20 @@ import SiteSettings from "../models/SiteSettings.js";
+ import User from "../models/User.js";
+ import requireUserAuth from "../middleware/requireUserAuth.js";
+ import { sendNewOrderEmail } from "../lib/mailer.js";
+-import { getEcmsPlans, getEcmsPlanById, isEcmsPackageId, ecmsKeyFromId } from "../lib/ecmsPlans.js";
++import { getEcmsPlans, getEcmsPlanById, isEcmsPackageId, ecmsKeyFromId, ECOMMERCE_CATEGORY } from "../lib/ecmsPlans.js";
+ 
+ const router = Router();
+ 
+ router.get("/packages", async (req, res) => {
+   const settings = await SiteSettings.getSingleton();
+   if (settings.sectionVisibility?.packages === false) return res.json([]);
+-  const packages = await Package.find({ deletedAt: null, active: { $ne: false } }).sort({ category: 1, sortOrder: 1 });
+-  res.json(packages);
++  // ই-কমার্স প্ল্যানের একমাত্র উৎস ECMS সুপার-অ্যাডমিন — Hikmah-র পুরোনো ই-কমার্স Package
++  // (ডাটাবেসে থাকলেও) এখানে বাদ দিয়ে ECMS প্ল্যান বসানো হয়।
++  const [own, ecmsPlans] = await Promise.all([
++    Package.find({ deletedAt: null, active: { $ne: false }, category: { $ne: ECOMMERCE_CATEGORY } }).sort({ category: 1, sortOrder: 1 }),
++    getEcmsPlans(),
++  ]);
++  res.json([...ecmsPlans, ...own]);
+ });
+ 
+ // ECMS প্ল্যান (দাম/ফিচার ECMS সুপার-অ্যাডমিন থেকে আসে) — Package আকারে
+diff --git a/server/src/scripts/removeOldEcommercePackages.js b/server/src/scripts/removeOldEcommercePackages.js
+new file mode 100644
+index 0000000..c19a2f7
+--- /dev/null
++++ b/server/src/scripts/removeOldEcommercePackages.js
+@@ -0,0 +1,57 @@
++// এক-বারের ক্লিনআপ: Hikmah-র নিজস্ব পুরোনো "ই-কমার্স ওয়েবসাইট" Package ডাটাবেস থেকে স্থায়ীভাবে মোছে।
++// এখন এই প্ল্যানগুলোর একমাত্র উৎস ECMS সুপার-অ্যাডমিন।
++//
++// ব্যবহার (server/ ফোল্ডার থেকে):
++//   node src/scripts/removeOldEcommercePackages.js            # শুধু দেখায় কী মুছবে (কিছু মোছে না)
++//   node src/scripts/removeOldEcommercePackages.js --confirm  # সত্যিই মোছে
++//
++// নিরাপত্তা:
++// - ডিফল্টে dry-run। --confirm না দিলে কিছুই মোছে না।
++// - পুরোনো Purchase রেকর্ডে নামের snapshot থাকে (packageNameSnapshot), তাই অর্ডারের ইতিহাস নষ্ট হয় না।
++// - মোছার আগে মুছতে-যাওয়া ডকুমেন্টগুলো JSON ব্যাকআপ হিসেবে ফাইলে সেভ হয়।
++// - কাজ শেষে এই ফাইলটি মুছে ফেলতে পারেন।
++import "dotenv/config";
++import fs from "node:fs";
++import mongoose from "mongoose";
++import Package from "../models/Package.js";
++import Purchase from "../models/Purchase.js";
++import { ECOMMERCE_CATEGORY } from "../lib/ecmsPlans.js";
++
++async function run() {
++  if (!process.env.MONGODB_URI) {
++    console.error("MONGODB_URI is not set in server/.env");
++    process.exit(1);
++  }
++  const confirm = process.argv.includes("--confirm");
++
++  await mongoose.connect(process.env.MONGODB_URI, {
++    dbName: process.env.MONGODB_DB_NAME || undefined,
++  });
++
++  // soft-deleted (Trash-এ থাকা) গুলোও ধরা হয়
++  const old = await Package.find({ category: ECOMMERCE_CATEGORY }).lean();
++  console.log(`"${ECOMMERCE_CATEGORY}" ক্যাটাগরির পুরোনো প্যাকেজ: ${old.length}টি`);
++  for (const p of old) {
++    const used = await Purchase.countDocuments({ packageId: p._id });
++    console.log(` - ${p.name} (${p._id}) | অর্ডার আছে: ${used}টি${p.deletedAt ? " | Trash-এ ছিল" : ""}`);
++  }
++
++  if (old.length === 0) {
++    console.log("মোছার মতো কিছু নেই।");
++  } else if (!confirm) {
++    console.log("\nএটা শুধু প্রিভিউ — কিছু মোছা হয়নি। সত্যিই মুছতে --confirm যোগ করে আবার চালান।");
++  } else {
++    const backup = `old-ecommerce-packages-backup-${Date.now()}.json`;
++    fs.writeFileSync(backup, JSON.stringify(old, null, 2));
++    console.log(`\nব্যাকআপ সেভ হয়েছে: ${backup}`);
++    const res = await Package.deleteMany({ _id: { $in: old.map((p) => p._id) } });
++    console.log(`মোছা হয়েছে: ${res.deletedCount}টি`);
++  }
++
++  await mongoose.disconnect();
++}
++
++run().catch((err) => {
++  console.error(err);
++  process.exit(1);
++});
+diff --git a/server/src/server.js b/server/src/server.js
+index 4f8a3a8..e41a0c0 100644
+--- a/server/src/server.js
++++ b/server/src/server.js
+@@ -21,6 +21,15 @@ async function start() {
+     process.exit(1);
+   }
+ 
++  // ECMS ইন্টিগ্রেশন env — না থাকলে সাইট চলে, কিন্তু ই-কমার্স প্ল্যান ও শপ চালু বন্ধ থাকে।
++  // তাই ভুল যেন চোখে পড়ে, লগে স্পষ্ট error দেওয়া হয়।
++  if (!process.env.ECMS_API_URL) {
++    console.error("[ENV CHECK] ❌ ECMS_API_URL সেট নেই — ই-কমার্স প্ল্যান (pricing/ecommerce পেজে) দেখাবে না");
++  }
++  if (!process.env.ECMS_INTEGRATION_KEY) {
++    console.error("[ENV CHECK] ❌ ECMS_INTEGRATION_KEY সেট নেই — Purchase approve করলে ECMS-এ শপ চালু হবে না");
++  }
++
+   await mongoose.connect(process.env.MONGODB_URI, {
+     dbName: process.env.MONGODB_DB_NAME,
+   });
+diff --git a/src/i18n/locales/bn/verifyPendingPage.js b/src/i18n/locales/bn/verifyPendingPage.js
+index f0fe30e..ef3d31f 100644
+--- a/src/i18n/locales/bn/verifyPendingPage.js
++++ b/src/i18n/locales/bn/verifyPendingPage.js
+@@ -21,6 +21,7 @@ export default {
+     resend: "কোড আবার পাঠান",
+     resendWithCooldown: "আবার পাঠান ({seconds}s)",
+     goToProfile: "প্রোফাইলে যান",
++    continueOrder: "অর্ডার চালিয়ে যান",
+     otpLengthError: "৬ ডিজিটের কোড দিন",
+     verifiedToast: "{label} ভেরিফাই হয়েছে",
+   },
+diff --git a/src/i18n/locales/en/verifyPendingPage.js b/src/i18n/locales/en/verifyPendingPage.js
+index 7a1d6ea..4683271 100644
+--- a/src/i18n/locales/en/verifyPendingPage.js
++++ b/src/i18n/locales/en/verifyPendingPage.js
+@@ -21,6 +21,7 @@ export default {
+     resend: "Resend Code",
+     resendWithCooldown: "Resend ({seconds}s)",
+     goToProfile: "Go to Profile",
++    continueOrder: "Continue your order",
+     otpLengthError: "Enter the 6-digit code",
+     verifiedToast: "{label} verified",
+   },
+diff --git a/src/pages/LoginPage.jsx b/src/pages/LoginPage.jsx
+index 7b47864..9b7644a 100644
+--- a/src/pages/LoginPage.jsx
++++ b/src/pages/LoginPage.jsx
+@@ -82,7 +82,7 @@ export default function LoginPage() {
+         </Link>
+         <p className="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">
+           {t("loginPage.noAccount")}{" "}
+-          <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
++          <Link to="/signup" state={{ from: location.state?.from }} className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
+             {t("loginPage.signupLink")}
+           </Link>
+         </p>
+diff --git a/src/pages/SignupPage.jsx b/src/pages/SignupPage.jsx
+index 2d8f743..354a754 100644
+--- a/src/pages/SignupPage.jsx
++++ b/src/pages/SignupPage.jsx
+@@ -1,5 +1,5 @@
+ import { useState } from "react";
+-import { Link, useNavigate } from "react-router-dom";
++import { Link, useLocation, useNavigate } from "react-router-dom";
+ import { UserPlus } from "lucide-react";
+ import toast from "react-hot-toast";
+ import Seo from "../components/Seo";
+@@ -16,6 +16,7 @@ export default function SignupPage() {
+   const { t } = useLanguage();
+   const { signup } = useUserAuth();
+   const navigate = useNavigate();
++  const location = useLocation();
+   const [form, setForm] = useState(emptyForm);
+   const [error, setError] = useState("");
+   const [loading, setLoading] = useState(false);
+@@ -46,7 +47,7 @@ export default function SignupPage() {
+     try {
+       await signup(form);
+       toast.success(t("signupPage.successToast"));
+-      navigate("/verify", { replace: true });
++      navigate("/verify", { replace: true, state: { from: location.state?.from } });
+     } catch (err) {
+       setError(err.message);
+       toast.error(err.message);
+@@ -103,7 +104,7 @@ export default function SignupPage() {
+ 
+         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
+           {t("signupPage.haveAccount")}{" "}
+-          <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
++          <Link to="/login" state={{ from: location.state?.from }} className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
+             {t("signupPage.loginLink")}
+           </Link>
+         </p>
+diff --git a/src/pages/VerifyPendingPage.jsx b/src/pages/VerifyPendingPage.jsx
+index 25757a7..ec9bdc0 100644
+--- a/src/pages/VerifyPendingPage.jsx
++++ b/src/pages/VerifyPendingPage.jsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import { useLocation } from "react-router-dom";
+ import { CheckCircle2, Mail, Smartphone } from "lucide-react";
+ import toast from "react-hot-toast";
+ import Seo from "../components/Seo";
+@@ -124,9 +125,13 @@ function VerifyBlock({ icon: Icon, label, contact, verified, verifyPath, resendP
+ export default function VerifyPendingPage() {
+   const { t } = useLanguage();
+   const { user, refresh } = useUserAuth();
++  const location = useLocation();
+ 
+   if (!user) return null;
+ 
++  // চেকআউট/অন্য পেজ থেকে signup-এ এলে verify শেষে সেখানেই ফিরে যায়
++  const returnTo = location.state?.from?.pathname || "";
++
+   const bothVerified = user.emailVerified && user.mobileVerified;
+ 
+   return (
+@@ -160,8 +165,8 @@ export default function VerifyPendingPage() {
+         </div>
+ 
+         {bothVerified && (
+-          <Button href="/profile" className="mt-6 w-full">
+-            {t("verifyPendingPage.goToProfile")}
++          <Button href={returnTo || "/profile"} className="mt-6 w-full">
++            {returnTo ? t("verifyPendingPage.continueOrder") : t("verifyPendingPage.goToProfile")}
+           </Button>
+         )}
+       </div>
