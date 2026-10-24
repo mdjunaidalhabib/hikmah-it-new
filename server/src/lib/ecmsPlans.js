@@ -37,8 +37,27 @@ function periodLabel(days) {
   return `/${d.toLocaleString("bn-BD")} দিন`;
 }
 
+// ECMS plan-এর ফিচার তালিকাকে "আছে" (features) ও "নেই" (notIncluded — কার্ডে কাটা অবস্থায়
+// দেখায়) এই দুই ভাগে ভাগ করে। ECMS `featureList` পাঠালে সেটাই একমাত্র উৎস, তাই চালু/বন্ধ
+// ফিচার ও তাদের লেবেল সবসময় ECMS সুপার-অ্যাডমিনের সাথে মিলে থাকে।
+// ⚠️ ECMS-এর নতুন বিল্ড আগে ডিপ্লয় করুন — পুরোনো ECMS `featureList` পাঠায় না, তখন শুধু
+// `highlights` (চালু ফিচার) দেখায় এবং কাটা ফিচারের তালিকা খালি থাকে।
+function splitFeatures(plan) {
+  if (Array.isArray(plan.featureList) && plan.featureList.length > 0) {
+    return {
+      features: plan.featureList.filter((item) => item.included).map((item) => item.label),
+      notIncluded: plan.featureList.filter((item) => !item.included).map((item) => item.label),
+    };
+  }
+  return {
+    features: plan.highlights || [],
+    notIncluded: Array.isArray(plan.notIncluded) ? plan.notIncluded : [],
+  };
+}
+
 export function toPackageShape(plan) {
   const isFree = !plan.price && plan.ctaType !== "contact";
+  const { features, notIncluded } = splitFeatures(plan);
   return {
     _id: `${ECMS_ID_PREFIX}${plan.key}`,
     source: "ecms",
@@ -52,8 +71,8 @@ export function toPackageShape(plan) {
     renewalText: "",
     text: plan.tagline || "",
     limits: [],
-    features: plan.highlights || [],
-    notIncluded: [],
+    features,
+    notIncluded,
     highlighted: !!plan.isPopular,
     ctaType: plan.ctaType || "buy",
     sortOrder: plan.order ?? 0,

@@ -55,6 +55,7 @@ export default {
     viewPackage: "প্যাকেজ দেখুন",
     recommended: "সুপারিশকৃত",
     discount: "% ছাড়",
+    notIncluded: "এই প্যাকেজে নেই",
   },
   whatsappButton: {
     chatWithUs: "আমাদের সাথে চ্যাট করুন",

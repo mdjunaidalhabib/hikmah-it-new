@@ -1,0 +1,105 @@
+From 51a83a017df8388a915f1f1a2ee63abff6957cb4 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 24 Oct 2026 00:46:37 +0000
+Subject: [PATCH] feat(ecommerce): show plan features not included in a plan
+ struck-through
+
+- ecmsPlans: split the ECMS featureList into `features` (included) and
+  `notIncluded` (excluded) when mapping an ECMS plan to a Hikmah package, so
+  the e-commerce page and /pricing render a cross + strike-through for every
+  feature the plan does not have. Older ECMS builds without featureList keep
+  working (included features only).
+- PricingCard: add an sr-only "not included" label to struck-through items so
+  the meaning is not conveyed by styling alone (new pricingCard.notIncluded
+  key in bn and en locales).
+
+Deploy order: ship the ECMS backend first so /plans returns featureList.
+---
+ server/src/lib/ecmsPlans.js    | 23 +++++++++++++++++++++--
+ src/components/PricingCard.jsx |  1 +
+ src/i18n/locales/bn/common.js  |  1 +
+ src/i18n/locales/en/common.js  |  1 +
+ 4 files changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/server/src/lib/ecmsPlans.js b/server/src/lib/ecmsPlans.js
+index 3e53341..e68ef13 100644
+--- a/server/src/lib/ecmsPlans.js
++++ b/server/src/lib/ecmsPlans.js
+@@ -37,8 +37,27 @@ function periodLabel(days) {
+   return `/${d.toLocaleString("bn-BD")} দিন`;
+ }
+ 
++// ECMS plan-এর ফিচার তালিকাকে "আছে" (features) ও "নেই" (notIncluded — কার্ডে কাটা অবস্থায়
++// দেখায়) এই দুই ভাগে ভাগ করে। ECMS `featureList` পাঠালে সেটাই একমাত্র উৎস, তাই চালু/বন্ধ
++// ফিচার ও তাদের লেবেল সবসময় ECMS সুপার-অ্যাডমিনের সাথে মিলে থাকে।
++// ⚠️ ECMS-এর নতুন বিল্ড আগে ডিপ্লয় করুন — পুরোনো ECMS `featureList` পাঠায় না, তখন শুধু
++// `highlights` (চালু ফিচার) দেখায় এবং কাটা ফিচারের তালিকা খালি থাকে।
++function splitFeatures(plan) {
++  if (Array.isArray(plan.featureList) && plan.featureList.length > 0) {
++    return {
++      features: plan.featureList.filter((item) => item.included).map((item) => item.label),
++      notIncluded: plan.featureList.filter((item) => !item.included).map((item) => item.label),
++    };
++  }
++  return {
++    features: plan.highlights || [],
++    notIncluded: Array.isArray(plan.notIncluded) ? plan.notIncluded : [],
++  };
++}
++
+ export function toPackageShape(plan) {
+   const isFree = !plan.price && plan.ctaType !== "contact";
++  const { features, notIncluded } = splitFeatures(plan);
+   return {
+     _id: `${ECMS_ID_PREFIX}${plan.key}`,
+     source: "ecms",
+@@ -52,8 +71,8 @@ export function toPackageShape(plan) {
+     renewalText: "",
+     text: plan.tagline || "",
+     limits: [],
+-    features: plan.highlights || [],
+-    notIncluded: [],
++    features,
++    notIncluded,
+     highlighted: !!plan.isPopular,
+     ctaType: plan.ctaType || "buy",
+     sortOrder: plan.order ?? 0,
+diff --git a/src/components/PricingCard.jsx b/src/components/PricingCard.jsx
+index ad7d065..20f43cb 100644
+--- a/src/components/PricingCard.jsx
++++ b/src/components/PricingCard.jsx
+@@ -68,6 +68,7 @@ export default function PricingCard({ plan }) {
+           <li key={feature} className="flex items-start gap-2 text-slate-400 dark:text-slate-500">
+             <XCircle size={16} className="mt-0.5 shrink-0 text-slate-300 dark:text-slate-600" />
+             <span className="line-through">{feature}</span>
++            <span className="sr-only">({t("pricingCard.notIncluded")})</span>
+           </li>
+         ))}
+       </ul>
+diff --git a/src/i18n/locales/bn/common.js b/src/i18n/locales/bn/common.js
+index b1aeab1..31a651e 100644
+--- a/src/i18n/locales/bn/common.js
++++ b/src/i18n/locales/bn/common.js
+@@ -55,6 +55,7 @@ export default {
+     viewPackage: "প্যাকেজ দেখুন",
+     recommended: "সুপারিশকৃত",
+     discount: "% ছাড়",
++    notIncluded: "এই প্যাকেজে নেই",
+   },
+   whatsappButton: {
+     chatWithUs: "আমাদের সাথে চ্যাট করুন",
+diff --git a/src/i18n/locales/en/common.js b/src/i18n/locales/en/common.js
+index 405a248..54e8c69 100644
+--- a/src/i18n/locales/en/common.js
++++ b/src/i18n/locales/en/common.js
+@@ -55,6 +55,7 @@ export default {
+     viewPackage: "View Package",
+     recommended: "Recommended",
+     discount: "% off",
++    notIncluded: "Not included in this package",
+   },
+   whatsappButton: {
+     chatWithUs: "Chat with us",
+-- 
+2.43.0
+

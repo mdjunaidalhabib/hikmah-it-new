@@ -68,6 +68,7 @@ export default function PricingCard({ plan }) {
           <li key={feature} className="flex items-start gap-2 text-slate-400 dark:text-slate-500">
             <XCircle size={16} className="mt-0.5 shrink-0 text-slate-300 dark:text-slate-600" />
             <span className="line-through">{feature}</span>
+            <span className="sr-only">({t("pricingCard.notIncluded")})</span>
           </li>
         ))}
       </ul>

@@ -55,6 +55,7 @@ export default {
     viewPackage: "View Package",
     recommended: "Recommended",
     discount: "% off",
+    notIncluded: "Not included in this package",
   },
   whatsappButton: {
     chatWithUs: "Chat with us",
