@@ -42,6 +42,16 @@ function periodLabel(days) {
 // ফিচার ও তাদের লেবেল সবসময় ECMS সুপার-অ্যাডমিনের সাথে মিলে থাকে।
 // ⚠️ ECMS-এর নতুন বিল্ড আগে ডিপ্লয় করুন — পুরোনো ECMS `featureList` পাঠায় না, তখন শুধু
 // `highlights` (চালু ফিচার) দেখায় এবং কাটা ফিচারের তালিকা খালি থাকে।
+const FEATURE_LABELS = [
+  { key: "fullStorefront", label: "সম্পূর্ণ স্টোরফ্রন্ট" },
+  { key: "analytics", label: "ভিজিটর অ্যানালিটিক্স" },
+  { key: "promo", label: "প্রোমো ও কুপন কোড" },
+  { key: "payment", label: "পেমেন্ট ইন্টিগ্রেশন" },
+  { key: "customDomain", label: "কাস্টম ডোমেইন" },
+  { key: "landingPages", label: "ল্যান্ডিং পেজ বিল্ডার" },
+  { key: "invoiceCustomization", label: "ইনভয়েস কাস্টমাইজেশন" },
+];
+
 function splitFeatures(plan) {
   if (Array.isArray(plan.featureList) && plan.featureList.length > 0) {
     return {
@@ -49,9 +59,15 @@ function splitFeatures(plan) {
       notIncluded: plan.featureList.filter((item) => !item.included).map((item) => item.label),
     };
   }
+  // পুরোনো ECMS বিল্ড (featureList/notIncluded নেই) হলেও `features` টগল থেকে নিজেই
+  // "নেই" ফিচার বের করি, যাতে ECMS রিডিপ্লয়ের অপেক্ষা না করেই কাটা ফিচার দেখায়।
+  const toggles = plan.features && typeof plan.features === "object" ? plan.features : null;
+  const derivedOff = toggles
+    ? FEATURE_LABELS.filter(({ key }) => !toggles[key]).map(({ label }) => label)
+    : [];
   return {
     features: plan.highlights || [],
-    notIncluded: Array.isArray(plan.notIncluded) ? plan.notIncluded : [],
+    notIncluded: Array.isArray(plan.notIncluded) && plan.notIncluded.length > 0 ? plan.notIncluded : derivedOff,
   };
 }
 
